@@ -174,6 +174,23 @@ class ProofreadingConfig(BaseModel):
     author_name: str = "MCP Lektor"
     langdock_api_base: str = "https://api.langdock.com/openai/v1"
     langdock_api_key: str = ""
+    
+    # --- New Configurable Parameters ---
+    # Default address form for tie-breaking: "Sie" (formal) or "Du" (informal)
+    default_address_form: str = "Sie"
+    
+    # Bible Validation Settings
+    bible_api_url: str = "https://bible-api.com"
+    bible_api_timeout_seconds: float = 5.0
+    use_bible_offline_fallback: bool = True
+    
+    # LLM Robustness Settings
+    llm_max_retries: int = 3
+    llm_retry_initial_delay_seconds: float = 2.0
+    
+    # Red-Text Detection Thresholds (Problem 3.1)
+    red_threshold_r: int = 180
+    red_threshold_gb: int = 80
 
 
 class ConfusedWordEntry(BaseModel):

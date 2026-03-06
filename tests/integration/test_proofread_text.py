@@ -13,7 +13,7 @@ from mcp_lektor.core.models import (
     RunFormatting,
     TextRun,
 )
-from mcp_lektor.tools._session_store import clear_all, create_session, get_session
+from mcp_lektor.core.session_manager import session_manager
 from mcp_lektor.tools.proofread_text import proofread_text
 
 
@@ -34,14 +34,14 @@ def _make_session_with_text(texts: list[str]) -> str:
         total_paragraphs=len(paragraphs),
         total_words=sum(len(t.split()) for t in texts),
     )
-    return create_session({"structure": structure, "file_path": "fake.docx"})
+    return session_manager.create_session({"structure": structure, "file_path": "fake.docx"})
 
 
 @pytest.fixture(autouse=True)
 def _clean_sessions():
-    clear_all()
+    session_manager._sessions.clear()
     yield
-    clear_all()
+    session_manager._sessions.clear()
 
 
 class TestProofreadTextTool:
@@ -69,7 +69,7 @@ class TestProofreadTextTool:
     async def test_result_stored_in_session(self):
         sid = _make_session_with_text(["Das ist - ein Test."])
         await proofread_text(session_id=sid, checks="typography")
-        session = get_session(sid)
+        session = session_manager.get_session(sid)
         assert "proofreading_result" in session
 
     @pytest.mark.asyncio

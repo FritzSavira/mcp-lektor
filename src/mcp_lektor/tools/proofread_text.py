@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import json
+import logging
 
 from mcp_lektor.core.models import CorrectionCategory
 from mcp_lektor.core.proofreading_engine import ProofreadingEngine
-from mcp_lektor.tools._session_store import get_session, update_session
+from mcp_lektor.core.session_manager import session_manager
+
+logger = logging.getLogger(__name__)
 
 _CATEGORY_ALIASES: dict[str, CorrectionCategory | None] = {
     "all": None,
@@ -65,24 +68,24 @@ async def proofread_text(
     JSON string with the ``ProofreadingResult``.
     """
     try:
-        session = get_session(session_id)
-    except KeyError:
+        session = session_manager.get_session(session_id)
+        structure = session["structure"]
+        parsed_checks = _parse_checks(checks)
+
+        engine = ProofreadingEngine()
+        result = await engine.proofread(structure, parsed_checks)
+
+        # Store result in session for later use by write_corrected_docx
+        session_manager.update_session(session_id, {"proofreading_result": result})
+
         return json.dumps(
-            {"error": f"Session not found: {session_id}"},
+            result.model_dump(),
             ensure_ascii=False,
+            indent=2,
         )
-
-    structure = session["structure"]
-    parsed_checks = _parse_checks(checks)
-
-    engine = ProofreadingEngine()
-    result = await engine.proofread(structure, parsed_checks)
-
-    # Store result in session for later use by write_corrected_docx
-    update_session(session_id, {"proofreading_result": result})
-
-    return json.dumps(
-        result.model_dump(),
-        ensure_ascii=False,
-        indent=2,
-    )
+    except KeyError as e:
+        logger.warning(f"Session not found: {session_id}")
+        return json.dumps({"error": str(e)}, ensure_ascii=False)
+    except Exception as e:
+        logger.error(f"Error during proofreading session {session_id}: {e}")
+        return json.dumps({"error": f"Internal error: {str(e)}"}, ensure_ascii=False)

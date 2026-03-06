@@ -20,6 +20,7 @@ from mcp_lektor.core.models import (
     TextColor,
     TextRun,
 )
+from mcp_lektor.core.run_normalizer import normalize_runs
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +41,8 @@ def parse_docx(file_path: str | Path) -> DocumentStructure:
     paragraphs: list[DocumentParagraph] = []
 
     for idx, para in enumerate(doc.paragraphs):
-        runs = [_build_text_run(run) for run in para.runs]
+        raw_runs = [_build_text_run(run) for run in para.runs]
+        runs = normalize_runs(raw_runs)
 
         has_content_runs = [r for r in runs if r.text.strip()]
         is_placeholder = bool(has_content_runs) and all(
@@ -187,8 +189,19 @@ def write_corrected_document(
 
     doc = DocxDocument(str(input_path))
     apply_corrections_to_document(doc, corrections, author, decisions)
+    # Perform a safety check on the XML before saving if needed, 
+    # but python-docx's .save() is usually what does the XML assembly.
     _save_comments_part(doc)
     doc.save(str(output_path))
 
-    logger.info("Corrected document saved to %s", output_path)
+    # Verify structural integrity of the newly saved file
+    from mcp_lektor.utils.xml_validator import validate_docx_structure
+    try:
+        validate_docx_structure(output_path)
+    except Exception as e:
+        logger.error(f"Generated .docx is invalid: {e}")
+        # We might want to raise an error here to prevent delivering corrupt files
+        raise ValueError(f"Failed to generate a valid .docx: {e}")
+
+    logger.info("Corrected document saved and validated at %s", output_path)
     return output_path

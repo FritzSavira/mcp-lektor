@@ -7,16 +7,16 @@ from pathlib import Path
 
 import pytest
 
-from mcp_lektor.tools._session_store import clear_all, get_session
+from mcp_lektor.core.session_manager import session_manager
 from mcp_lektor.tools.extract_document import extract_document
 
 
 @pytest.fixture(autouse=True)
 def _clean_sessions():
     """Ensure a clean session store for every test."""
-    clear_all()
+    session_manager._sessions.clear()
     yield
-    clear_all()
+    session_manager._sessions.clear()
 
 
 class TestExtractDocumentTool:
@@ -33,7 +33,7 @@ class TestExtractDocumentTool:
     async def test_session_created(self, sample_docx_path: Path) -> None:
         raw = await extract_document(str(sample_docx_path))
         sid = json.loads(raw)["session_id"]
-        session = get_session(sid)
+        session = session_manager.get_session(sid)
         assert "structure" in session
 
     @pytest.mark.asyncio
@@ -46,5 +46,7 @@ class TestExtractDocumentTool:
 
     @pytest.mark.asyncio
     async def test_file_not_found(self, tmp_dir: Path) -> None:
-        with pytest.raises(FileNotFoundError):
-            await extract_document(str(tmp_dir / "nope.docx"))
+        # Note: In the tool, we wrap parse_docx in a try/except that returns a JSON error
+        raw = await extract_document(str(tmp_dir / "nope.docx"))
+        data = json.loads(raw)
+        assert "error" in data

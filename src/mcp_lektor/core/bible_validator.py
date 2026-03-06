@@ -306,6 +306,8 @@ async def _validate_online(
     *,
     api_base: str,
     client: httpx.AsyncClient,
+    timeout: float = 10.0,
+    use_fallback: bool = True,
 ) -> BibleValidationResult:
     """Validate a single reference against an online Bible API.
 
@@ -328,7 +330,7 @@ async def _validate_online(
 
     url = f"{api_base}/{query_parts_str}"
     try:
-        resp = await client.get(url, timeout=10.0)
+        resp = await client.get(url, timeout=timeout)
         if resp.status_code == 404:
             return BibleValidationResult(
                 reference=ref,
@@ -353,10 +355,17 @@ async def _validate_online(
         )
     except (httpx.HTTPError, httpx.TimeoutException) as exc:
         logger.warning(
-            "Bible API request failed for %s: %s – falling back to offline",
+            "Bible API request failed for %s: %s",
             ref.raw_text,
             exc,
         )
+        if not use_fallback:
+            return BibleValidationResult(
+                reference=ref,
+                is_valid=False,
+                error_message=f"API nicht erreichbar: {exc}",
+            )
+            
         result = _validate_offline(ref)
         result.error_message = (
             f"API nicht erreichbar – Offline-Prüfung: "
@@ -370,12 +379,15 @@ class BibleValidator:
 
     def __init__(
         self,
+        config: ProofreadingConfig | None = None,
         *,
-        api_base: str = "https://bible-api.com",
         use_online: bool = True,
     ) -> None:
-        self._api_base = api_base.rstrip("/")
-        self._use_online = use_online
+        from mcp_lektor.config.settings import load_config
+        self.config = config or load_config()
+        self._api_base = self.config.bible_api_url.rstrip("/")
+        self._use_online = use_online and bool(self.config.bible_api_url)
+        self._timeout = self.config.bible_api_timeout_seconds
 
     def extract_refs(self, structure: DocumentStructure) -> list[BibleReference]:
         """Extract all Bible references from paragraphs (skipping placeholders)."""
@@ -416,7 +428,13 @@ class BibleValidator:
 
         async with httpx.AsyncClient() as client:
             tasks = [
-                _validate_online(r, api_base=self._api_base, client=client)
+                _validate_online(
+                    r, 
+                    api_base=self._api_base, 
+                    client=client, 
+                    timeout=self._timeout,
+                    use_fallback=self.config.use_bible_offline_fallback
+                )
                 for r in refs
             ]
             results = await asyncio.gather(*tasks)

@@ -84,13 +84,61 @@ class ProofreadingEngine:
         for i, corr in enumerate(all_corrections, 1):
             corr.id = f"C-{i:03d}"
 
+        # --- Step 5: Determine Predominant Address Form (Problem 3.3) ---
+        predominant, deviations = self._determine_address_form_stats(structure, all_corrections)
+
         elapsed = time.time() - start
         return ProofreadingResult(
             document_filename=structure.filename,
             total_corrections=len(all_corrections),
             corrections=all_corrections,
+            predominant_address_form=predominant,
+            address_form_deviations=deviations,
             processing_time_seconds=round(elapsed, 2),
         )
+
+    def _determine_address_form_stats(
+        self, structure: DocumentStructure, corrections: list[ProposedCorrection]
+    ) -> tuple[str, int]:
+        """
+        Count occurrences of 'Du' vs 'Sie' address forms.
+        Uses config.default_address_form for tie-breaking (Problem 3.3).
+        """
+        import re
+        
+        # We look for personal pronouns and possessives
+        # Du-Form: du, dir, dich, dein, deine, ...
+        # Sie-Form: Sie, Ihnen, Ihr, Ihre, ... (must be capitalized)
+        du_pattern = re.compile(r"\b(du|dir|dich|dein|deine|deinem|deiner|deines)\b", re.IGNORECASE)
+        sie_pattern = re.compile(r"\b(Sie|Ihnen|Ihr|Ihre|Ihrem|Ihrer|Ihres)\b")
+        
+        du_count = 0
+        sie_count = 0
+        
+        for para in structure.paragraphs:
+            text = para.proofreadable_text
+            du_count += len(du_pattern.findall(text))
+            sie_count += len(sie_pattern.findall(text))
+            
+        if du_count == 0 and sie_count == 0:
+            return "None", 0
+            
+        # Tie-breaking logic
+        if du_count > sie_count:
+            predominant = "Du"
+            deviations = sie_count
+        elif sie_count > du_count:
+            predominant = "Sie"
+            deviations = du_count
+        else:
+            # TIE! Use configured default
+            predominant = self.config.default_address_form
+            # In a tie, both counts are equal, so deviations = du_count (or sie_count)
+            # but only for the non-predominant form. 
+            # If predominant is "Sie", then du_count are the deviations.
+            deviations = du_count if predominant == "Sie" else sie_count
+            
+        return predominant, deviations
 
     async def _proofread_with_llm(
         self,
