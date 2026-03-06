@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  mcp-lektor:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - LANGDOCK_API_KEY=${LANGDOCK_API_KEY}
+      - BIBLE_API_URL=${BIBLE_API_URL:-https://bible-api.com}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ./config:/app/config:ro
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2.0"

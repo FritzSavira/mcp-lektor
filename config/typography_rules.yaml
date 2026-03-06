@@ -1,0 +1,31 @@
+# Typografie-Regeln für deutsche Texte
+rules:
+  - name: "Anführungszeichen öffnend"
+    pattern: '"(?=\w)'
+    replacement: "„"
+    explanation: 'Deutsche öffnende Anführungszeichen sind „ (unten).'
+    category: "Anfuehrungszeichen"
+
+  - name: "Anführungszeichen schließend"
+    pattern: '(?<=\w)"'
+    replacement: "\u201c"
+    explanation: 'Deutsche schließende Anführungszeichen sind \u201c (oben).'
+    category: "Anfuehrungszeichen"
+
+  - name: "Apostroph"
+    pattern: "(?<=\\w)'(?=\\w)"
+    replacement: "\u2019"
+    explanation: "Typografisch korrekter Apostroph ist \u2019."
+    category: "Typografie"
+
+  - name: "Gedankenstrich"
+    pattern: " - "
+    replacement: " – "
+    explanation: "Im Deutschen wird der Halbgeviertstrich (–) als Gedankenstrich verwendet."
+    category: "Typografie"
+
+  - name: "Ellipse"
+    pattern: '\.\.\.'
+    replacement: "…"
+    explanation: "Drei Punkte werden typografisch als Ellipsenzeichen (…) gesetzt."
+    category: "Typografie"

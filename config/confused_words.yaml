@@ -1,0 +1,38 @@
+# Verwechslungswörter – häufig verwechselte deutsche Wörter
+# Format: word / confused_with / explanation / example_correct / example_incorrect
+words:
+  - word: "das"
+    confused_with: "dass"
+    explanation: "'das' ist Artikel oder Relativpronomen, 'dass' ist Konjunktion."
+    example_correct: "Ich weiß, dass das stimmt."
+    example_incorrect: "Ich weiß, das das stimmt."
+
+  - word: "seit"
+    confused_with: "seid"
+    explanation: "'seit' ist temporal (Präposition/Konjunktion), 'seid' ist 2. Person Plural von 'sein'."
+    example_correct: "Seit wann seid ihr hier?"
+    example_incorrect: "Seid wann seit ihr hier?"
+
+  - word: "wider"
+    confused_with: "wieder"
+    explanation: "'wider' bedeutet 'gegen', 'wieder' bedeutet 'erneut'."
+    example_correct: "Das widerspricht meiner Meinung. Komm bitte wieder."
+    example_incorrect: "Das wiederspricht meiner Meinung."
+
+  - word: "Standart"
+    confused_with: "Standard"
+    explanation: "'Standard' (mit d) ist korrekt. 'Standart' existiert nicht."
+    example_correct: "Das ist der Standard."
+    example_incorrect: "Das ist der Standart."
+
+  - word: "Tod"
+    confused_with: "tot"
+    explanation: "'Tod' ist das Substantiv, 'tot' ist das Adjektiv."
+    example_correct: "Er ist tot. Der Tod kam plötzlich."
+    example_incorrect: "Er ist Tod."
+
+  - word: "anscheinend"
+    confused_with: "scheinbar"
+    explanation: "'anscheinend' = vermutlich wahr; 'scheinbar' = nur dem Anschein nach (tatsächlich nicht wahr)."
+    example_correct: "Er ist anscheinend krank (= wahrscheinlich wirklich krank)."
+    example_incorrect: "Er ist scheinbar krank (wenn er wirklich krank ist)."
