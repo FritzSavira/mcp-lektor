@@ -22,7 +22,7 @@ Der Workflow ist in vier Hauptphasen unterteilt. In der aktuellen Prototyp-Phase
 3.  **Bibel-Prüfung:** Parallel dazu sucht der `BibleValidator` nach Bibelstellen und validiert diese online oder offline.
 4.  **Ergebnis:** Alle Funde werden in einer Liste von `ProposedCorrection`-Objekten gesammelt.
 
-## 3. Phase: Interaktive Review (Benutzer-Interaktion)
+IM CODE GELÖSCHT ## 3. Phase: Interaktive Review (Benutzer-Interaktion) IM CODE GELÖSCHT
 **Ort:** Streamlit GUI Dashboard
 
 1.  **Anzeige:** Die GUI präsentiert die Korrekturen in einer Tabelle.

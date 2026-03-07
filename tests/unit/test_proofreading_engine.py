@@ -100,9 +100,17 @@ class TestConfusedWordsChecker:
     """Tests for confused_words_checker.scan_confused_words."""
 
     def test_detects_das_dass(self):
+        from mcp_lektor.config.models import ConfusedWordEntry
         structure = _make_structure(["Ich wei\u00df, das das stimmt."])
-        words = load_confused_words()
-        corrections = scan_confused_words(structure, words)
+        # Manually create entry to avoid dependency on external config file
+        entry = ConfusedWordEntry(
+            word="das",
+            confused_with="dass",
+            explanation="Test explanation",
+            example_correct="Test",
+            example_incorrect="Test"
+        )
+        corrections = scan_confused_words(structure, [entry])
         assert len(corrections) >= 1
         assert any(c.category == CorrectionCategory.CONFUSED_WORD for c in corrections)
 
@@ -192,9 +200,8 @@ class TestProofreadingEngine:
     @pytest.mark.asyncio
     async def test_rule_based_only(self):
         """Run engine with only rule-based categories (no LLM call)."""
-        from mcp_lektor.core.models import ProofreadingConfig
+        from mcp_lektor.config.models import ProofreadingConfig
         from mcp_lektor.core.proofreading_engine import ProofreadingEngine
-
         structure = _make_structure(
             [
                 'Er sagte "Hallo" - und ging...',
@@ -219,9 +226,8 @@ class TestProofreadingEngine:
     @pytest.mark.asyncio
     async def test_empty_document(self):
         """Empty document should produce zero corrections."""
-        from mcp_lektor.core.models import ProofreadingConfig
+        from mcp_lektor.config.models import ProofreadingConfig
         from mcp_lektor.core.proofreading_engine import ProofreadingEngine
-
         structure = _make_structure([])
         config = ProofreadingConfig()
         engine = ProofreadingEngine(config)

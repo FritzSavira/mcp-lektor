@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import re
 
+from mcp_lektor.config.models import ConfusedWordEntry
 from mcp_lektor.core.models import (
     ConfidenceLevel,
-    ConfusedWordEntry,
     CorrectionCategory,
     DocumentStructure,
     ProposedCorrection,

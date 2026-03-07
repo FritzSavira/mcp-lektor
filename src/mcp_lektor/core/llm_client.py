@@ -13,7 +13,7 @@ from typing import Any
 import httpx
 from openai import AsyncOpenAI
 
-from mcp_lektor.core.models import ProofreadingConfig
+from mcp_lektor.config.models import ProofreadingConfig
 
 logger = logging.getLogger(__name__)
 

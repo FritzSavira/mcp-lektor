@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import re
 
+from mcp_lektor.config.models import TypographyRule
 from mcp_lektor.core.models import (
     ConfidenceLevel,
     CorrectionCategory,
     DocumentStructure,
     ProposedCorrection,
-    TypographyRule,
 )
 
 

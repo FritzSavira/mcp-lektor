@@ -7,7 +7,8 @@ from typing import Any
 
 import yaml
 
-from mcp_lektor.core.models import (
+from mcp_lektor.config.models import (
+    AppConfig,
     ConfusedWordEntry,
     ProofreadingConfig,
     TypographyRule,
@@ -36,15 +37,23 @@ _CONFIG_DIR = _find_config_dir()
 
 
 def load_config(config_dir: Path | None = None) -> ProofreadingConfig:
-    """Load the main config.yaml and return a ProofreadingConfig."""
+    """Load the main config.yaml and return a ProofreadingConfig.
+    
+    Internally parses the full AppConfig to ensure server/session settings are valid too.
+    """
     base = config_dir or _CONFIG_DIR
     path = base / "config.yaml"
     if not path.exists():
         return ProofreadingConfig()
+    
     with open(path, encoding="utf-8") as f:
         raw: dict[str, Any] = yaml.safe_load(f) or {}
-    section = raw.get("proofreading", {})
-    return ProofreadingConfig(**section)
+    
+    # Validate entire structure
+    app_config = AppConfig(**raw)
+    
+    # Return only the proofreading section for backward compatibility
+    return app_config.proofreading
 
 
 def load_typography_rules(config_dir: Path | None = None) -> list[TypographyRule]:
@@ -66,4 +75,5 @@ def load_confused_words(config_dir: Path | None = None) -> list[ConfusedWordEntr
         return []
     with open(path, encoding="utf-8") as f:
         raw = yaml.safe_load(f) or {}
-    return [ConfusedWordEntry(**w) for w in raw.get("words", [])]
+    words = raw.get("words", [])
+    return [ConfusedWordEntry(**w) for w in words]
