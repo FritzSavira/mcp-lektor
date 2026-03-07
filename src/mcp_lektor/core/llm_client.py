@@ -1,5 +1,5 @@
 """
-Async wrapper for LLM calls via Langdock (OpenAI-compatible) or Straico API.
+Async wrapper for LLM calls via Langdock (OpenAI-compatible) or Straico API (v.0).
 """
 
 from __future__ import annotations
@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import asyncio
 from typing import Any
 
 import httpx
@@ -44,8 +45,6 @@ Antworte AUSSCHLIESSLICH mit einem JSON-Array im folgenden Format:
 Wenn keine Fehler vorhanden sind, antworte mit einem leeren Array: []
 """
 
-import asyncio
-
 async def call_llm_for_proofreading(
     paragraphs_json: str,
     config: ProofreadingConfig,
@@ -53,7 +52,6 @@ async def call_llm_for_proofreading(
 ) -> list[dict[str, Any]]:
     """
     Send a batch of paragraphs to the LLM and parse corrections.
-    Includes an exponential backoff retry mechanism for robustness (Problem 3.4).
     """
     straico_key = os.environ.get("STRAICO_API_KEY")
     max_retries = config.llm_max_retries
@@ -64,7 +62,7 @@ async def call_llm_for_proofreading(
     for attempt in range(max_retries + 1):
         try:
             if straico_key:
-                return await _call_straico(paragraphs_json, straico_key, config, checks)
+                return await _call_straico_v0(paragraphs_json, straico_key, config, checks)
             else:
                 return await _call_langdock(paragraphs_json, config, checks)
         except Exception as exc:
@@ -75,7 +73,7 @@ async def call_llm_for_proofreading(
                     f"Retrying in {delay}s..."
                 )
                 await asyncio.sleep(delay)
-                delay *= 2 # Exponential backoff
+                delay *= 2
             else:
                 logger.error(f"LLM API final attempt failed: {exc}")
     
@@ -99,7 +97,7 @@ async def _call_langdock(
     )
 
     response = await client.chat.completions.create(
-        model=config.llm_model,
+        model=config.llm_model or "claude-3-5-sonnet-20240620",
         messages=[
             {"role": "system", "content": _SYSTEM_PROMPT},
             {"role": "user", "content": user_message},
@@ -110,14 +108,14 @@ async def _call_langdock(
     content = response.choices[0].message.content or "[]"
     return _parse_json_content(content)
 
-async def _call_straico(
+async def _call_straico_v0(
     paragraphs_json: str,
     api_key: str,
     config: ProofreadingConfig,
     checks: list[str],
 ) -> list[dict[str, Any]]:
-    """Straico API call using httpx."""
-    url = "https://api.straico.com/v1/prompt/completion"
+    """Straico API call using v.0 prompt completion."""
+    url = "https://api.straico.com/v0/prompt/completion"
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
@@ -130,33 +128,43 @@ async def _call_straico(
         f"Absätze (JSON):\n{paragraphs_json}"
     )
 
+    # v.0 Payload construction
     payload = {
-        "models": [config.llm_model or "anthropic/claude-3.5-sonnet"],
         "message": full_prompt,
+        "temperature": config.temperature,
+        "max_tokens": config.max_tokens_per_call,
+        "replace_failed_models": True
     }
 
+    # Decide between smart_llm_selector and specific model
+    if config.smart_llm_selector:
+        payload["smart_llm_selector"] = config.smart_llm_selector
+    else:
+        payload["model"] = config.llm_model or "anthropic/claude-3-5-sonnet"
+
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=payload, timeout=60.0)
+        response = await client.post(url, headers=headers, json=payload, timeout=90.0)
+        
+        if response.status_code == 422:
+            logger.error(f"Straico v.0 422 Error: {response.text}")
+            
         response.raise_for_status()
         data = response.json()
         
-        # Straico response structure check
-        completions = data.get("data", {}).get("completions", {})
-        if not completions:
-            logger.warning(f"Straico returned unexpected structure: {data}")
+        # v.0 Response structure: data.completion.choices[0].message.content
+        try:
+            content = data["data"]["completion"]["choices"][0]["message"]["content"]
+            model_used = data["data"]["completion"].get("model", "unknown")
+            logger.info(f"Straico used model: {model_used}")
+            return _parse_json_content(content)
+        except (KeyError, IndexError) as exc:
+            logger.error(f"Failed to parse Straico v.0 response: {exc}. Data: {data}")
             return []
-        
-        # Get the first model's completion
-        first_model_data = next(iter(completions.values()))
-        content = first_model_data.get("completion", {}).get("choices", [{}])[0].get("message", {}).get("content", "[]")
-        
-        return _parse_json_content(content)
 
 def _parse_json_content(content: str) -> list[dict[str, Any]]:
     """Helper to clean and parse JSON from LLM string."""
     content = content.strip()
     if content.startswith("```"):
-        # Remove markdown code blocks if present
         lines = content.split("\n")
         if lines[0].startswith("```"):
             lines = lines[1:]

@@ -5,23 +5,26 @@ server:
   log_level: "info"
 
 proofreading:
-  llm_model: "claude-sonnet-4-20250514"
+  # Straico v.0 Mode: Use either smart_llm_selector OR llm_model
+  smart_llm_selector: "quality"
+  llm_model: null 
+  
   max_tokens_per_call: 4096
   temperature: 0.1
   author_name: "MCP Lektor"
   langdock_api_base: "https://api.langdock.com/openai/v1"
   
-  # --- Logic Settings (Problem 3.3, 3.1) ---
+  # --- Logic Settings ---
   default_address_form: "Sie"
   red_threshold_r: 180
   red_threshold_gb: 80
   
-  # --- Bible API (Problem 3.2) ---
+  # --- Bible API ---
   bible_api_url: "https://bible-api.com"
   bible_api_timeout_seconds: 5.0
   use_bible_offline_fallback: true
   
-  # --- Robustness (Problem 3.4) ---
+  # --- Robustness ---
   llm_max_retries: 3
   llm_retry_initial_delay_seconds: 2.0
 

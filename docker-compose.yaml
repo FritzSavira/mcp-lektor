@@ -1,18 +1,21 @@
-version: "3.9"
 services:
-  mcp-lektor:
+  mcp-server:
     build: .
     ports:
       - "8080:8080"
+    env_file: .env
     environment:
-      - LANGDOCK_API_KEY=${LANGDOCK_API_KEY}
-      - BIBLE_API_URL=${BIBLE_API_URL:-https://bible-api.com}
-      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     volumes:
       - ./config:/app/config:ro
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 2G
-          cpus: "2.0"
+
+  mcp-gui:
+    build: .
+    ports:
+      - "8501:8501"
+    env_file: .env
+    volumes:
+      - ./config:/app/config:ro
+    command: ["streamlit", "run", "src/mcp_lektor/gui.py", "--server.address", "0.0.0.0"]
+    restart: unless-stopped

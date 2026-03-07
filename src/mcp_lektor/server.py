@@ -19,40 +19,21 @@ from mcp_lektor.core.session_manager import session_manager
 load_dotenv()
 
 # Configure logging
+log_level_str = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
-    level=os.getenv("LOG_LEVEL", "INFO"),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=log_level_str,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("mcp-lektor")
 
 # Initialize FastMCP server
-mcp = FastMCP(
-    "MCP Lektor",
-    description="Professional German-language proofreading server for .docx files."
-)
+mcp = FastMCP("MCP Lektor")
 
 # Register tools
 mcp.tool()(extract_document)
 mcp.tool()(proofread_text)
 mcp.tool()(validate_bible_refs)
 mcp.tool()(write_corrected_docx)
-
-@mcp.on_startup
-async def on_startup():
-    """Tasks to run on server startup."""
-    logger.info("MCP Lektor server starting up...")
-    
-    # Start background session cleanup
-    ttl = int(os.getenv("SESSION_TTL_MINUTES", "30"))
-    session_manager._ttl_minutes = ttl
-    await session_manager.start_cleanup_task()
-    
-    logger.info(f"Background session cleanup started (TTL: {ttl}m).")
-
-@mcp.on_shutdown
-async def on_shutdown():
-    """Tasks to run on server shutdown."""
-    logger.info("MCP Lektor server shutting down...")
 
 if __name__ == "__main__":
     # Get port from environment or default to 8080
