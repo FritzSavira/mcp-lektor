@@ -168,8 +168,8 @@ class ProofreadingConfig(BaseModel):
     checks_enabled: list[CorrectionCategory] = Field(
         default_factory=lambda: list(CorrectionCategory)
     )
-    llm_model: Optional[str] = "anthropic/claude-3.5-sonnet"
-    smart_llm_selector: Optional[str] = "quality"
+    llm_model: Optional[str] = "anthropic/claude-sonnet-4.5"
+    smart_llm_selector: Optional[str] = None
     max_tokens_per_call: int = 4096
     temperature: float = 0.1
     author_name: str = "MCP Lektor"

@@ -42,6 +42,8 @@ Antworte AUSSCHLIESSLICH mit einem JSON-Array im folgenden Format:
   }
 ]
 
+WICHTIG: Alle Textwerte müssen valider JSON-Code sein. Doppelte Anführungszeichen innerhalb von Texten MÜSSEN mit einem Backslash maskiert werden (\").
+
 Wenn keine Fehler vorhanden sind, antworte mit einem leeren Array: []
 """
 
@@ -97,7 +99,7 @@ async def _call_langdock(
     )
 
     response = await client.chat.completions.create(
-        model=config.llm_model or "claude-3-5-sonnet-20240620",
+        model=config.llm_model or "anthropic/claude-sonnet-4.5",
         messages=[
             {"role": "system", "content": _SYSTEM_PROMPT},
             {"role": "user", "content": user_message},
@@ -133,14 +135,13 @@ async def _call_straico_v0(
         "message": full_prompt,
         "temperature": config.temperature,
         "max_tokens": config.max_tokens_per_call,
-        "replace_failed_models": True
     }
 
     # Decide between smart_llm_selector and specific model
     if config.smart_llm_selector:
         payload["smart_llm_selector"] = config.smart_llm_selector
     else:
-        payload["model"] = config.llm_model or "anthropic/claude-3-5-sonnet"
+        payload["model"] = config.llm_model or "anthropic/claude-sonnet-4.5"
 
     async with httpx.AsyncClient() as client:
         response = await client.post(url, headers=headers, json=payload, timeout=90.0)
@@ -163,17 +164,34 @@ async def _call_straico_v0(
 
 def _parse_json_content(content: str) -> list[dict[str, Any]]:
     """Helper to clean and parse JSON from LLM string."""
+    import re
+    
     content = content.strip()
+    
+    # 1. Strip Markdown code blocks
     if content.startswith("```"):
-        lines = content.split("\n")
-        if lines[0].startswith("```"):
-            lines = lines[1:]
-        if lines and lines[-1].startswith("```"):
-            lines = lines[:-1]
-        content = "\n".join(lines).strip()
+        content = re.sub(r"^```[a-z]*\n", "", content)
+        content = re.sub(r"\n```$", "", content)
+    content = content.strip()
+    
+    # 2. Handle cases where the LLM might include text before/after the JSON array
+    if not (content.startswith("[") and content.endswith("]")):
+        match = re.search(r"\[.*\]", content, re.DOTALL)
+        if match:
+            content = match.group(0)
+    
+    # 3. Robust JSON cleaning
+    # Remove trailing commas in arrays/objects (very common in LLM outputs)
+    content = re.sub(r",\s*([\]}])", r"\1", content)
     
     try:
         return json.loads(content)
     except json.JSONDecodeError as exc:
-        logger.warning(f"LLM returned unparseable JSON: {exc}\nContent: {content[:100]}...")
-        return []
+        logger.warning(f"LLM returned unparseable JSON: {exc}\nContent: {content[:150]}...")
+        # Final attempt: try to fix common escaping issues if possible
+        try:
+            # Replace unescaped newlines within quotes
+            fixed_content = re.sub(r'(?<=: ")(.*?)(?=",)', lambda m: m.group(1).replace("\n", "\\n"), content, flags=re.DOTALL)
+            return json.loads(fixed_content)
+        except Exception:
+            return []

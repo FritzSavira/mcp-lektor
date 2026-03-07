@@ -21,13 +21,16 @@ COMMENTS_URI = "http://schemas.openxmlformats.org/officeDocument/2006/relationsh
 COMMENTS_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml"
 
 
-def apply_text_based_correction(
+def apply_track_change(
     paragraph_element: etree._Element,
     original_text: str,
     replacement_text: str,
     author: str,
     timestamp: str,
     revision_id: int,
+    run_index: Optional[int] = None, # Deprecated/Ignored
+    char_start: Optional[int] = None, # Deprecated/Ignored
+    char_end: Optional[int] = None, # Deprecated/Ignored
 ) -> bool:
     """
     Locates original_text within the paragraph's runs and replaces it with 
@@ -49,12 +52,13 @@ def apply_text_based_correction(
             run_map.append((start, len(full_para_text), run))
 
     # 2. Find the original_text in the full paragraph text
-    # We use regex for exact but flexible matching (e.g. whitespace)
+    # We use fuzzy matching to account for apostrophe/quote/space variations
+    fuzzy_pattern = _to_fuzzy_regex(original_text)
     try:
-        match = re.search(re.escape(original_text), full_para_text)
+        match = re.search(fuzzy_pattern, full_para_text)
         if not match:
-            # Fallback: try case-insensitive or stripped if exact match fails
-            match = re.search(re.escape(original_text.strip()), full_para_text)
+            # Fallback: case-insensitive if exact fuzzy match fails
+            match = re.search(fuzzy_pattern, full_para_text, re.IGNORECASE)
             if not match:
                 logger.warning(f"Could not find text '{original_text}' in paragraph.")
                 return False
@@ -63,6 +67,8 @@ def apply_text_based_correction(
         return False
 
     match_start, match_end = match.span()
+    # Use the ACTUAL text from the document for the delete tag to be accurate
+    document_text = full_para_text[match_start:match_end]
 
     # 3. Identify which runs are affected
     affected_runs = []
@@ -101,7 +107,7 @@ def apply_text_based_correction(
 
     # The actual Track Changes
     del_elem = etree.Element(f"{W}del", {f"{W}id": str(revision_id), f"{W}author": author, f"{W}date": timestamp})
-    del_elem.append(_make_run(original_text, rpr_copy, is_delete=True))
+    del_elem.append(_make_run(document_text, rpr_copy, is_delete=True))
     new_elements.append(del_elem)
 
     ins_elem = etree.Element(f"{W}ins", {f"{W}id": str(revision_id + 1), f"{W}author": author, f"{W}date": timestamp})
@@ -116,6 +122,29 @@ def apply_text_based_correction(
         parent.insert(insertion_point + i, elem)
 
     return True
+
+
+def _to_fuzzy_regex(text: str) -> str:
+    """Escapes text but allows common variations like apostrophes, quotes or spaces."""
+    # We want to replace quotes, apostrophes and spaces with character classes.
+    # To do this safely, we first escape everything, then replace the ESCAPED versions.
+    # Note: re.escape does NOT escape ' or " in modern Python, but it DOES escape spaces.
+    
+    res = re.escape(text)
+    
+    # 1. Apostrophes: straight ('), smart (’, ‘)
+    # Since re.escape doesn't escape ', we just replace it.
+    res = res.replace("'", "['’‘]")
+    
+    # 2. Quotes: straight ("), German low („), smart high (“ ”)
+    # Since re.escape doesn't escape ", we just replace it.
+    res = res.replace('"', '[\\"„“”]')
+    
+    # 3. Spaces: re.escape turns " " into "\ "
+    # We replace the escaped space "\ " with a character class for all types of spaces.
+    res = res.replace(r"\ ", r"[\s\xa0]+")
+    
+    return res
 
 
 def apply_corrections_to_document(
@@ -154,7 +183,7 @@ def apply_corrections_to_document(
         replacement_text = corr.get("suggested_text") or corr.get("replacement_text", "")
 
         # 1. Apply Track Change via Text Matching
-        success = apply_text_based_correction(
+        success = apply_track_change(
             paragraph_element=para_elem,
             original_text=original_text,
             replacement_text=replacement_text,
@@ -187,6 +216,9 @@ def add_comment(
     author: str,
     timestamp: str,
     comment_id: int,
+    run_index: Optional[int] = None, # Deprecated/Ignored
+    char_start: Optional[int] = None, # Deprecated/Ignored
+    char_end: Optional[int] = None, # Deprecated/Ignored
 ) -> None:
     """Adds a comment to the END of a paragraph (simpler and safer for Auto-mode)."""
     comments_element = _get_or_create_comments_part(document)

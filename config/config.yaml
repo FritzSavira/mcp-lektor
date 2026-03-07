@@ -6,8 +6,11 @@ server:
 
 proofreading:
   # Straico v.0 Mode: Use either smart_llm_selector OR llm_model
-  smart_llm_selector: "quality"
-  llm_model: null 
+  smart_llm_selector: NULL
+  llm_model: "openai/gpt-4.1"
+  # llm_model: "nvidia/llama-3.3-nemotron-super-49b-v1.5" - nok
+  # llm_model: "claude-opus-4-5" - ok
+  # llm_model: "openai/gpt-4o-2024-11-20" - ok
   
   max_tokens_per_call: 4096
   temperature: 0.1

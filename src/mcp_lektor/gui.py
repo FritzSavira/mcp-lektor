@@ -4,6 +4,8 @@ import asyncio
 from pathlib import Path
 from dotenv import load_dotenv
 
+from datetime import datetime
+
 # Importe korrigiert: Wir importieren die Funktionen und die korrekten Modelle
 from mcp_lektor.core.document_io import parse_docx, write_corrected_document
 from mcp_lektor.core.proofreading_engine import ProofreadingEngine
@@ -20,7 +22,7 @@ st.set_page_config(
 )
 
 # Initialisierung der Core-Komponenten
-@st.cache_resource
+# CACHING DEAKTIVIERT: Damit Änderungen an der config.yaml sofort wirksam werden
 def get_engine():
     return ProofreadingEngine()
 
@@ -136,10 +138,13 @@ if st.session_state.processed and st.session_state.output_bytes:
     st.balloons()
     st.success(f"Fertig! Es wurden **{st.session_state.num_corrections}** Korrekturen gefunden und als Track Changes eingearbeitet.")
     
+    # Zeitstempel für eindeutigen Dateinamen generieren
+    timestamp = datetime.now().strftime("%H-%M-%S")
+    
     st.download_button(
         label="📥 Korrigiertes Dokument herunterladen",
         data=st.session_state.output_bytes,
-        file_name=f"lektoriert_{st.session_state.file_name}",
+        file_name=f"lektoriert_{st.session_state.file_name.replace('.docx', '')}_{timestamp}.docx",
         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         use_container_width=True
     )

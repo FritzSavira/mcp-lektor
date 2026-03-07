@@ -13,7 +13,26 @@ from mcp_lektor.core.models import (
     TypographyRule,
 )
 
-_CONFIG_DIR = Path(__file__).resolve().parent.parent.parent.parent / "config"
+def _find_config_dir() -> Path:
+    """Try to find the config directory in common locations."""
+    # 1. Direct path /app/config (Docker)
+    docker_path = Path("/app/config")
+    if docker_path.exists():
+        return docker_path
+    
+    # 2. Local development path (relative to this file)
+    local_path = Path(__file__).resolve().parent.parent.parent.parent / "config"
+    if local_path.exists():
+        return local_path
+    
+    # 3. Current working directory + config
+    cwd_path = Path.cwd() / "config"
+    if cwd_path.exists():
+        return cwd_path
+        
+    return local_path # Fallback
+
+_CONFIG_DIR = _find_config_dir()
 
 
 def load_config(config_dir: Path | None = None) -> ProofreadingConfig:

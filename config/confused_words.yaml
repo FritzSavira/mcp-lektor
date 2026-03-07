@@ -1,12 +1,13 @@
 # Verwechslungswörter – häufig verwechselte deutsche Wörter
 # Format: word / confused_with / explanation / example_correct / example_incorrect
 words:
-  - word: "das"
-    confused_with: "dass"
-    explanation: "'das' ist Artikel oder Relativpronomen, 'dass' ist Konjunktion."
-    example_correct: "Ich weiß, dass das stimmt."
-    example_incorrect: "Ich weiß, das das stimmt."
-
+  
+  #- word: "das"
+  #  confused_with: "dass"
+  #  explanation: "'das' ist Artikel oder Relativpronomen, 'dass' ist Konjunktion."
+  #  example_correct: "Ich weiß, dass das stimmt."
+  #  example_incorrect: "Ich weiß, das das stimmt."
+  
   - word: "seit"
     confused_with: "seid"
     explanation: "'seit' ist temporal (Präposition/Konjunktion), 'seid' ist 2. Person Plural von 'sein'."
