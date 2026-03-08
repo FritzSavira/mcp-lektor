@@ -28,10 +28,14 @@ def apply_track_change(
     author: str,
     timestamp: str,
     revision_id: int,
+    char_start: Optional[int] = None,
 ) -> bool:
     """
     Locates original_text within the paragraph's runs and replaces it with 
     Track Changes (w:del and w:ins).
+    
+    If char_start is provided, it is used to disambiguate multiple occurrences 
+    by picking the match closest to that offset.
     """
     if not original_text:
         return False
@@ -51,14 +55,27 @@ def apply_track_change(
     # 2. Find the original_text in the full paragraph text
     # We use fuzzy matching to account for apostrophe/quote/space variations
     fuzzy_pattern = _to_fuzzy_regex(original_text)
+    
+    match = None
     try:
-        match = re.search(fuzzy_pattern, full_para_text)
-        if not match:
-            # Fallback: case-insensitive if exact fuzzy match fails
-            match = re.search(fuzzy_pattern, full_para_text, re.IGNORECASE)
-            if not match:
-                logger.warning(f"Could not find text '{original_text}' in paragraph.")
-                return False
+        # Find ALL matches to handle duplicates
+        matches = list(re.finditer(fuzzy_pattern, full_para_text))
+        if not matches:
+             # Fallback: case-insensitive
+            matches = list(re.finditer(fuzzy_pattern, full_para_text, re.IGNORECASE))
+        
+        if not matches:
+            logger.warning(f"Could not find text '{original_text}' in paragraph.")
+            return False
+
+        if char_start is not None and len(matches) > 1:
+            # Disambiguate using char_start
+            # Find the match whose start() is closest to char_start
+            match = min(matches, key=lambda m: abs(m.start() - char_start))
+        else:
+            # Default to first match if no hint or only one match
+            match = matches[0]
+
     except Exception as e:
         logger.error(f"Regex error searching for '{original_text}': {e}")
         return False
@@ -186,7 +203,8 @@ def apply_corrections_to_document(
             replacement_text=replacement_text,
             author=author,
             timestamp=timestamp,
-            revision_id=revision_id
+            revision_id=revision_id,
+            char_start=corr.get("char_offset_start") or corr.get("char_start"),
         )
 
         if success:

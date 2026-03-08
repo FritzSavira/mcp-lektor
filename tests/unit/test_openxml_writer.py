@@ -161,6 +161,42 @@ class TestApplyCorrectionsToDocument:
         # Rejected correction should NOT be applied
         assert "del" not in xml_str or "delText" not in xml_str
 
+    def test_corrects_second_occurrence_only(self) -> None:
+        doc = _create_simple_docx("Ein Fehler ist ein Fehler.")
+        # We want to change the SECOND "Fehler" (index ~17) to "Problem"
+        # The first "Fehler" is at index 4.
+        corrections = [
+            {
+                "paragraph_index": 0,
+                "run_index": 0,
+                "char_start": 17,
+                "char_end": 23,
+                "original_text": "Fehler",
+                "replacement_text": "Problem",
+                "category": "Wortwahl",
+                "explanation": "Synonym",
+            },
+        ]
+
+        apply_corrections_to_document(doc, corrections, author="Test")
+
+        xml_str = etree.tostring(doc.element.body, encoding="unicode")
+        
+        # We expect:
+        # "Ein Fehler ist ein " (preserved)
+        # <w:del>Fehler</w:del> <w:ins>Problem</w:ins>
+        # "." (preserved)
+        
+        # If it failed (replaced FIRST "Fehler"), we'd see:
+        # "Ein " (preserved)
+        # <w:del>Fehler</w:del> <w:ins>Problem</w:ins>
+        # " ist ein Fehler." (preserved)
+        
+        # Assertion: "Fehler ist ein " must be present as plain text inside a run.
+        # This proves the first "Fehler" was NOT touched.
+        assert "Fehler ist ein " in xml_str
+        assert "Problem" in xml_str
+
     def test_roundtrip_saves_and_opens(self, tmp_path: Path) -> None:
         doc = _create_simple_docx("Testdokument zum Speichern.")
         corrections = [
