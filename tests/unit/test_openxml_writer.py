@@ -42,9 +42,6 @@ class TestApplyTrackChange:
 
         apply_track_change(
             paragraph_element=para,
-            run_index=0,
-            char_start=13,
-            char_end=19,
             original_text="Fehler",
             replacement_text="Erfolg",
             author="Test",
@@ -62,9 +59,6 @@ class TestApplyTrackChange:
 
         apply_track_change(
             paragraph_element=para,
-            run_index=0,
-            char_start=7,
-            char_end=13,
             original_text="Fehler",
             replacement_text="Erfolg",
             author="Test",
@@ -83,9 +77,6 @@ class TestApplyTrackChange:
 
         apply_track_change(
             paragraph_element=para,
-            run_index=0,
-            char_start=7,
-            char_end=11,
             original_text="Text",
             replacement_text="Satz",
             author="Test",
@@ -100,23 +91,6 @@ class TestApplyTrackChange:
         rpr = ins_run.find(f"{{{WORD_NS}}}rPr")
         assert rpr is not None
 
-    def test_out_of_range_run_index_is_safe(self) -> None:
-        doc = _create_simple_docx("Test.")
-        para = _get_paragraph_element(doc)
-
-        # Should not raise
-        apply_track_change(
-            paragraph_element=para,
-            run_index=99,
-            char_start=0,
-            char_end=4,
-            original_text="Test",
-            replacement_text="Prüf",
-            author="Test",
-            timestamp="2026-03-05T12:00:00Z",
-            revision_id=1,
-        )
-
 
 class TestAddComment:
     """Tests for add_comment()."""
@@ -128,7 +102,6 @@ class TestAddComment:
         add_comment(
             document=doc,
             paragraph_element=para,
-            run_index=0,
             comment_text="Testkommentar",
             author="Test",
             timestamp="2026-03-05T12:00:00Z",

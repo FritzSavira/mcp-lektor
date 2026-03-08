@@ -28,9 +28,6 @@ def apply_track_change(
     author: str,
     timestamp: str,
     revision_id: int,
-    run_index: Optional[int] = None, # Deprecated/Ignored
-    char_start: Optional[int] = None, # Deprecated/Ignored
-    char_end: Optional[int] = None, # Deprecated/Ignored
 ) -> bool:
     """
     Locates original_text within the paragraph's runs and replaces it with 
@@ -216,9 +213,6 @@ def add_comment(
     author: str,
     timestamp: str,
     comment_id: int,
-    run_index: Optional[int] = None, # Deprecated/Ignored
-    char_start: Optional[int] = None, # Deprecated/Ignored
-    char_end: Optional[int] = None, # Deprecated/Ignored
 ) -> None:
     """Adds a comment to the END of a paragraph (simpler and safer for Auto-mode)."""
     comments_element = _get_or_create_comments_part(document)
