@@ -109,7 +109,11 @@ class TestConfusedWordsChecker:
         )
         corrections = scan_confused_words(structure, [entry])
         assert len(corrections) >= 1
-        assert any(c.category == CorrectionCategory.CONFUSED_WORD for c in corrections)
+        corr = corrections[0]
+        assert corr.category == CorrectionCategory.CONFUSED_WORD
+        assert corr.original_text == "das"
+        assert corr.suggested_text == "das"  # Now matches original
+        assert corr.explanation.startswith("Pr\u00fcfen: das/dass")
 
     def test_detects_standart(self):
         structure = _make_structure(["Das ist der Standart."])
@@ -149,7 +153,11 @@ class TestQuotationChecker:
         rules = load_typography_rules()
         corrections = check_typography(structure, rules)
         # Filter for quotation mark corrections
-        q_corrs = [c for c in corrections if c.category == CorrectionCategory.QUOTATION_MARKS]
+        q_corrs = [
+            c
+            for c in corrections
+            if c.category == CorrectionCategory.QUOTATION_MARKS
+        ]
         assert len(q_corrs) >= 1
         # Check if it detected opening
         opening = [c for c in q_corrs if "„" in c.suggested_text]
@@ -159,7 +167,11 @@ class TestQuotationChecker:
         structure = _make_structure(['Er sagte "Hallo".'])
         rules = load_typography_rules()
         corrections = check_typography(structure, rules)
-        q_corrs = [c for c in corrections if c.category == CorrectionCategory.QUOTATION_MARKS]
+        q_corrs = [
+            c
+            for c in corrections
+            if c.category == CorrectionCategory.QUOTATION_MARKS
+        ]
         # Check if it detected closing (follows word/punctuation)
         closing = [c for c in q_corrs if "“" in c.suggested_text]
         assert len(closing) >= 1
@@ -168,7 +180,11 @@ class TestQuotationChecker:
         structure = _make_structure(["Er sagte \u201eHallo\u201c zu ihr."])
         rules = load_typography_rules()
         corrections = check_typography(structure, rules)
-        q_corrs = [c for c in corrections if c.category == CorrectionCategory.QUOTATION_MARKS]
+        q_corrs = [
+            c
+            for c in corrections
+            if c.category == CorrectionCategory.QUOTATION_MARKS
+        ]
         assert len(q_corrs) == 0
 
 

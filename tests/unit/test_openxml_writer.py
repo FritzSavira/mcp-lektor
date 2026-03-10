@@ -181,21 +181,47 @@ class TestApplyCorrectionsToDocument:
         apply_corrections_to_document(doc, corrections, author="Test")
 
         xml_str = etree.tostring(doc.element.body, encoding="unicode")
-        
+
         # We expect:
         # "Ein Fehler ist ein " (preserved)
         # <w:del>Fehler</w:del> <w:ins>Problem</w:ins>
         # "." (preserved)
-        
+
         # If it failed (replaced FIRST "Fehler"), we'd see:
         # "Ein " (preserved)
         # <w:del>Fehler</w:del> <w:ins>Problem</w:ins>
         # " ist ein Fehler." (preserved)
-        
+
         # Assertion: "Fehler ist ein " must be present as plain text inside a run.
         # This proves the first "Fehler" was NOT touched.
         assert "Fehler ist ein " in xml_str
         assert "Problem" in xml_str
+
+    def test_comment_only_correction_no_track_changes(self) -> None:
+        """Verifies that if original == suggested, no track changes are created."""
+        doc = _create_simple_docx("Wir als Gemeinde glauben.")
+        corrections = [
+            {
+                "paragraph_index": 0,
+                "original_text": "Gemeinde",
+                "suggested_text": "Gemeinde",
+                "category": "CONFUSED_WORD",
+                "explanation": "Prüfen: Gemeinde/Kirche",
+            },
+        ]
+
+        apply_corrections_to_document(doc, corrections, author="Test")
+
+        xml_str = etree.tostring(doc.element.body, encoding="unicode")
+
+        # Should NOT contain del/ins
+        assert "w:del" not in xml_str
+        assert "w:ins" not in xml_str
+
+        # Should contain comment markers anchored to the word
+        assert "commentRangeStart" in xml_str
+        assert "commentRangeEnd" in xml_str
+        assert "Gemeinde" in xml_str
 
     def test_roundtrip_saves_and_opens(self, tmp_path: Path) -> None:
         doc = _create_simple_docx("Testdokument zum Speichern.")

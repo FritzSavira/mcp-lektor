@@ -47,6 +47,7 @@ def scan_confused_words(
                     continue
 
                 entry = lookup[key]
+                hint = f"Pr\u00fcfen: {entry.word}/{entry.confused_with}."
                 corrections.append(
                     ProposedCorrection(
                         id="",
@@ -55,11 +56,13 @@ def scan_confused_words(
                         char_offset_start=word_match.start(),
                         char_offset_end=word_match.end(),
                         original_text=token,
-                        suggested_text=f"[pr\u00fcfen: {entry.word}/{entry.confused_with}]",
+                        suggested_text=token,  # Keep original, use comment for hint
                         category=CorrectionCategory.CONFUSED_WORD,
                         confidence=ConfidenceLevel.MEDIUM,
-                        explanation=entry.explanation,
-                        rule_reference=f"Verwechslung: {entry.word} / {entry.confused_with}",
+                        explanation=f"{hint} {entry.explanation}",
+                        rule_reference=(
+                            f"Verwechslung: {entry.word} / {entry.confused_with}"
+                        ),
                     )
                 )
     return corrections
