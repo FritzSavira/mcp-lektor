@@ -1,21 +1,21 @@
 # Typografie-Regeln für deutsche Texte
 rules:
   - name: "Anführungszeichen öffnend"
-    pattern: '"(?=\w)'
-    replacement: "„"
+    pattern: '(^|[\s(\[«])"'
+    replacement: '\1„'
     explanation: 'Deutsche öffnende Anführungszeichen sind „ (unten).'
     category: "Anfuehrungszeichen"
 
   - name: "Anführungszeichen schließend"
-    pattern: '(?<=\w)"'
-    replacement: "\u201c"
-    explanation: 'Deutsche schließende Anführungszeichen sind \u201c (oben).'
+    pattern: '([\w.,!?;:»])"'
+    replacement: '\1“'
+    explanation: 'Deutsche schließende Anführungszeichen sind “ (oben).'
     category: "Anfuehrungszeichen"
 
   - name: "Apostroph"
     pattern: "(?<=\\w)'(?=\\w)"
-    replacement: "\u2019"
-    explanation: "Typografisch korrekter Apostroph ist \u2019."
+    replacement: "’"
+    explanation: "Typografisch korrekter Apostroph ist ’."
     category: "Typografie"
 
   - name: "Gedankenstrich"

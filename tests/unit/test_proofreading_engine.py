@@ -14,7 +14,6 @@ from mcp_lektor.core.models import (
     RunFormatting,
     TextRun,
 )
-from mcp_lektor.core.quotation_checker import check_quotation_marks
 from mcp_lektor.core.typography_checker import check_typography
 
 
@@ -143,18 +142,34 @@ class TestConfusedWordsChecker:
 
 
 class TestQuotationChecker:
-    """Tests for quotation_checker.check_quotation_marks."""
+    """Tests for quotation mark detection (now handled by TypographyChecker)."""
 
-    def test_detects_straight_quotes(self):
-        structure = _make_structure(['Er sagte "Hallo" zu ihr.'])
-        corrections = check_quotation_marks(structure)
-        assert len(corrections) >= 1
-        assert corrections[0].category == CorrectionCategory.QUOTATION_MARKS
+    def test_detects_straight_quotes_opening(self):
+        structure = _make_structure(['Er sagte "Hallo".'])
+        rules = load_typography_rules()
+        corrections = check_typography(structure, rules)
+        # Filter for quotation mark corrections
+        q_corrs = [c for c in corrections if c.category == CorrectionCategory.QUOTATION_MARKS]
+        assert len(q_corrs) >= 1
+        # Check if it detected opening
+        opening = [c for c in q_corrs if "„" in c.suggested_text]
+        assert len(opening) >= 1
+
+    def test_detects_straight_quotes_closing(self):
+        structure = _make_structure(['Er sagte "Hallo".'])
+        rules = load_typography_rules()
+        corrections = check_typography(structure, rules)
+        q_corrs = [c for c in corrections if c.category == CorrectionCategory.QUOTATION_MARKS]
+        # Check if it detected closing (follows word/punctuation)
+        closing = [c for c in q_corrs if "“" in c.suggested_text]
+        assert len(closing) >= 1
 
     def test_correct_german_quotes_no_flag(self):
         structure = _make_structure(["Er sagte \u201eHallo\u201c zu ihr."])
-        corrections = check_quotation_marks(structure)
-        assert len(corrections) == 0
+        rules = load_typography_rules()
+        corrections = check_typography(structure, rules)
+        q_corrs = [c for c in corrections if c.category == CorrectionCategory.QUOTATION_MARKS]
+        assert len(q_corrs) == 0
 
 
 class TestDeduplication:

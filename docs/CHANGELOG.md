@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-03-10] - Consolidation of Quotation Mark Logic
+
+### Changed
+- **Typography Checker Consolidation**: Moved all quotation mark detection and correction logic into `src/mcp_lektor/core/typography_checker.py`, using rules from `config/typography_rules.yaml`.
+- **Refined Typographic Rules**: Updated `config/typography_rules.yaml` with context-aware regex to distinguish between opening („) and closing (“) German quotation marks (referencing ADR-0003).
+- **Proofreading Engine Update**: Simplified `ProofreadingEngine` to call `check_typography` for both general typography and quotation marks, ensuring a single source of truth for these rules.
+
+### Removed
+- **Redundant Quotation Checker**: Deprecated the simple rule-based implementation in `src/mcp_lektor/core/quotation_checker.py` to prevent duplicate and low-quality suggestions.
+
+### Fixed
+- **Word Export Integrity**: Ensured that quotation mark corrections result in correct typographic marks (unten/oben) and that the `openxml_writer.py` correctly inserts these as Track Changes with explanatory comments.
+
 ## [2026-03-09] - Architectural Refinement
 
 ### Added

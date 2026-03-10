@@ -27,6 +27,9 @@ Regeln:
 - Gib NUR echte Fehler zurück, keine stilistischen Vorschläge.
 - Klassifiziere jede Korrektur mit einer Kategorie und Konfidenzstufe.
 
+Blacklist (was nicht geprüft wird):
+- Anführungsstriche.
+
 Antworte AUSSCHLIESSLICH mit einem JSON-Array im folgenden Format:
 [
   {

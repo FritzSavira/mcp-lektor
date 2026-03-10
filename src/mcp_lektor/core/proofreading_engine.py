@@ -7,12 +7,12 @@ import logging
 import time
 from typing import Any
 
+from mcp_lektor.config.models import ProofreadingConfig
 from mcp_lektor.config.settings import (
     load_config,
     load_confused_words,
     load_typography_rules,
 )
-from mcp_lektor.config.models import ProofreadingConfig
 from mcp_lektor.core.confused_words_checker import scan_confused_words
 from mcp_lektor.core.enums import ConfidenceLevel, CorrectionCategory
 from mcp_lektor.core.models import (
@@ -20,7 +20,6 @@ from mcp_lektor.core.models import (
     ProofreadingResult,
     ProposedCorrection,
 )
-from mcp_lektor.core.quotation_checker import check_quotation_marks
 from mcp_lektor.core.typography_checker import check_typography
 
 logger = logging.getLogger(__name__)
@@ -63,12 +62,15 @@ class ProofreadingEngine:
         all_corrections: list[ProposedCorrection] = []
 
         # --- Step 1: Rule-based checks ---
-        if CorrectionCategory.TYPOGRAPHY in checks:
+        if (
+            CorrectionCategory.TYPOGRAPHY in checks
+            or CorrectionCategory.QUOTATION_MARKS in checks
+        ):
+            # We apply typography rules; those with category='Anfuehrungszeichen'
+            # are mapped to CorrectionCategory.QUOTATION_MARKS.
             all_corrections.extend(check_typography(structure, self.typography_rules))
         if CorrectionCategory.CONFUSED_WORD in checks:
             all_corrections.extend(scan_confused_words(structure, self.confused_words))
-        if CorrectionCategory.QUOTATION_MARKS in checks:
-            all_corrections.extend(check_quotation_marks(structure))
 
         # --- Step 2: LLM-based checks ---
         llm_checks = [c for c in checks if c in _LLM_CATEGORIES]
@@ -84,7 +86,9 @@ class ProofreadingEngine:
             corr.id = f"C-{i:03d}"
 
         # --- Step 5: Determine Predominant Address Form (Problem 3.3) ---
-        predominant, deviations = self._determine_address_form_stats(structure, all_corrections)
+        predominant, deviations = self._determine_address_form_stats(
+            structure, all_corrections
+        )
 
         elapsed = time.time() - start
         return ProofreadingResult(
@@ -104,24 +108,26 @@ class ProofreadingEngine:
         Uses config.default_address_form for tie-breaking (Problem 3.3).
         """
         import re
-        
+
         # We look for personal pronouns and possessives
         # Du-Form: du, dir, dich, dein, deine, ...
         # Sie-Form: Sie, Ihnen, Ihr, Ihre, ... (must be capitalized)
-        du_pattern = re.compile(r"\b(du|dir|dich|dein|deine|deinem|deiner|deines)\b", re.IGNORECASE)
+        du_pattern = re.compile(
+            r"\b(du|dir|dich|dein|deine|deinem|deiner|deines)\b", re.IGNORECASE
+        )
         sie_pattern = re.compile(r"\b(Sie|Ihnen|Ihr|Ihre|Ihrem|Ihrer|Ihres)\b")
-        
+
         du_count = 0
         sie_count = 0
-        
+
         for para in structure.paragraphs:
             text = para.proofreadable_text
             du_count += len(du_pattern.findall(text))
             sie_count += len(sie_pattern.findall(text))
-            
+
         if du_count == 0 and sie_count == 0:
             return "None", 0
-            
+
         # Tie-breaking logic
         if du_count > sie_count:
             predominant = "Du"
@@ -133,10 +139,10 @@ class ProofreadingEngine:
             # TIE! Use configured default
             predominant = self.config.default_address_form
             # In a tie, both counts are equal, so deviations = du_count (or sie_count)
-            # but only for the non-predominant form. 
+            # but only for the non-predominant form.
             # If predominant is "Sie", then du_count are the deviations.
             deviations = du_count if predominant == "Sie" else sie_count
-            
+
         return predominant, deviations
 
     async def _proofread_with_llm(
