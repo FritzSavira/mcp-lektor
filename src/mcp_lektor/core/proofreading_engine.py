@@ -14,9 +14,8 @@ from mcp_lektor.config.settings import (
 )
 from mcp_lektor.config.models import ProofreadingConfig
 from mcp_lektor.core.confused_words_checker import scan_confused_words
+from mcp_lektor.core.enums import ConfidenceLevel, CorrectionCategory
 from mcp_lektor.core.models import (
-    ConfidenceLevel,
-    CorrectionCategory,
     DocumentStructure,
     ProofreadingResult,
     ProposedCorrection,

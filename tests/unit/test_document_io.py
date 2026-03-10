@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from mcp_lektor.core.document_io import parse_docx
-from mcp_lektor.core.models import ParagraphType
+from mcp_lektor.core.enums import ParagraphType
 
 
 class TestParseDocx:

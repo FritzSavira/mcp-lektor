@@ -10,7 +10,7 @@ from datetime import datetime
 from mcp_lektor.core.document_io import parse_docx, write_corrected_document
 from mcp_lektor.core.proofreading_engine import ProofreadingEngine
 from mcp_lektor.core.bible_validator import BibleValidator
-from mcp_lektor.core.models import CorrectionCategory
+from mcp_lektor.core.enums import CorrectionCategory
 
 # Lade Umgebungsvariablen für API-Keys
 load_dotenv()
@@ -21,10 +21,13 @@ st.set_page_config(
     layout="centered"
 )
 
+from mcp_lektor.config.settings import get_settings
+
 # Initialisierung der Core-Komponenten
 # CACHING DEAKTIVIERT: Damit Änderungen an der config.yaml sofort wirksam werden
 def get_engine():
-    return ProofreadingEngine()
+    settings = get_settings(reload=True)
+    return ProofreadingEngine(config=settings.proofreading)
 
 @st.cache_resource
 def get_bible_validator():

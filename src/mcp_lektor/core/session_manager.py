@@ -12,6 +12,9 @@ from datetime import datetime, timedelta, timezone
 from typing import Any
 from uuid import uuid4
 
+from mcp_lektor.config.settings import get_settings
+from mcp_lektor.config.models import SessionConfig
+
 logger = logging.getLogger(__name__)
 
 class SessionManager:
@@ -22,8 +25,9 @@ class SessionManager:
     by a Redis or database-backed store (see DEV_OPEN_QUESTIONS-0001).
     """
     
-    def __init__(self, ttl_minutes: int = 30):
-        self._ttl_minutes = ttl_minutes
+    def __init__(self, config: SessionConfig | None = None):
+        # Use provided config or load from global settings
+        self._config = config or get_settings().session
         self._lock = threading.Lock()
         self._sessions: dict[str, dict[str, Any]] = {}
         self._cleanup_task: asyncio.Task | None = None
@@ -86,12 +90,12 @@ class SessionManager:
 
     def _is_expired(self, session: dict[str, Any]) -> bool:
         """Check if a single session has exceeded its TTL."""
-        expiry_limit = datetime.now(timezone.utc) - timedelta(minutes=self._ttl_minutes)
+        expiry_limit = datetime.now(timezone.utc) - timedelta(minutes=self._config.ttl_minutes)
         # Use last_accessed for sliding window expiration, or created_at for fixed.
         # Design choice: sliding window.
         return session.get("last_accessed", datetime.min.replace(tzinfo=timezone.utc)) < expiry_limit
 
-    async def start_cleanup_task(self, interval_seconds: int = 60):
+    async def start_cleanup_task(self, interval_seconds: int | None = None):
         """
         Background task to periodically prune expired sessions.
         Should be started during server initialization.
@@ -99,8 +103,9 @@ class SessionManager:
         if self._cleanup_task:
             return
         
-        logger.info("Starting background session cleanup task.")
-        self._cleanup_task = asyncio.create_task(self._run_cleanup_loop(interval_seconds))
+        interval = interval_seconds or self._config.cleanup_interval_seconds
+        logger.info(f"Starting background session cleanup task (interval: {interval}s).")
+        self._cleanup_task = asyncio.create_task(self._run_cleanup_loop(interval))
 
     async def _run_cleanup_loop(self, interval: int):
         while True:

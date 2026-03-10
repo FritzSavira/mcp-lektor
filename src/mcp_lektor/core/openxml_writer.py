@@ -29,6 +29,7 @@ def apply_track_change(
     timestamp: str,
     revision_id: int,
     char_start: Optional[int] = None,
+    paragraph_index: Optional[int] = None,
 ) -> bool:
     """
     Locates original_text within the paragraph's runs and replaces it with 
@@ -65,7 +66,9 @@ def apply_track_change(
             matches = list(re.finditer(fuzzy_pattern, full_para_text, re.IGNORECASE))
         
         if not matches:
-            logger.warning(f"Could not find text '{original_text}' in paragraph.")
+            idx_info = f" (Index {paragraph_index})" if paragraph_index is not None else ""
+            context = f" Context: '{full_para_text[:50]}...'" if full_para_text else ""
+            logger.warning(f"Could not find text '{original_text}' in paragraph{idx_info}.{context}")
             return False
 
         if char_start is not None and len(matches) > 1:
@@ -205,6 +208,7 @@ def apply_corrections_to_document(
             timestamp=timestamp,
             revision_id=revision_id,
             char_start=corr.get("char_offset_start") or corr.get("char_start"),
+            paragraph_index=p_idx,
         )
 
         if success:

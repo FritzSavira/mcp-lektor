@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import logging
 
-from mcp_lektor.core.models import CorrectionCategory
+from mcp_lektor.core.enums import CorrectionCategory
 from mcp_lektor.core.proofreading_engine import ProofreadingEngine
 from mcp_lektor.core.session_manager import session_manager
 

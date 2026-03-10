@@ -12,10 +12,10 @@ from docx.oxml.ns import qn
 from docx.text.paragraph import Paragraph
 from docx.text.run import Run
 
+from mcp_lektor.core.enums import ParagraphType
 from mcp_lektor.core.models import (
     DocumentParagraph,
     DocumentStructure,
-    ParagraphType,
     RunFormatting,
     TextColor,
     TextRun,

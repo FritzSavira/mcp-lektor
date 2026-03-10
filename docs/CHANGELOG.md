@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-03-09] - Architectural Refinement
+
+### Added
+- **Dedicated Enum Module**: Created `src/mcp_lektor/core/enums.py` to house shared enumerations, eliminating circular dependencies between domain and configuration models.
+- **Environment Overrides**: Implemented `LEKTOR_` prefix support for all configuration settings, enabling easy environment-based configuration for Docker and Langdock deployments.
+- **Smart Settings Accessor**: Introduced `get_settings()` with optional `reload=True` to support live-reloading of configuration files in development tools like Streamlit.
+
+### Changed
+- **Unified Configuration**: Refactored `src/mcp_lektor/config/settings.py` to use a validated `AppConfig` root model for all application sections (Server, Proofreading, Session).
+- **Session Manager Integration**: Updated `SessionManager` to use settings from `config.yaml` for TTL and cleanup intervals.
+- **Server Integration**: Updated `server.py` to utilize centralized server configuration (host, port, log level).
+- **Refined Data Models**: strictly separated domain models in `core/models.py` from configuration models in `config/models.py`.
+
+### Fixed
+- **Circular Import Risk**: Resolved implicit loop where configuration models depended on domain models containing enums.
+- **Inconsistent Config Loading**: Eliminated hardcoded defaults in server and session management modules.
+
 ## [2026-03-06] - Sprint 1-3 Summary
 
 ### Added

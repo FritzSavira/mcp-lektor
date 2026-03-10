@@ -1,9 +1,15 @@
 """Pydantic data models for MCP Lektor."""
 
-from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel, Field
+
+from mcp_lektor.core.enums import (
+    ConfidenceLevel,
+    CorrectionCategory,
+    CorrectionDecision,
+    ParagraphType,
+)
 
 
 class TextColor(BaseModel):
@@ -38,15 +44,6 @@ class TextRun(BaseModel):
         return self.formatting.color is not None and self.formatting.color.is_red
 
 
-class ParagraphType(str, Enum):
-    HEADING = "heading"
-    BODY = "body"
-    LIST_ITEM = "list_item"
-    TABLE_CELL = "table_cell"
-    HEADER = "header"
-    FOOTER = "footer"
-
-
 class DocumentParagraph(BaseModel):
     index: int
     paragraph_type: ParagraphType = ParagraphType.BODY
@@ -71,23 +68,6 @@ class DocumentStructure(BaseModel):
     total_words: int = 0
     placeholder_count: int = 0
     placeholder_locations: list[str] = Field(default_factory=list)
-
-
-class CorrectionCategory(str, Enum):
-    SPELLING = "Rechtschreibung"
-    GRAMMAR = "Grammatik"
-    PUNCTUATION = "Zeichensetzung"
-    TYPOGRAPHY = "Typografie"
-    QUOTATION_MARKS = "Anfuehrungszeichen"
-    ADDRESS_FORM = "Anrede-Konsistenz"
-    CONFUSED_WORD = "Verwechslungswort"
-    BIBLE_REFERENCE = "Bibelstelle"
-
-
-class ConfidenceLevel(str, Enum):
-    HIGH = "high"
-    MEDIUM = "medium"
-    LOW = "low"
 
 
 class ProposedCorrection(BaseModel):
@@ -141,12 +121,6 @@ class BibleValidationResult(BaseModel):
     error_message: Optional[str] = None
     suggested_correction: Optional[str] = None
     source_url: Optional[str] = None
-
-
-class CorrectionDecision(str, Enum):
-    ACCEPT = "accept"
-    REJECT = "reject"
-    EDIT = "edit"
 
 
 class UserDecision(BaseModel):

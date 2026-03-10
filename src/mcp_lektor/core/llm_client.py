@@ -163,35 +163,54 @@ async def _call_straico_v0(
             return []
 
 def _parse_json_content(content: str) -> list[dict[str, Any]]:
-    """Helper to clean and parse JSON from LLM string."""
+    """Helper to clean and parse JSON from LLM string with self-healing."""
     import re
     
+    # 1. Basic cleaning
     content = content.strip()
-    
-    # 1. Strip Markdown code blocks
     if content.startswith("```"):
         content = re.sub(r"^```[a-z]*\n", "", content)
         content = re.sub(r"\n```$", "", content)
     content = content.strip()
     
-    # 2. Handle cases where the LLM might include text before/after the JSON array
+    # 2. Extract array part
     if not (content.startswith("[") and content.endswith("]")):
         match = re.search(r"\[.*\]", content, re.DOTALL)
         if match:
             content = match.group(0)
     
-    # 3. Robust JSON cleaning
-    # Remove trailing commas in arrays/objects (very common in LLM outputs)
+    # 3. Trailing commas
     content = re.sub(r",\s*([\]}])", r"\1", content)
     
+    # First attempt: standard parse
     try:
         return json.loads(content)
-    except json.JSONDecodeError as exc:
-        logger.warning(f"LLM returned unparseable JSON: {exc}\nContent: {content[:150]}...")
-        # Final attempt: try to fix common escaping issues if possible
-        try:
-            # Replace unescaped newlines within quotes
-            fixed_content = re.sub(r'(?<=: ")(.*?)(?=",)', lambda m: m.group(1).replace("\n", "\\n"), content, flags=re.DOTALL)
-            return json.loads(fixed_content)
-        except Exception:
-            return []
+    except json.JSONDecodeError:
+        logger.info("Standard JSON parse failed, attempting repair...")
+        pass
+
+    # Second attempt: Targeted repair of unescaped quotes and newlines
+    try:
+        # This regex looks for values inside "key": "value" patterns
+        # It specifically targets our known fields to avoid breaking the JSON structure
+        fields = "original_text|suggested_text|explanation|category|confidence"
+        
+        def repair_value(match):
+            prefix = match.group(1) # "field": "
+            value = match.group(3)  # the actual value content
+            suffix = match.group(4) # "
+            # Escape unescaped double quotes
+            # But don't double-escape already escaped ones
+            value = re.sub(r'(?<!\\)"', r'\"', value)
+            # Replace real newlines with \n
+            value = value.replace("\n", "\\n").replace("\r", "")
+            return f'{prefix}{value}{suffix}'
+
+        # Pattern: "field" : " (value) " followed by , or }
+        pattern = rf'("({fields})"\s*:\s*")(.*?)("(?=\s*[,}}]))'
+        fixed_content = re.sub(pattern, repair_value, content, flags=re.DOTALL)
+        
+        return json.loads(fixed_content)
+    except Exception as exc:
+        logger.warning(f"JSON repair failed: {exc}\nPartial content: {content[:200]}...")
+        return []

@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 # To avoid circular imports, we might need to keep shared Enums in core/models 
 # or move them to a common place. 
 # For now, let's import it from core/models as it is a fundamental domain type.
-from mcp_lektor.core.models import CorrectionCategory
+from mcp_lektor.core.enums import CorrectionCategory
 
 
 class ServerConfig(BaseModel):

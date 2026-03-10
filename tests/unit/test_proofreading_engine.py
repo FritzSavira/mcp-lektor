@@ -6,12 +6,10 @@ import pytest
 
 from mcp_lektor.config.settings import load_confused_words, load_typography_rules
 from mcp_lektor.core.confused_words_checker import scan_confused_words
+from mcp_lektor.core.enums import ConfidenceLevel, CorrectionCategory, ParagraphType
 from mcp_lektor.core.models import (
-    ConfidenceLevel,
-    CorrectionCategory,
     DocumentParagraph,
     DocumentStructure,
-    ParagraphType,
     ProposedCorrection,
     RunFormatting,
     TextRun,
