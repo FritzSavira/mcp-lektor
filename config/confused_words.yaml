@@ -2,6 +2,12 @@
 # Format: word / confused_with / explanation / example_correct / example_incorrect
 words:
   
+  - word: "Standard"
+    confused_with: "Standart"
+    explanation: "'Standard' ist die Norm/der Maßstab; 'Standart' ist eine Fehlschreibung oder bezieht sich auf Stand-Arten."
+    example_correct: "Das ist der Standard."
+    example_incorrect: "Das ist der Standart."
+
   - word: "seit"
     confused_with: "seid"
     explanation: "'seit' ist temporal (Präposition/Konjunktion), 'seid' ist 2. Person Plural von 'sein'."
