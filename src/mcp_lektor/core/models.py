@@ -121,6 +121,7 @@ class BibleValidationResult(BaseModel):
     error_message: Optional[str] = None
     suggested_correction: Optional[str] = None
     source_url: Optional[str] = None
+    comparison_links: dict[str, str] = Field(default_factory=dict)
 
 
 class UserDecision(BaseModel):

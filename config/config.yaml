@@ -27,6 +27,35 @@ proofreading:
   bible_api_timeout_seconds: 5.0
   use_bible_offline_fallback: true
   
+  # Bibelserver Translations
+  bible_translations:
+    # Deutsche Übersetzungen
+    LUT: { label: "Lutherbibel 2017", enabled: true }
+    EU:  { label: "Einheitsübersetzung 2016", enabled: true }
+    HFA: { label: "Hoffnung für Alle", enabled: true }
+    NGÜ: { label: "Neue Genfer Übersetzung", enabled: true }
+    GNB: { label: "Gute Nachricht Bibel", enabled: false }
+    ELB: { label: "Elberfelder Bibel", enabled: false }
+    NLB: { label: "Neues Leben Bibel", enabled: false }
+    SLT: { label: "Schlachter 2000", enabled: false }
+    ZB:  { label: "Zürcher Bibel", enabled: false }
+    MENG: { label: "Menge Bibel", enabled: false }
+    NeÜ: { label: "Neue evangelistische Übersetzung", enabled: false }
+    BAS: { label: "BasisBibel", enabled: false }
+    # Internationale Übersetzungen
+    ESV: { label: "English Standard Version", enabled: false }
+    NIV: { label: "New International Version", enabled: false }
+    KJV: { label: "King James Version", enabled: false }
+    NKJV: { label: "New King James Version", enabled: false }
+    NLT: { label: "New Living Translation", enabled: false }
+    NASB: { label: "New American Standard Bible", enabled: false }
+    CSB: { label: "Christian Standard Bible", enabled: false }
+    NRSV: { label: "New Revised Standard Version", enabled: false }
+    TOB: { label: "Traduction Œcuménique de la Bible (FR)", enabled: false }
+    NBS: { label: "Nouvelle Bible Segond (FR)", enabled: false }
+    NBV: { label: "Nieuwe Bijbelvertaling (NL)", enabled: false }
+    CEI: { label: "Conferenza Episcopale Italiana (IT)", enabled: false }
+  
   # --- Robustness ---
   llm_max_retries: 3
   llm_retry_initial_delay_seconds: 2.0

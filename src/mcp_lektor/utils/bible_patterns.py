@@ -6,9 +6,10 @@ import re
 
 # German book abbreviations / names  (order matters: longer first)
 _BOOK_NAMES = (
-    # With numeric prefix  – the prefix is captured separately below
+    # Names often with numeric prefix or long names
     "Mose|Koenige|Könige|Samuel|Chronik|Korinther|Thessalonicher"
-    "|Timotheus|Petrus|Johannes"
+    "|Timotheus|Petrus|Johannes|Roemer|Römer|Galater|Epheser"
+    "|Philipper|Kolosser|Hebreaer|Hebräer|Offenbarung"
     # Standard abbreviations (AT)
     "|Gen|Ex|Lev|Num|Dtn|Jos|Ri|Rut|Sam|Kön|Koen|Chr|Esr|Neh|Est"
     "|Ijob|Hiob|Hi|Ps|Spr|Koh|Pred|Hld|Jes|Jer|Klgl|Ez|Hes|Dan"
@@ -25,8 +26,8 @@ BIBLE_REF_PATTERN: re.Pattern[str] = re.compile(
     r")"
     r"\s*"
     r"(?P<chapter>\d{1,3})"
-    r"(?:\s*[,:]\s*(?P<verse_start>\d{1,3}))?"
-    r"(?:\s*[-\u2013]\s*(?P<verse_end>\d{1,3}))?",
+    r"(?:\s*[,:]\s*(?P<verse_start>\d{1,3})[abf]{0,2})?"
+    r"(?:\s*[-\u2013]\s*(?P<verse_end>\d{1,3})[abf]{0,2})?",
     re.IGNORECASE,
 )
 

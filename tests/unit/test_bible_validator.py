@@ -80,6 +80,33 @@ class TestBiblePatterns:
         assert refs[0]["chapter"] == 3
         assert refs[0]["verse_start"] == 16
 
+    def test_full_book_name(self):
+        refs = extract_references("Epheser 5, 21")
+        assert len(refs) == 1
+        assert refs[0]["book"] == "Epheser"
+        assert refs[0]["chapter"] == 5
+
+    def test_verse_suffix_a(self):
+        refs = extract_references("Epheser 5, 21a")
+        assert len(refs) == 1
+        assert refs[0]["book"] == "Epheser"
+        assert refs[0]["chapter"] == 5
+        assert refs[0]["verse_start"] == 21
+        assert refs[0]["raw_text"] == "Epheser 5, 21a"
+
+    def test_verse_suffix_f_ff(self):
+        refs = extract_references("Ps 23, 1f und Mt 5, 3ff")
+        assert len(refs) == 2
+        assert refs[0]["raw_text"] == "Ps 23, 1f"
+        assert refs[1]["raw_text"] == "Mt 5, 3ff"
+
+    def test_verse_range_with_suffixes(self):
+        refs = extract_references("Gen 1, 1a-2b")
+        assert len(refs) == 1
+        assert refs[0]["verse_start"] == 1
+        assert refs[0]["verse_end"] == 2
+        assert refs[0]["raw_text"] == "Gen 1, 1a-2b"
+
 
 # ───────────────────────── Offline validation ─────────────────────────
 
@@ -131,6 +158,17 @@ class TestOfflineValidation:
         )
         result = _validate_offline(ref)
         assert result.is_valid is False
+
+    def test_full_book_name_valid(self):
+        ref = BibleReference(
+            paragraph_index=0,
+            raw_text="Epheser 5, 21a",
+            book="Epheser",
+            chapter=5,
+            verse_start=21,
+        )
+        result = _validate_offline(ref)
+        assert result.is_valid is True
 
 
 # ───────────────────────── BibleValidator integration ─────────────────
@@ -238,3 +276,41 @@ class TestBibleValidatorOffline:
         validator = BibleValidator(use_online=False)
         results = await validator.validate(structure)
         assert results == []
+
+    def test_get_bibelserver_url(self):
+        from mcp_lektor.config.models import BibleTranslationEntry, ProofreadingConfig
+        config = ProofreadingConfig()
+        config.bible_translations = {
+            "LUT": BibleTranslationEntry(label="Luther", enabled=True),
+            "EU": BibleTranslationEntry(label="Einheit", enabled=True),
+        }
+        validator = BibleValidator(config=config, use_online=False)
+        ref = BibleReference(
+            paragraph_index=0,
+            raw_text="1. Mose 1,1",
+            book="1. Mose",
+            chapter=1,
+            verse_start=1,
+        )
+        url = validator.get_bibelserver_url(ref, "LUT")
+        assert url == "https://www.bibelserver.com/LUT/1-mose1,1"
+
+        ref_range = BibleReference(
+            paragraph_index=0,
+            raw_text="Joh 3,16-18",
+            book="Joh",
+            chapter=3,
+            verse_start=16,
+            verse_end=18,
+        )
+        url_range = validator.get_bibelserver_url(ref_range, "EU")
+        assert url_range == "https://www.bibelserver.com/EU/johannes3,16-18"
+
+        ref_no_verse = BibleReference(
+            paragraph_index=0,
+            raw_text="Ps 23",
+            book="Ps",
+            chapter=23,
+        )
+        url_no_verse = validator.get_bibelserver_url(ref_no_verse, "SLT")
+        assert url_no_verse == "https://www.bibelserver.com/SLT/psalm23"

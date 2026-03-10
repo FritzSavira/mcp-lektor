@@ -7,6 +7,7 @@ import logging
 
 import httpx
 
+from mcp_lektor.config.models import ProofreadingConfig
 from mcp_lektor.core.models import (
     BibleReference,
     BibleValidationResult,
@@ -101,6 +102,8 @@ _FALLBACK_CHAPTER_COUNTS: dict[str, int] = {
     "Apg": 28,
     "Röm": 16,
     "Roem": 16,
+    "Römer": 16,
+    "Roemer": 16,
     "1. Kor": 16,
     "1. Korinther": 16,
     "1.Kor": 16,
@@ -108,9 +111,13 @@ _FALLBACK_CHAPTER_COUNTS: dict[str, int] = {
     "2. Korinther": 13,
     "2.Kor": 13,
     "Gal": 6,
+    "Galater": 6,
     "Eph": 6,
+    "Epheser": 6,
     "Phil": 4,
+    "Philipper": 4,
     "Kol": 4,
+    "Kolosser": 4,
     "1. Thess": 5,
     "1. Thessalonicher": 5,
     "1.Thess": 5,
@@ -126,6 +133,8 @@ _FALLBACK_CHAPTER_COUNTS: dict[str, int] = {
     "Tit": 3,
     "Phlm": 1,
     "Hebr": 13,
+    "Hebreaer": 13,
+    "Hebräer": 13,
     "Jak": 5,
     "1. Petr": 5,
     "1. Petrus": 5,
@@ -144,6 +153,7 @@ _FALLBACK_CHAPTER_COUNTS: dict[str, int] = {
     "3.Joh": 1,
     "Jud": 1,
     "Offb": 22,
+    "Offenbarung": 22,
 }
 
 # Book-name → bible-api.com book id mapping
@@ -222,6 +232,8 @@ _API_BOOK_MAP: dict[str, str] = {
     "Apg": "ACT",
     "Röm": "ROM",
     "Roem": "ROM",
+    "Römer": "ROM",
+    "Roemer": "ROM",
     "1. Kor": "1CO",
     "1.Kor": "1CO",
     "1. Korinther": "1CO",
@@ -229,9 +241,13 @@ _API_BOOK_MAP: dict[str, str] = {
     "2.Kor": "2CO",
     "2. Korinther": "2CO",
     "Gal": "GAL",
+    "Galater": "GAL",
     "Eph": "EPH",
+    "Epheser": "EPH",
     "Phil": "PHP",
+    "Philipper": "PHP",
     "Kol": "COL",
+    "Kolosser": "COL",
     "1. Thess": "1TH",
     "1.Thess": "1TH",
     "1. Thessalonicher": "1TH",
@@ -247,6 +263,8 @@ _API_BOOK_MAP: dict[str, str] = {
     "Tit": "TIT",
     "Phlm": "PHM",
     "Hebr": "HEB",
+    "Hebreaer": "HEB",
+    "Hebräer": "HEB",
     "Jak": "JAS",
     "1. Petr": "1PE",
     "1.Petr": "1PE",
@@ -265,6 +283,137 @@ _API_BOOK_MAP: dict[str, str] = {
     "3. Johannes": "3JN",
     "Jud": "JUD",
     "Offb": "REV",
+    "Offenbarung": "REV",
+}
+
+# Book-name → bibelserver.com slug mapping
+_BIBELSERVER_BOOK_MAP: dict[str, str] = {
+    "1. Mose": "1-mose",
+    "1.Mose": "1-mose",
+    "Gen": "1-mose",
+    "2. Mose": "2-mose",
+    "2.Mose": "2-mose",
+    "Ex": "2-mose",
+    "3. Mose": "3-mose",
+    "3.Mose": "3-mose",
+    "Lev": "3-mose",
+    "4. Mose": "4-mose",
+    "4.Mose": "4-mose",
+    "Num": "4-mose",
+    "5. Mose": "5-mose",
+    "5.Mose": "5-mose",
+    "Dtn": "5-mose",
+    "Jos": "josua",
+    "Ri": "richter",
+    "Rut": "rut",
+    "1. Sam": "1-samuel",
+    "1.Samuel": "1-samuel",
+    "1. Samuel": "1-samuel",
+    "2. Sam": "2-samuel",
+    "2.Samuel": "2-samuel",
+    "2. Samuel": "2-samuel",
+    "1. Kön": "1-koenige",
+    "1. Koenige": "1-koenige",
+    "1.Kön": "1-koenige",
+    "1.Koenige": "1-koenige",
+    "2. Kön": "2-koenige",
+    "2. Koenige": "2-koenige",
+    "2.Kön": "2-koenige",
+    "2.Koenige": "2-koenige",
+    "1. Chr": "1-chronik",
+    "1. Chronik": "1-chronik",
+    "1.Chr": "1-chronik",
+    "2. Chr": "2-chronik",
+    "2. Chronik": "2-chronik",
+    "2.Chr": "2-chronik",
+    "Esr": "esra",
+    "Neh": "nehemia",
+    "Est": "ester",
+    "Ijob": "hiob",
+    "Hiob": "hiob",
+    "Hi": "hiob",
+    "Ps": "psalm",
+    "Spr": "sprueche",
+    "Koh": "prediger",
+    "Pred": "prediger",
+    "Hld": "hohelied",
+    "Jes": "jesaja",
+    "Jer": "jeremia",
+    "Klgl": "klagelieder",
+    "Ez": "hesekiel",
+    "Hes": "hesekiel",
+    "Dan": "daniel",
+    "Hos": "hosea",
+    "Joel": "joel",
+    "Am": "amos",
+    "Obd": "obadja",
+    "Jona": "jona",
+    "Mi": "micha",
+    "Nah": "nahum",
+    "Hab": "habakuk",
+    "Zef": "zefanja",
+    "Hag": "haggai",
+    "Sach": "sacharja",
+    "Mal": "maleachi",
+    "Mt": "matthaeus",
+    "Mk": "markus",
+    "Lk": "lukas",
+    "Joh": "johannes",
+    "Apg": "apostelgeschichte",
+    "Röm": "roemer",
+    "Roem": "roemer",
+    "Römer": "roemer",
+    "Roemer": "roemer",
+    "1. Kor": "1-korinther",
+    "1. Korinther": "1-korinther",
+    "1.Kor": "1-korinther",
+    "2. Kor": "2-korinther",
+    "2. Korinther": "2-korinther",
+    "2.Kor": "2-korinther",
+    "Gal": "galater",
+    "Galater": "galater",
+    "Eph": "epheser",
+    "Epheser": "epheser",
+    "Phil": "philipper",
+    "Philipper": "philipper",
+    "Kol": "kolosser",
+    "Kolosser": "kolosser",
+    "1. Thess": "1-thessalonicher",
+    "1. Thessalonicher": "1-thessalonicher",
+    "1.Thess": "1-thessalonicher",
+    "2. Thess": "2-thessalonicher",
+    "2. Thessalonicher": "2-thessalonicher",
+    "2.Thess": "2-thessalonicher",
+    "1. Tim": "1-timotheus",
+    "1. Timotheus": "1-timotheus",
+    "1.Tim": "1-timotheus",
+    "2. Tim": "2-timotheus",
+    "2. Timotheus": "2-timotheus",
+    "2.Tim": "2-timotheus",
+    "Tit": "titus",
+    "Phlm": "philemon",
+    "Hebr": "hebraeer",
+    "Hebreaer": "hebraeer",
+    "Hebräer": "hebraeer",
+    "Jak": "jakobus",
+    "1. Petr": "1-petrus",
+    "1. Petrus": "1-petrus",
+    "1.Petr": "1-petrus",
+    "2. Petr": "2-petrus",
+    "2. Petrus": "2-petrus",
+    "2.Petr": "2-petrus",
+    "1. Joh": "1-johannes",
+    "1. Johannes": "1-johannes",
+    "1.Joh": "1-johannes",
+    "2. Joh": "2-johannes",
+    "2. Johannes": "2-johannes",
+    "2.Joh": "2-johannes",
+    "3. Joh": "3-johannes",
+    "3. Johannes": "3-johannes",
+    "3.Joh": "3-johannes",
+    "Jud": "judas",
+    "Offb": "offenbarung",
+    "Offenbarung": "offenbarung",
 }
 
 
@@ -365,7 +514,7 @@ async def _validate_online(
                 is_valid=False,
                 error_message=f"API nicht erreichbar: {exc}",
             )
-            
+
         result = _validate_offline(ref)
         result.error_message = (
             f"API nicht erreichbar – Offline-Prüfung: "
@@ -411,6 +560,19 @@ class BibleValidator:
                 )
         return refs
 
+    def get_bibelserver_url(self, ref: BibleReference, translation: str) -> str | None:
+        """Generate a bibelserver.com URL for a given reference and translation."""
+        book_slug = _BIBELSERVER_BOOK_MAP.get(ref.book)
+        if not book_slug:
+            return None
+
+        url = f"https://www.bibelserver.com/{translation}/{book_slug}{ref.chapter}"
+        if ref.verse_start is not None:
+            url += f",{ref.verse_start}"
+            if ref.verse_end is not None:
+                url += f"-{ref.verse_end}"
+        return url
+
     async def validate(
         self,
         structure: DocumentStructure,
@@ -423,19 +585,34 @@ class BibleValidator:
         if not refs:
             return []
 
+        results: list[BibleValidationResult] = []
         if not self._use_online:
-            return [_validate_offline(r) for r in refs]
+            results = [_validate_offline(r) for r in refs]
+        else:
+            async with httpx.AsyncClient() as client:
+                tasks = [
+                    _validate_online(
+                        r,
+                        api_base=self._api_base,
+                        client=client,
+                        timeout=self._timeout,
+                        use_fallback=self.config.use_bible_offline_fallback,
+                    )
+                    for r in refs
+                ]
+                results = list(await asyncio.gather(*tasks))
 
-        async with httpx.AsyncClient() as client:
-            tasks = [
-                _validate_online(
-                    r, 
-                    api_base=self._api_base, 
-                    client=client, 
-                    timeout=self._timeout,
-                    use_fallback=self.config.use_bible_offline_fallback
-                )
-                for r in refs
-            ]
-            results = await asyncio.gather(*tasks)
-        return list(results)
+        # Add comparison links to results
+        translation_config = self.config.bible_translations
+        for res in results:
+            links = {}
+            for slug, entry in translation_config.items():
+                if entry.enabled:
+                    url = self.get_bibelserver_url(res.reference, slug)
+                    if url:
+                        # Use the shorthand (slug) as key,
+                        # just like before, but filtered.
+                        links[slug] = url
+            res.comparison_links = links
+
+        return results

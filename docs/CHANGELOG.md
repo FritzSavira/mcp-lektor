@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 - **Refined Typographic Rules**: Updated `config/typography_rules.yaml` with context-aware regex to distinguish between opening („) and closing (“) German quotation marks (referencing ADR-0003).
 - **Proofreading Engine Update**: Simplified `ProofreadingEngine` to call `check_typography` for both general typography and quotation marks, ensuring a single source of truth for these rules.
 - **Confused Words Refinement**: Switched `ConfusedWordsChecker` to "comment-only" mode to provide hints (e.g., "Prüfen: Gemeinde/Kirche") without distracting track changes in the text.
+- **Improvement**: Expanded `BibleValidator` and `bible_patterns` to support full German book names (e.g., "Epheser", "Römer") and verse suffixes (e.g., "21a", "3ff").
+- **Feature**: Added flexible Bible translation configuration in `config.yaml`, allowing users to enable/disable specific Bibelserver translations with full labels.
 
 ### Removed
 - **Redundant Quotation Checker**: Deprecated the simple rule-based implementation in `src/mcp_lektor/core/quotation_checker.py` to prevent duplicate and low-quality suggestions.
