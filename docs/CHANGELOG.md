@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-03-11] - Bible Validation Refinement
+
+### Added
+- **Active Bibelserver Validation**: Replaced `bible-api.com` with active scraping of `bibleserver.com`. The validator now verifies references by checking the HTML `<title>` tag of the resulting page, which allows detecting Bibelserver's automatic correction of invalid references (referencing ADR-0005).
+
+### Changed
+- **Mandatory Online Validation**: Removed the offline fallback mechanism for Bible reference validation, as the project's infrastructure premises require internet access (referencing ADR-0004).
+- **Streamlined Bible Validator**: Simplified `src/mcp_lektor/core/bible_validator.py` by removing ~150 lines of static chapter-count data and redundant offline logic.
+- **Improved Error Messages**: API network errors or timeouts during Bible validation now result in clear, explicit error messages (e.g., "Bibelserver nicht erreichbar") instead of a partial offline check.
+
+### Removed
+- **Redundant Configuration**: Removed the `use_bible_offline_fallback` parameter and `bible_api_` settings from `config.yaml` and the `ProofreadingConfig` model.
+- **Obsolete Tests**: Deleted offline-only unit tests and `bible-api.com` mock tests, replaced with new Bibelserver scraping tests.
+
 ## [2026-03-10] - Consolidation of Quotation Mark Logic
 
 ### Added

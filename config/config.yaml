@@ -22,12 +22,13 @@ proofreading:
   red_threshold_r: 180
   red_threshold_gb: 80
   
-  # --- Bible API ---
-  bible_api_url: "https://bible-api.com"
-  bible_api_timeout_seconds: 5.0
-  use_bible_offline_fallback: true
-  
+  # --- Bible Validation ---
+  bible_validation_base_url: "https://www.bibleserver.com"
+  bible_validation_translation: "SLT"
+  bible_validation_timeout_seconds: 10.0
+
   # Bibelserver Translations
+
   bible_translations:
     # Deutsche Übersetzungen
     LUT: { label: "Lutherbibel 2017", enabled: true }

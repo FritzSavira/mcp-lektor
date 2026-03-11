@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import pytest
+import httpx
 
-from mcp_lektor.core.bible_validator import BibleValidator, _validate_offline
+from mcp_lektor.core.bible_validator import BibleValidator
 from mcp_lektor.core.models import (
     BibleReference,
     DocumentParagraph,
@@ -108,69 +109,6 @@ class TestBiblePatterns:
         assert refs[0]["raw_text"] == "Gen 1, 1a-2b"
 
 
-# ───────────────────────── Offline validation ─────────────────────────
-
-
-class TestOfflineValidation:
-    """Tests for _validate_offline."""
-
-    def test_valid_reference(self):
-        ref = BibleReference(
-            paragraph_index=0,
-            raw_text="Gen 1,1",
-            book="Gen",
-            chapter=1,
-            verse_start=1,
-        )
-        result = _validate_offline(ref)
-        assert result.is_valid is True
-
-    def test_chapter_out_of_range(self):
-        ref = BibleReference(
-            paragraph_index=0,
-            raw_text="Gen 99,1",
-            book="Gen",
-            chapter=99,
-            verse_start=1,
-        )
-        result = _validate_offline(ref)
-        assert result.is_valid is False
-        assert "50 Kapitel" in result.error_message
-
-    def test_unknown_book(self):
-        ref = BibleReference(
-            paragraph_index=0,
-            raw_text="Xyz 1,1",
-            book="Xyz",
-            chapter=1,
-        )
-        result = _validate_offline(ref)
-        assert result.is_valid is False
-        assert "Unbekanntes Buch" in result.error_message
-
-    def test_chapter_zero_invalid(self):
-        ref = BibleReference(
-            paragraph_index=0,
-            raw_text="Mt 0,1",
-            book="Mt",
-            chapter=0,
-            verse_start=1,
-        )
-        result = _validate_offline(ref)
-        assert result.is_valid is False
-
-    def test_full_book_name_valid(self):
-        ref = BibleReference(
-            paragraph_index=0,
-            raw_text="Epheser 5, 21a",
-            book="Epheser",
-            chapter=5,
-            verse_start=21,
-        )
-        result = _validate_offline(ref)
-        assert result.is_valid is True
-
-
 # ───────────────────────── BibleValidator integration ─────────────────
 
 
@@ -233,49 +171,8 @@ class TestBibleValidatorExtraction:
         assert len(refs) == 0
 
 
-# ───────────────────────── Async validate (offline) ──────────────────
-
-
-class TestBibleValidatorOffline:
-    """Tests for BibleValidator.validate with use_online=False."""
-
-    def _make_structure(self, texts: list[str]) -> DocumentStructure:
-        paras = []
-        for i, t in enumerate(texts):
-            paras.append(
-                DocumentParagraph(
-                    index=i,
-                    runs=[TextRun(text=t)],
-                )
-            )
-        return DocumentStructure(
-            filename="test.docx",
-            paragraphs=paras,
-            total_paragraphs=len(paras),
-        )
-
-    @pytest.mark.asyncio
-    async def test_valid_refs_offline(self):
-        structure = self._make_structure(["Mt 5,3 und Ps 23"])
-        validator = BibleValidator(use_online=False)
-        results = await validator.validate(structure)
-        assert len(results) == 2
-        assert all(r.is_valid for r in results)
-
-    @pytest.mark.asyncio
-    async def test_invalid_chapter_offline(self):
-        structure = self._make_structure(["Gen 99,1"])
-        validator = BibleValidator(use_online=False)
-        results = await validator.validate(structure)
-        assert len(results) == 1
-        assert results[0].is_valid is False
-
-    @pytest.mark.asyncio
-    async def test_empty_document_returns_empty(self):
-        structure = self._make_structure([])
-        validator = BibleValidator(use_online=False)
-        results = await validator.validate(structure)
-        assert results == []
+class TestBibleValidatorUtils:
+    """Tests for utility methods of BibleValidator."""
 
     def test_get_bibelserver_url(self):
         from mcp_lektor.config.models import BibleTranslationEntry, ProofreadingConfig
@@ -293,7 +190,7 @@ class TestBibleValidatorOffline:
             verse_start=1,
         )
         url = validator.get_bibelserver_url(ref, "LUT")
-        assert url == "https://www.bibelserver.com/LUT/1-mose1,1"
+        assert url == "https://www.bibleserver.com/LUT/1-mose1,1"
 
         ref_range = BibleReference(
             paragraph_index=0,
@@ -304,7 +201,7 @@ class TestBibleValidatorOffline:
             verse_end=18,
         )
         url_range = validator.get_bibelserver_url(ref_range, "EU")
-        assert url_range == "https://www.bibelserver.com/EU/johannes3,16-18"
+        assert url_range == "https://www.bibleserver.com/EU/johannes3,16-18"
 
         ref_no_verse = BibleReference(
             paragraph_index=0,
@@ -313,4 +210,88 @@ class TestBibleValidatorOffline:
             chapter=23,
         )
         url_no_verse = validator.get_bibelserver_url(ref_no_verse, "SLT")
-        assert url_no_verse == "https://www.bibelserver.com/SLT/psalm23"
+        assert url_no_verse == "https://www.bibleserver.com/SLT/psalm23"
+
+
+# ───────────────────────── Async validate (online mock) ───────────────
+
+
+class TestBibleValidatorOnline:
+    """Tests for BibleValidator.validate with online mocking."""
+
+    def _make_structure(self, texts: list[str]) -> DocumentStructure:
+        paras = []
+        for i, t in enumerate(texts):
+            paras.append(
+                DocumentParagraph(
+                    index=i,
+                    runs=[TextRun(text=t)],
+                )
+            )
+        return DocumentStructure(
+            filename="test.docx",
+            paragraphs=paras,
+            total_paragraphs=len(paras),
+        )
+
+    @pytest.mark.asyncio
+    async def test_validate_offline_mode_returns_error(self):
+        """Verify that disabling online validation now returns explicit errors."""
+        structure = self._make_structure(["Mt 5,3"])
+        validator = BibleValidator(use_online=False)
+        results = await validator.validate(structure)
+        assert len(results) == 1
+        assert results[0].is_valid is False
+        assert "deaktiviert" in results[0].error_message
+
+    @pytest.mark.asyncio
+    async def test_validate_success(self, mocker):
+        """Test successful validation with matching title."""
+        mock_resp = mocker.MagicMock(spec=httpx.Response)
+        mock_resp.status_code = 200
+        mock_resp.text = "<title>1.Mose 1,1 | Schlachter 2000</title>"
+        mock_resp.url = "https://www.bibleserver.com/SLT/1-mose1,1"
+        mock_resp.raise_for_status.return_value = None
+        
+        mocker.patch("httpx.AsyncClient.get", return_value=mock_resp)
+        
+        structure = self._make_structure(["Gen 1,1"])
+        validator = BibleValidator(use_online=True)
+        results = await validator.validate(structure)
+        
+        assert len(results) == 1
+        assert results[0].is_valid is True
+        assert "1-mose1,1" in results[0].source_url
+
+    @pytest.mark.asyncio
+    async def test_validate_autocorrect_fail(self, mocker):
+        """Test failure when Bibelserver auto-corrects to another chapter."""
+        mock_resp = mocker.MagicMock(spec=httpx.Response)
+        mock_resp.status_code = 200
+        mock_resp.text = "<title>1.Mose 50 | Schlachter 2000</title>"
+        mock_resp.url = "https://www.bibleserver.com/SLT/1-mose60"
+        mock_resp.raise_for_status.return_value = None
+        
+        mocker.patch("httpx.AsyncClient.get", return_value=mock_resp)
+        
+        structure = self._make_structure(["Gen 60"])
+        validator = BibleValidator(use_online=True)
+        results = await validator.validate(structure)
+        
+        assert len(results) == 1
+        assert results[0].is_valid is False
+        assert "existiert nicht" in results[0].error_message
+        assert "1.Mose 50" in results[0].error_message
+
+    @pytest.mark.asyncio
+    async def test_validate_network_error(self, mocker):
+        """Test behavior on network failure."""
+        mocker.patch("httpx.AsyncClient.get", side_effect=httpx.ConnectTimeout("Timeout"))
+        
+        structure = self._make_structure(["Mt 5,3"])
+        validator = BibleValidator(use_online=True)
+        results = await validator.validate(structure)
+        
+        assert len(results) == 1
+        assert results[0].is_valid is False
+        assert "nicht erreichbar" in results[0].error_message

@@ -49,9 +49,9 @@ class ProofreadingConfig(BaseModel):
     default_address_form: str = "Sie"
 
     # --- Bible Validation Settings ---
-    bible_api_url: str = "https://bible-api.com"
-    bible_api_timeout_seconds: float = 5.0
-    use_bible_offline_fallback: bool = True
+    bible_validation_base_url: str = "https://www.bibleserver.com"
+    bible_validation_translation: str = "SLT"
+    bible_validation_timeout_seconds: float = 10.0
     bible_translations: dict[str, BibleTranslationEntry] = Field(
         default_factory=dict
     )
