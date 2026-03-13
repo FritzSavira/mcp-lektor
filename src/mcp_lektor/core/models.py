@@ -113,6 +113,8 @@ class BibleReference(BaseModel):
     chapter: int
     verse_start: Optional[int] = None
     verse_end: Optional[int] = None
+    char_offset_start: int = 0
+    char_offset_end: int = 0
 
 
 class BibleValidationResult(BaseModel):
@@ -122,6 +124,7 @@ class BibleValidationResult(BaseModel):
     suggested_correction: Optional[str] = None
     source_url: Optional[str] = None
     comparison_links: dict[str, str] = Field(default_factory=dict)
+    local_texts: dict[str, str] = Field(default_factory=dict)
 
 
 class UserDecision(BaseModel):

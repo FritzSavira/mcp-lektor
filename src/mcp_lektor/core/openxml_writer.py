@@ -245,9 +245,18 @@ def apply_corrections_to_document(
         if success:
             # 2. Add the comment content to comments.xml
             comments_element = _get_or_create_comments_part(doc)
-            category = corr.get("category", "Lektorat")
+            
+            # Get the human-readable category name from the enum value
+            category_obj = corr.get("category", "Lektorat")
+            # If it's a CorrectionCategory enum member, use its .value
+            if hasattr(category_obj, "value"):
+                category_label = str(category_obj.value)
+            else:
+                # Handle cases where it might already be a string or different object
+                category_label = str(category_obj).split(".")[-1].capitalize()
+                
             explanation = corr.get("explanation", "")
-            comment_text = f"[{category}] {explanation}"
+            comment_text = f"[{category_label}] {explanation}"
             _add_comment_to_part(
                 comments_element, comment_id, author, timestamp, comment_text
             )
@@ -328,9 +337,33 @@ def _add_comment_to_part(
         },
     )
     p = etree.SubElement(comment, f"{W}p")
-    r = etree.SubElement(p, f"{W}r")
-    t = etree.SubElement(r, f"{W}t")
-    t.text = text
+    
+    # Split by line breaks and handle bold markers (simple implementation)
+    lines = text.split("\n")
+    for i, line in enumerate(lines):
+        # Process bold markers: **Text**
+        # We split by ** and alternate between bold and normal runs
+        parts = re.split(r"(\*\*.*?\*\*)", line)
+        for part in parts:
+            if part.startswith("**") and part.endswith("**"):
+                bold_text = part[2:-2]
+                r = etree.SubElement(p, f"{W}r")
+                rpr = etree.SubElement(r, f"{W}rPr")
+                etree.SubElement(rpr, f"{W}b")
+                t = etree.SubElement(r, f"{W}t")
+                t.set(f"{{{XML_NS}}}space", "preserve")
+                t.text = bold_text
+            else:
+                if part:
+                    r = etree.SubElement(p, f"{W}r")
+                    t = etree.SubElement(r, f"{W}t")
+                    t.set(f"{{{XML_NS}}}space", "preserve")
+                    t.text = part
+        
+        # Add line break if not the last line
+        if i < len(lines) - 1:
+            r = etree.SubElement(p, f"{W}r")
+            etree.SubElement(r, f"{W}br")
 
 
 def _save_comments_part(doc: DocxDocument) -> None:

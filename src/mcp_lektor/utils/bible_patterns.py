@@ -7,9 +7,13 @@ import re
 # German book abbreviations / names  (order matters: longer first)
 _BOOK_NAMES = (
     # Names often with numeric prefix or long names
-    "Mose|Koenige|Könige|Samuel|Chronik|Korinther|Thessalonicher"
-    "|Timotheus|Petrus|Johannes|Roemer|Römer|Galater|Epheser"
-    "|Philipper|Kolosser|Hebreaer|Hebräer|Offenbarung"
+    "Mose|Josua|Richter|Rut|Samuel|Könige|Koenige|Chronik|Esra|Nehemia|Ester"
+    "|Hiob|Psalmen|Sprüche|Sprueche|Prediger|Hohelied|Jesaja|Jeremia|Klagelieder|Hesekiel|Daniel"
+    "|Hosea|Joel|Amos|Obadja|Jona|Micha|Nahum|Habakuk|Zefanja|Haggai|Sacharja|Maleachi"
+    "|Tobit|Judit|Makkabäer|Makkabaeer|Weisheit|Jesus Sirach|Baruch"
+    "|Matthäus|Matthaeus|Markus|Lukas|Johannes|Apostelgeschichte|Römer|Roemer|Korinther|Galater|Epheser"
+    "|Philipper|Kolosser|Thessalonicher|Timotheus|Titus|Philemon|Hebräer|Hebraeer|Jakobus|Petrus"
+    "|Johannesbriefe|Judas|Offenbarung"
     # Standard abbreviations (AT)
     "|Gen|Ex|Lev|Num|Dtn|Jos|Ri|Rut|Sam|Kön|Koen|Chr|Esr|Neh|Est"
     "|Ijob|Hiob|Hi|Ps|Spr|Koh|Pred|Hld|Jes|Jer|Klgl|Ez|Hes|Dan"

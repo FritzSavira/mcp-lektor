@@ -31,7 +31,7 @@ def get_engine():
 
 @st.cache_resource
 def get_bible_validator():
-    return BibleValidator(use_online=True)
+    return BibleValidator()
 
 engine = get_engine()
 bible_val = get_bible_validator()

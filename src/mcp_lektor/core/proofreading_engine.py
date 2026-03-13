@@ -14,8 +14,11 @@ from mcp_lektor.config.settings import (
     load_typography_rules,
 )
 from mcp_lektor.core.confused_words_checker import scan_confused_words
+from mcp_lektor.core.bible_validator import BibleValidator
 from mcp_lektor.core.enums import ConfidenceLevel, CorrectionCategory
 from mcp_lektor.core.models import (
+    BibleValidationResult,
+    DocumentParagraph,
     DocumentStructure,
     ProofreadingResult,
     ProposedCorrection,
@@ -71,6 +74,12 @@ class ProofreadingEngine:
             all_corrections.extend(check_typography(structure, self.typography_rules))
         if CorrectionCategory.CONFUSED_WORD in checks:
             all_corrections.extend(scan_confused_words(structure, self.confused_words))
+        if CorrectionCategory.BIBLE_REFERENCE in checks:
+            bible_validator = BibleValidator(self.config)
+            bible_results = await bible_validator.validate(structure)
+            all_corrections.extend(
+                self._convert_bible_results_to_corrections(structure, bible_results)
+            )
 
         # --- Step 2: LLM-based checks ---
         llm_checks = [c for c in checks if c in _LLM_CATEGORIES]
@@ -224,6 +233,77 @@ class ProofreadingEngine:
             except (KeyError, ValueError) as exc:
                 logger.warning("Skipping invalid LLM correction: %s", exc)
         return corrections
+
+    def _convert_bible_results_to_corrections(
+        self,
+        structure: DocumentStructure,
+        results: list[BibleValidationResult],
+    ) -> list[ProposedCorrection]:
+        """Map BibleValidationResult objects to ProposedCorrection objects."""
+        corrections: list[ProposedCorrection] = []
+
+        # Find the paragraph map for quick lookup
+        para_map = {p.index: p for p in structure.paragraphs}
+
+        for res in results:
+            ref = res.reference
+            para = para_map.get(ref.paragraph_index)
+            if not para:
+                continue
+
+            # Determine run_index for the start offset
+            run_index = self._find_run_index_for_offset(para, ref.char_offset_start)
+
+            # Format local texts
+            local_texts_str = ""
+            if res.local_texts:
+                items = []
+                for label, text in res.local_texts.items():
+                    # Format: **Label**: "Text"
+                    items.append(f"**{label.upper()}**: \"{text}\"")
+                local_texts_str = "\n" + "\n".join(items)
+
+            # Format comparison links for explanation
+            links_str = ""
+            if res.comparison_links:
+                links_list = [f"**{k}**: {v}" for k, v in res.comparison_links.items()]
+                links_str = "\n\n**Vergleichslinks**:\n" + "\n".join(links_list)
+
+            status_text = ""
+            if not res.is_valid:
+                status_text = f"**FEHLER**: {res.error_message or 'Ungültig'}"
+            else:
+                status_text = "**Bibelstelle verifiziert**."
+
+            explanation = f"{status_text}\n{local_texts_str}{links_str}"
+
+            corrections.append(
+                ProposedCorrection(
+                    id="",
+                    paragraph_index=ref.paragraph_index,
+                    run_index=run_index,
+                    char_offset_start=ref.char_offset_start,
+                    char_offset_end=ref.char_offset_end,
+                    original_text=ref.raw_text,
+                    suggested_text=ref.raw_text,  # Keep original, just add comment
+                    category=CorrectionCategory.BIBLE_REFERENCE,
+                    confidence=ConfidenceLevel.HIGH,
+                    explanation=explanation,
+                )
+            )
+        return corrections
+
+    def _find_run_index_for_offset(
+        self, para: DocumentParagraph, char_offset: int
+    ) -> int:
+        """Find the run index that contains the given character offset."""
+        current_offset = 0
+        for i, run in enumerate(para.runs):
+            run_len = len(run.text)
+            if current_offset <= char_offset < current_offset + run_len:
+                return i
+            current_offset += run_len
+        return len(para.runs) - 1 if para.runs else 0
 
 
 def _deduplicate(

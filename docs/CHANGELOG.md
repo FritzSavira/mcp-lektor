@@ -2,12 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-03-12] - Local Bible Knowledge Base
+
+### Added
+- **Local Bible Knowledge Base**: Implemented `BibleProvider` for sub-millisecond Bible reference validation and text lookup using local JSON data files (Menge, NeÜ, Elberfelder 1905, Luther 1912).
+- **Rich Text Citations**: Bible references in Word comments now include the full text of the verse from up to four German translations, clearly labeled for easy comparison.
+- **Offline Robustness**: The core Bible validation and citation functionality no longer requires an internet connection, fulfilling the project's requirement for a reliable and robust workflow (referencing ADR-0007).
+- **New Data Model**: Extended `BibleValidationResult` to include `local_texts`, allowing the `ProofreadingEngine` to format rich explanations.
+
+### Changed
+- **Refactored Bible Validator**: Switched `BibleValidator` from fragile web scraping to a robust local-first architecture using the `BibleProvider`.
+- **Improved Explanation Formatting**: Updated `ProofreadingEngine` to generate detailed, multi-translation explanations for all identified Bible references.
+- **Regex Robustness**: Fixed a bug in `bible_patterns.py` where leading/trailing pipes in the book name regex could lead to incorrect empty matches.
+- **Updated Configuration**: Added `local_bible_data_dir` to `ProofreadingConfig` and updated `config.yaml` to enable specific translations (LUT, ELB) for external comparison links.
+
+### Removed
+- **Scraping Logic**: Removed all `httpx`-based scraping and title-matching logic from `BibleValidator`, eliminating dependencies on `bibleserver.com`'s internal HTML structure.
+
 ## [2026-03-11] - Bible Validation Refinement
 
 ### Added
+- **Workflow Integration**: Integrated Bible validation into the main `ProofreadingEngine` pipeline. Bible references now appear as `ProposedCorrection` objects (category `BIBLE_REFERENCE`) in the final report and Word export (referencing ADR-0006).
+- **Comparison Links in Comments**: All identified Bible references now include a list of configured `bibelserver.com` comparison links in their explanatory comments, facilitating manual verification.
 - **Active Bibelserver Validation**: Replaced `bible-api.com` with active scraping of `bibleserver.com`. The validator now verifies references by checking the HTML `<title>` tag of the resulting page, which allows detecting Bibelserver's automatic correction of invalid references (referencing ADR-0005).
 
 ### Changed
+- **Model Enhancement**: Added `char_offset_start` and `char_offset_end` to `BibleReference` to enable precise anchoring of corrections in the document.
 - **Mandatory Online Validation**: Removed the offline fallback mechanism for Bible reference validation, as the project's infrastructure premises require internet access (referencing ADR-0004).
 - **Streamlined Bible Validator**: Simplified `src/mcp_lektor/core/bible_validator.py` by removing ~150 lines of static chapter-count data and redundant offline logic.
 - **Improved Error Messages**: API network errors or timeouts during Bible validation now result in clear, explicit error messages (e.g., "Bibelserver nicht erreichbar") instead of a partial offline check.

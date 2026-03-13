@@ -22,10 +22,13 @@ proofreading:
   red_threshold_r: 180
   red_threshold_gb: 80
   
-  # --- Bible Validation ---
+  # --- Bible Validation Settings ---
+  enable_bible_links: false
   bible_validation_base_url: "https://www.bibleserver.com"
-  bible_validation_translation: "SLT"
+
+  bible_validation_translation: "LUT"
   bible_validation_timeout_seconds: 10.0
+  local_bible_data_dir: "data/bibles"
 
   # Bibelserver Translations
 
@@ -35,12 +38,12 @@ proofreading:
     EU:  { label: "Einheitsübersetzung 2016", enabled: true }
     HFA: { label: "Hoffnung für Alle", enabled: true }
     NGÜ: { label: "Neue Genfer Übersetzung", enabled: true }
+    ELB: { label: "Elberfelder Bibel", enabled: true }
     GNB: { label: "Gute Nachricht Bibel", enabled: false }
-    ELB: { label: "Elberfelder Bibel", enabled: false }
     NLB: { label: "Neues Leben Bibel", enabled: false }
-    SLT: { label: "Schlachter 2000", enabled: false }
+    SLT: { label: "Schlachter 2000", enabled: true }
     ZB:  { label: "Zürcher Bibel", enabled: false }
-    MENG: { label: "Menge Bibel", enabled: false }
+    MENG: { label: "Menge Bibel", enabled: true }
     NeÜ: { label: "Neue evangelistische Übersetzung", enabled: false }
     BAS: { label: "BasisBibel", enabled: false }
     # Internationale Übersetzungen

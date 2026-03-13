@@ -27,7 +27,7 @@ async def validate_bible_refs(session_id: str) -> str:
         session = session_manager.get_session(session_id)
         structure = session["structure"]
 
-        validator = BibleValidator(use_online=True)
+        validator = BibleValidator()
         results = await validator.validate(structure)
 
         # Persist results in session so write_corrected_docx can use them later
