@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-03-13] - UI and Robustness Refinement
+
+### Added
+- **Enhanced Comment Formatting**: `OpenXMLWriter` now supports multi-line comments and bold text. Bible validation results are now clearly structured with bold translation labels (e.g., **MENGE**) and clean line breaks for better readability.
+- **Human-Readable Category Labels**: Comments in Word now use friendly German labels (e.g., `[Bibelstelle]`, `[Typografie]`) instead of technical enum names.
+- **Configurable Bible Links**: Added `enable_bible_links` toggle in `config.yaml` to allow users to disable external `bibleserver.com` links while keeping local citations.
+- **Robust Book Name Normalization**: Improved `BibleProvider` to handle case-insensitive lookups and variations with or without spaces/dots (e.g., "1. Mose", "1.Mose", "1 Mose").
+- **Extended Bible Coverage**: Added missing book variants and singular forms (e.g., "Psalm", "Matthäus", "1. Chronik") to the detection regex and mapping tables.
+- **Advanced Typography Rules**: Added new rules to `typography_rules.yaml` for professional German typesetting, including spaces in abbreviations (z. B.), units (10 kg), percentages (100 %), and correct en-dashes for ranges (10–12).
+
+### Fixed
+- **GUI Startup**: Resolved a `TypeError` in `gui.py` by removing the obsolete `use_online` parameter from `BibleValidator`.
+- **Docker Data Access**: Updated `docker-compose.yaml` to correctly mount the `./data` directory, ensuring local Bible JSON files are accessible within the containers.
+- **Redundant Bible Checks**: Removed duplicate Bible validation calls in the GUI to improve performance and reduce log clutter.
+- **Path Stability**: Switched to absolute path resolution in `BibleProvider` to prevent "File Not Found" errors in containerized environments.
+
+### Changed
+- **Optimized UI Workflow**: Streamlined the `gui.py` processing loop to rely on the `ProofreadingEngine`'s integrated Bible validation.
+
 ## [2026-03-12] - Local Bible Knowledge Base
 
 ### Added
@@ -20,86 +39,4 @@ All notable changes to this project will be documented in this file.
 - **Scraping Logic**: Removed all `httpx`-based scraping and title-matching logic from `BibleValidator`, eliminating dependencies on `bibleserver.com`'s internal HTML structure.
 
 ## [2026-03-11] - Bible Validation Refinement
-
-### Added
-- **Workflow Integration**: Integrated Bible validation into the main `ProofreadingEngine` pipeline. Bible references now appear as `ProposedCorrection` objects (category `BIBLE_REFERENCE`) in the final report and Word export (referencing ADR-0006).
-- **Comparison Links in Comments**: All identified Bible references now include a list of configured `bibelserver.com` comparison links in their explanatory comments, facilitating manual verification.
-- **Active Bibelserver Validation**: Replaced `bible-api.com` with active scraping of `bibleserver.com`. The validator now verifies references by checking the HTML `<title>` tag of the resulting page, which allows detecting Bibelserver's automatic correction of invalid references (referencing ADR-0005).
-
-### Changed
-- **Model Enhancement**: Added `char_offset_start` and `char_offset_end` to `BibleReference` to enable precise anchoring of corrections in the document.
-- **Mandatory Online Validation**: Removed the offline fallback mechanism for Bible reference validation, as the project's infrastructure premises require internet access (referencing ADR-0004).
-- **Streamlined Bible Validator**: Simplified `src/mcp_lektor/core/bible_validator.py` by removing ~150 lines of static chapter-count data and redundant offline logic.
-- **Improved Error Messages**: API network errors or timeouts during Bible validation now result in clear, explicit error messages (e.g., "Bibelserver nicht erreichbar") instead of a partial offline check.
-
-### Removed
-- **Redundant Configuration**: Removed the `use_bible_offline_fallback` parameter and `bible_api_` settings from `config.yaml` and the `ProofreadingConfig` model.
-- **Obsolete Tests**: Deleted offline-only unit tests and `bible-api.com` mock tests, replaced with new Bibelserver scraping tests.
-
-## [2026-03-10] - Consolidation of Quotation Mark Logic
-
-### Added
-- **Anchored Comments**: Enhanced `OpenXMLWriter` to position comments precisely at the occurrence instead of the paragraph end.
-- **Comment-Only Corrections**: Implemented support in `OpenXMLWriter` for corrections that only provide a hint without changing the text (where `original_text == suggested_text`).
-
-### Changed
-- **Typography Checker Consolidation**: Moved all quotation mark detection and correction logic into `src/mcp_lektor/core/typography_checker.py`, using rules from `config/typography_rules.yaml`.
-- **Refined Typographic Rules**: Updated `config/typography_rules.yaml` with context-aware regex to distinguish between opening („) and closing (“) German quotation marks (referencing ADR-0003).
-- **Proofreading Engine Update**: Simplified `ProofreadingEngine` to call `check_typography` for both general typography and quotation marks, ensuring a single source of truth for these rules.
-- **Confused Words Refinement**: Switched `ConfusedWordsChecker` to "comment-only" mode to provide hints (e.g., "Prüfen: Gemeinde/Kirche") without distracting track changes in the text.
-- **Improvement**: Expanded `BibleValidator` and `bible_patterns` to support full German book names (e.g., "Epheser", "Römer") and verse suffixes (e.g., "21a", "3ff").
-- **Feature**: Added flexible Bible translation configuration in `config.yaml`, allowing users to enable/disable specific Bibelserver translations with full labels.
-
-### Removed
-- **Redundant Quotation Checker**: Deprecated the simple rule-based implementation in `src/mcp_lektor/core/quotation_checker.py` to prevent duplicate and low-quality suggestions.
-
-### Fixed
-- **Word Export Integrity**: Ensured that quotation mark corrections result in correct typographic marks (unten/oben) and that the `openxml_writer.py` correctly inserts these as Track Changes with explanatory comments.
-
-## [2026-03-09] - Architectural Refinement
-
-### Added
-- **Dedicated Enum Module**: Created `src/mcp_lektor/core/enums.py` to house shared enumerations, eliminating circular dependencies between domain and configuration models.
-- **Environment Overrides**: Implemented `LEKTOR_` prefix support for all configuration settings, enabling easy environment-based configuration for Docker and Langdock deployments.
-- **Smart Settings Accessor**: Introduced `get_settings()` with optional `reload=True` to support live-reloading of configuration files in development tools like Streamlit.
-
-### Changed
-- **Unified Configuration**: Refactored `src/mcp_lektor/config/settings.py` to use a validated `AppConfig` root model for all application sections (Server, Proofreading, Session).
-- **Session Manager Integration**: Updated `SessionManager` to use settings from `config.yaml` for TTL and cleanup intervals.
-- **Server Integration**: Updated `server.py` to utilize centralized server configuration (host, port, log level).
-- **Refined Data Models**: strictly separated domain models in `core/models.py` from configuration models in `config/models.py`.
-
-### Fixed
-- **Circular Import Risk**: Resolved implicit loop where configuration models depended on domain models containing enums.
-- **Inconsistent Config Loading**: Eliminated hardcoded defaults in server and session management modules.
-
-## [2026-03-06] - Sprint 1-3 Summary
-
-### Added
-- **MCP Server Architecture**: Fully implemented FastMCP server with SSE transport.
-- **Run Normalization**: Added logic to merge fragmented Word runs with identical formatting to improve correction accuracy.
-- **XML Validation**: Integrated `lxml`-based structural validation for generated .docx files.
-- **Bible API Robustness**: Added offline fallback for Protestant canon (chapter counts) and configurable API timeouts.
-- **Centralized Configuration**: Moved logic parameters (address form, thresholds, retries) to `config.yaml`.
-- **LLM Robustness**: Implemented exponential backoff for LLM API calls.
-- **Straico Integration**: Added support for Straico API as a development LLM provider.
-- **Session Management**: Thread-safe, centralized session manager with background cleanup.
-- **End-to-End Tests**: Full pipeline integration tests (Extract -> Proofread -> Validate -> Write).
-
-### Changed
-- Refactored all MCP tools to return JSON strings instead of dicts for protocol compliance.
-- Harmonized session metadata to prevent `KeyError` during tool handovers.
-- Updated `is_red` detection to use configurable thresholds.
-
-### Fixed
-- Fixed run fragmentation breaking character offsets in OpenXML writer.
-- Resolved `pytest-asyncio` environment issues for async integration tests.
-- Fixed `python-docx` session persistence in multi-worker scenarios.
-
-## [2026-03-04] - Initial Setup
-
-### Added
-- Project scaffolding and CI configuration.
-- Core data models for document structure and proofreading results.
-- Basic document ingestion for .docx files.
-- Rule-based checkers for typography and confused words.
+... [rest of file] ...

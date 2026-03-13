@@ -17,17 +17,17 @@ _BOOK_ID_MAP: dict[str, str] = {
         "1. Mose": "GEN", "1.Mose": "GEN", "Gen": "GEN", "Genesis": "GEN",
         "2. Mose": "EXO", "2.Mose": "EXO", "Ex": "EXO", "Exodus": "EXO",
         "3. Mose": "LEV", "3.Mose": "LEV", "Lev": "LEV", "Levitikus": "LEV",
-        "4. Mose": "NUM", "4.Mose": "NUM", "Num": "NUM", "Numeri": "LEV",
+        "4. Mose": "NUM", "4.Mose": "NUM", "Num": "NUM", "Numeri": "NUM",
         "5. Mose": "DTN", "5.Mose": "DTN", "Dtn": "DTN", "Deuteronomium": "DTN",
         "Jos": "JOS", "Josua": "JOS",
         "Ri": "JDG", "Richter": "JDG",
         "Rut": "RUT",
-        "1. Sam": "1SA", "1.Samuel": "1SA", "1. Samuel": "1SA",
-        "2. Sam": "2SA", "2.Samuel": "2SA", "2. Samuel": "2SA",
-        "1. Kön": "1KI", "1. Koenige": "1KI", "1.Kön": "1KI", "1.Koenige": "1KI",
-        "2. Kön": "2KI", "2. Koenige": "2KI", "2.Kön": "2KI", "2.Koenige": "2KI",
-        "1. Chr": "1CH", "1. Chronik": "1CH", "1.Chr": "1CH",
-        "2. Chr": "2CH", "2. Chronik": "2CH", "2.Chr": "2CH",
+        "1. Sam": "1SA", "1.Samuel": "1SA", "1. Samuel": "1SA", "1.Sam": "1SA",
+        "2. Sam": "2SA", "2.Samuel": "2SA", "2. Samuel": "2SA", "2.Sam": "2SA",
+        "1. Kön": "1KI", "1. Koenige": "1KI", "1.Kön": "1KI", "1.Koenige": "1KI", "1.Könige": "1KI", "1.Koen": "1KI",
+        "2. Kön": "2KI", "2. Koenige": "2KI", "2.Kön": "2KI", "2.Koenige": "2KI", "2.Könige": "2KI", "2.Koen": "2KI",
+        "1. Chr": "1CH", "1. Chronik": "1CH", "1.Chr": "1CH", "1.Chronik": "1CH",
+        "2. Chr": "2CH", "2. Chronik": "2CH", "2.Chr": "2CH", "2.Chronik": "2CH",
         "Esr": "EZR", "Esra": "EZR",
         "Neh": "NEH", "Nehemia": "NEH",
         "Est": "EST", "Ester": "EST",
@@ -50,29 +50,29 @@ _BOOK_ID_MAP: dict[str, str] = {
         "Hag": "HAG", "Haggai": "HAG",
         "Sach": "ZEC", "Sacharja": "ZEC",
         "Mal": "MAL", "Maleachi": "MAL",
-        "Mt": "MAT", "Matthaeus": "MAT", "Markus": "MAT", "Mk": "MRK",
+        "Mt": "MAT", "Matthaeus": "MAT", "Markus": "MAT", "Mk": "MRK", "Matthäus": "MAT",
         "Lk": "LUK", "Lukas": "LUK", "Joh": "JHN", "Johannes": "JHN",
         "Apg": "ACT", "Apostelgeschichte": "ACT",
         "Röm": "ROM", "Roem": "ROM", "Römer": "ROM", "Roemer": "ROM",
-        "1. Kor": "1CO", "1. Korinther": "1CO", "1.Kor": "1CO",
-        "2. Kor": "2CO", "2. Korinther": "2CO", "2.Kor": "2CO",
+        "1. Kor": "1CO", "1. Korinther": "1CO", "1.Kor": "1CO", "1.Korinther": "1CO",
+        "2. Kor": "2CO", "2. Korinther": "2CO", "2.Kor": "2CO", "2.Korinther": "2CO",
         "Gal": "GAL", "Galater": "GAL",
         "Eph": "EPH", "Epheser": "EPH",
         "Phil": "PHP", "Philipper": "PHP",
         "Kol": "COL", "Kolosser": "COL",
-        "1. Thess": "1TH", "1. Thessalonicher": "1TH", "1.Thess": "1TH",
-        "2. Thess": "2TH", "2. Thessalonicher": "2TH", "2.Thess": "2TH",
-        "1. Tim": "1TI", "1. Timotheus": "1TI", "1.Tim": "1TI",
-        "2. Tim": "2TI", "2. Timotheus": "2TI", "2.Tim": "2TI",
+        "1. Thess": "1TH", "1. Thessalonicher": "1TH", "1.Thess": "1TH", "1.Thessalonicher": "1TH",
+        "2. Thess": "2TH", "2. Thessalonicher": "2TH", "2.Thess": "2TH", "2.Thessalonicher": "2TH",
+        "1. Tim": "1TI", "1. Timotheus": "1TI", "1.Tim": "1TI", "1.Timotheus": "1TI",
+        "2. Tim": "2TI", "2. Timotheus": "2TI", "2.Tim": "2TI", "2.Timotheus": "2TI",
         "Tit": "TIT", "Titus": "TIT",
         "Phlm": "PHM", "Philemon": "PHM",
         "Hebr": "HEB", "Hebreaer": "HEB", "Hebräer": "HEB",
         "Jak": "JAS", "Jakobus": "JAS",
-        "1. Petr": "1PE", "1. Petrus": "1PE", "1.Petr": "1PE",
-        "2. Petr": "2PE", "2. Petrus": "2PE", "2.Petr": "2PE",
-        "1. Joh": "1JN", "1. Johannes": "1JN", "1.Joh": "1JN",
-        "2. Joh": "2JN", "2. Johannes": "2JN", "2.Joh": "2JN",
-        "3. Joh": "3JN", "3. Johannes": "3JN", "3.Joh": "3JN",
+        "1. Petr": "1PE", "1. Petrus": "1PE", "1.Petr": "1PE", "1.Petrus": "1PE",
+        "2. Petr": "2PE", "2. Petrus": "2PE", "2.Petr": "2PE", "2.Petrus": "2PE",
+        "1. Joh": "1JN", "1. Johannes": "1JN", "1.Joh": "1JN", "1.Johannes": "1JN",
+        "2. Joh": "2JN", "2. Johannes": "2JN", "2.Joh": "2JN", "2.Johannes": "2JN",
+        "3. Joh": "3JN", "3. Johannes": "3JN", "3.Joh": "3JN", "3.Johannes": "3JN",
         "Jud": "JUD", "Judas": "JUD",
         "Offb": "REV", "Offenbarung": "REV",
     }.items()
@@ -89,14 +89,37 @@ class BibleProvider:
 
     def normalize_book_name(self, name: str) -> str | None:
         """Map common German book names/abbreviations to standard IDs."""
+        if not name:
+            return None
+        
+        # Step 1: Basic cleanup
         clean_name = name.strip().lower()
-        # Handle cases like "1. Mose" vs "1.Mose"
-        clean_name = clean_name.replace(". ", ".")
+        
+        # Step 2: Try direct lookup
         book_id = _BOOK_ID_MAP.get(clean_name)
-        if not book_id:
-            # Try without dot as well
-            book_id = _BOOK_ID_MAP.get(clean_name.replace(".", ""))
-        return book_id
+        if book_id:
+            return book_id
+            
+        # Step 3: Handle variations with/without space after dot (e.g. "1. Mose" vs "1.Mose")
+        if ". " in clean_name:
+            alt_name = clean_name.replace(". ", ".")
+            book_id = _BOOK_ID_MAP.get(alt_name)
+            if book_id:
+                return book_id
+        elif "." in clean_name:
+            alt_name = clean_name.replace(".", ". ")
+            book_id = _BOOK_ID_MAP.get(alt_name)
+            if book_id:
+                return book_id
+        
+        # Step 4: Final attempt - remove dots and spaces entirely for the map search
+        # We don't do this as a general rule to avoid false positives, but as a fallback
+        simplified = clean_name.replace(".", "").replace(" ", "")
+        for k, v in _BOOK_ID_MAP.items():
+            if k.replace(".", "").replace(" ", "") == simplified:
+                return v
+                
+        return None
 
     def load_all(self) -> None:
         """Load all JSON files from the data directory into memory."""

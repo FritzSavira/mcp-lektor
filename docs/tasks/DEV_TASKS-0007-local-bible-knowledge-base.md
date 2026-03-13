@@ -14,86 +14,85 @@ Implement a local-first Bible knowledge base for robust validation and rich cita
 ## Phase 1: Foundation & Sample Data
 *Goal: Set up the local storage structure and create test data.*
 
-- [ ] **Step 1.1: Create Directory Structure**
-    - [ ] **Action:** Create the directory `data/bibles/` in the project root.
-    - [ ] **Action:** Add an empty `data/bibles/.gitkeep` file.
-    - [ ] **Verification:** Run `ls data/bibles/` (or `dir data/bibles/` on Windows) and report if it exists.
+- [x] **Step 1.1: Create Directory Structure**
+    - [x] **Action:** Create the directory `data/bibles/` in the project root.
+    - [x] **Action:** Add an empty `data/bibles/.gitkeep` file.
+    - [x] **Verification:** Run `ls data/bibles/` (or `dir data/bibles/` on Windows) and report if it exists.
 
-- [ ] **Step 1.2: Create Mock Master Data (Menge)**
-    - [ ] **Action:** Create `data/bibles/menge.json` with basic content:
-      ```json
-      {
-        "GEN": {
-          "1": {
-            "1": "Am Anfang schuf Gott den Himmel und die Erde.",
-            "2": "Und die Erde war wüst und leer."
-          }
-        }
-      }
-      ```
-    - [ ] **Verification:** Confirm the file is readable and contains valid JSON.
+- [x] **Step 1.2: Create Mock Master Data (Menge)**
+    - [x] **Action:** Create `data/bibles/menge.json` with basic content.
+    - [x] **Verification:** Confirm the file is readable and contains valid JSON.
 
-- [ ] **Step 1.3: Create Mock Secondary Data (NeÜ)**
-    - [ ] **Action:** Create `data/bibles/neu.json`:
-      ```json
-      {
-        "GEN": {
-          "1": {
-            "1": "Im Anfang schuf Gott Himmel und Erde.",
-            "2": "Die Erde aber war wüst und öde."
-          }
-        }
-      }
-      ```
-    - [ ] **Verification:** Confirm both files exist in `data/bibles/`.
+- [x] **Step 1.3: Create Mock Secondary Data (NeÜ)**
+    - [x] **Action:** Create `data/bibles/neu.json`.
+    - [x] **Verification:** Confirm both files exist in `data/bibles/`.
 
 ---
 
 ## Phase 2: BibleProvider Implementation
 *Goal: Create the core service for local Bible access.*
 
-- [ ] **Step 2.1: Scaffold `bible_provider.py`**
-    - [ ] **Action:** Create `src/mcp_lektor/core/bible_provider.py`.
-    - [ ] **Action:** Implement basic structure and `normalize_book_name`.
-    - [ ] **Verification (Interactive Test):** 
-        1. Run `python -c "from mcp_lektor.core.bible_provider import BibleProvider; p = BibleProvider(); print(p.normalize_book_name('1. Mose'))"`.
-        2. **Expected Result:** "GEN".
+- [x] **Step 2.1: Scaffold `bible_provider.py`**
+    - [x] **Action:** Create `src/mcp_lektor/core/bible_provider.py`.
+    - [x] **Action:** Implement basic structure and `normalize_book_name`.
+    - [x] **Verification (Interactive Test):** "1. Mose" -> "GEN".
 
-- [ ] **Step 2.3: Implement Loading & Existence Check**
-    - [ ] **Action:** Implement `load_all()` and `exists(book, chapter, verse)`.
-    - [ ] **Verification (Interactive Test):**
-        1. Initialize provider, call `load_all()`.
-        2. Call `exists('GEN', 1, 1)`.
-        3. **Expected Result:** True.
+- [x] **Step 2.3: Implement Loading & Existence Check**
+    - [x] **Action:** Implement `load_all()` and `exists(book, chapter, verse)`.
+    - [x] **Verification (Interactive Test):** `exists('GEN', 1, 1)` -> True.
 
-- [ ] **Step 2.4: Implement Text Retrieval**
-    - [ ] **Action:** Implement `get_texts(book, chapter, verse_start, verse_end=None)`.
-    - [ ] **Verification:** Test with GEN 1:1 and confirm it returns both Menge and NeÜ texts.
+- [x] **Step 2.4: Implement Text Retrieval**
+    - [x] **Action:** Implement `get_texts(book, chapter, verse_start, verse_end=None)`.
+    - [x] **Verification:** Test with GEN 1:1 and confirm it returns both Menge and NeÜ texts.
 
 ---
 
 ## Phase 3: Workflow Integration
 *Goal: Update the Engine to use local data for rich explanations.*
 
-- [ ] **Step 3.1: Update `BibleValidator`**
-    - [ ] **Action:** Refactor to use `BibleProvider`.
-    - [ ] **Action:** Remove `httpx` dependency from this module.
-    - [ ] **Verification:** Unit tests for extraction still pass.
+- [x] **Step 3.1: Update `BibleValidator`**
+    - [x] **Action:** Refactor to use `BibleProvider`.
+    - [x] **Action:** Remove `httpx` dependency from this module.
+    - [x] **Verification:** Unit tests for extraction still pass.
 
-- [ ] **Step 3.2: Update `ProofreadingEngine` Explanation**
-    - [ ] **Action:** In `_convert_bible_results_to_corrections`, integrate the multi-translation text retrieval.
-    - [ ] **Action:** Format the `explanation` with citations and links.
-    - [ ] **Verification:** Check a sample `ProposedCorrection` for rich text content.
+- [x] **Step 3.2: Update `ProofreadingEngine` Explanation**
+    - [x] **Action:** In `_convert_bible_results_to_corrections`, integrate the multi-translation text retrieval.
+    - [x] **Action:** Format the `explanation` with citations and links.
+    - [x] **Verification:** Check a sample `ProposedCorrection` for rich text content.
 
 ---
 
 ## Phase 4: Finalization
 *Goal: Cleanup and real data preparation.*
 
-- [ ] **Step 4.1: Update Configuration**
-    - [ ] **Action:** Cleanup `config.yaml` and `models.py`.
-    - [ ] **Verification:** App starts without errors.
+- [x] **Step 4.1: Update Configuration**
+    - [x] **Action:** Cleanup `config.yaml` and `models.py`.
+    - [x] **Verification:** App starts without errors.
 
-- [ ] **Step 4.2: Full Verification**
-    - [ ] **Action:** Run `pytest`.
-    - [ ] **Verification:** All tests (unit + integration) must pass.
+- [x] **Step 4.2: Full Verification**
+    - [x] **Action:** Run `pytest`.
+    - [x] **Verification:** All tests (unit + integration) pass.
+
+---
+
+## Phase 5: UI & Infrastructure Refinement
+*Goal: Improve usability, formatting, and Docker stability.*
+
+- [x] **Step 5.1: Fix GUI & Docker Integration**
+    - [x] **Action:** Remove obsolete parameters from `gui.py`.
+    - [x] **Action:** Update `docker-compose.yaml` to mount `data/` volume.
+    - [x] **Verification:** GUI starts in Docker and loads Bible data correctly.
+
+- [x] **Step 5.2: Enhanced Comment Formatting**
+    - [x] **Action:** Update `OpenXMLWriter` to support bold text (`**...**`) and line breaks (`\n`).
+    - [x] **Action:** Update `ProofreadingEngine` to generate structured, bolded Bible citations.
+    - [x] **Verification:** Word comments show bold labels and distinct lines for translations.
+
+- [x] **Step 5.3: Robust Reference Detection**
+    - [x] **Action:** Improve `BibleProvider.normalize_book_name` for better tolerance (spaces, dots).
+    - [x] **Action:** Add missing variants (singular "Psalm", "1. Chronik") to regex and mappings.
+    - [x] **Verification:** Test document with all books and singular forms is processed correctly.
+
+- [x] **Step 5.4: Configuration Options**
+    - [x] **Action:** Implement `enable_bible_links` toggle in `config.yaml`.
+    - [x] **Verification:** Setting to `false` removes external links from comments.

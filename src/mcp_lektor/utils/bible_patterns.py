@@ -8,7 +8,7 @@ import re
 _BOOK_NAMES = (
     # Names often with numeric prefix or long names
     "Mose|Josua|Richter|Rut|Samuel|Könige|Koenige|Chronik|Esra|Nehemia|Ester"
-    "|Hiob|Psalmen|Sprüche|Sprueche|Prediger|Hohelied|Jesaja|Jeremia|Klagelieder|Hesekiel|Daniel"
+    "|Hiob|Psalm|Psalmen|Sprüche|Sprueche|Prediger|Hohelied|Jesaja|Jeremia|Klagelieder|Hesekiel|Daniel"
     "|Hosea|Joel|Amos|Obadja|Jona|Micha|Nahum|Habakuk|Zefanja|Haggai|Sacharja|Maleachi"
     "|Tobit|Judit|Makkabäer|Makkabaeer|Weisheit|Jesus Sirach|Baruch"
     "|Matthäus|Matthaeus|Markus|Lukas|Johannes|Apostelgeschichte|Römer|Roemer|Korinther|Galater|Epheser"

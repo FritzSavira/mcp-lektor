@@ -1,5 +1,6 @@
 # Typografie-Regeln für deutsche Texte
 rules:
+  # --- Grundregeln ---
   - name: "Anführungszeichen öffnend"
     pattern: '(^|[\s(\[«])"'
     replacement: '\1„'
@@ -28,4 +29,29 @@ rules:
     pattern: '\.\.\.'
     replacement: "…"
     explanation: "Drei Punkte werden typografisch als Ellipsenzeichen (…) gesetzt."
+    category: "Typografie"
+
+  # --- Profi-Regeln (Ergänzt) ---
+  - name: "Abkürzungen mit Leerzeichen"
+    pattern: '\b(z|u|d|i|o)\.([BbAahRäv])\.'
+    replacement: '\1. \2.'
+    explanation: "Zwischen den Buchstaben von Abkürzungen (z. B., u. a., d. h.) gehört ein Leerzeichen."
+    category: "Typografie"
+
+  - name: "Leerzeichen vor Maßeinheiten"
+    pattern: '(\d)(kg|cm|mm|km|ha|min|sec|m|g|l|t|h)\b'
+    replacement: '\1 \2'
+    explanation: "Zwischen einer Zahl und ihrer Maßeinheit muss ein Leerzeichen stehen."
+    category: "Typografie"
+
+  - name: "Leerzeichen vor Prozent"
+    pattern: '(\d)%'
+    replacement: '\1 %'
+    explanation: "Vor dem Prozentzeichen gehört im Deutschen ein Leerzeichen."
+    category: "Typografie"
+
+  - name: "Bis-Strich"
+    pattern: '(\d)-(\d)'
+    replacement: '\1–\2'
+    explanation: "In Zahlenbereichen (z. B. 10–12 Uhr) wird der Halbgeviertstrich (–) als Bis-Strich verwendet."
     category: "Typografie"
