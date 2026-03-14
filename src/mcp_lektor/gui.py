@@ -36,7 +36,7 @@ def get_bible_validator():
 engine = get_engine()
 bible_val = get_bible_validator()
 
-st.title("✍️ MCP-Lektor: Professionelles Lektorat")
+st.title("✍️ MCP-Lektor")
 st.markdown("""
 ### Modus: Full Auto (Direkt-Lektorat)
 Lade eine `.docx` Datei hoch. Der Lektor prüft den Text (KI + Regeln) und erstellt **sofort** ein Dokument mit Track Changes und Kommentaren.
