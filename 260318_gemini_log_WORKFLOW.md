@@ -1,0 +1,1007 @@
+## USER 🧑‍💻
+
+<session_context>
+This is the Gemini CLI. We are setting up the context for our chat.
+Today's date is Mittwoch, 18. März 2026 (formatted according to the user's locale).
+My operating system is: win32
+The project's temporary directory is: C:\Users\Fried\.gemini\tmp\mcp-lektor
+- **Workspace Directories:**
+  - C:\Users\Fried\onedrive\heukelbach\mcp-lektor
+- **Directory Structure:**
+
+Showing up to 200 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (200 items) was reached.
+
+C:\Users\Fried\onedrive\heukelbach\mcp-lektor\
+├───.env.example
+├───.gitignore
+├───docker-compose.yaml
+├───Dockerfile
+├───pyproject.toml
+├───.git\...
+├───.pytest_cache\
+│   └───v\...
+├───.ruff_cache\
+│   ├───0.12.8\...
+│   └───0.15.4\...
+├───.venv\
+│   ├───Include\...
+│   ├───Lib\...
+│   └───Scripts\...
+├───config\
+│   ├───config.yaml
+│   ├───confused_words.yaml
+│   └───typography_rules.yaml
+├───data\
+│   └───bibles\
+│       ├───.gitkeep
+│       ├───elberfelder1905.json
+│       ├───luther1912.json
+│       ├───menge.json
+│       └───schlachter1951.json
+├───docs\
+│   ├───CHANGELOG.md
+│   ├───CODING_STYLE.md
+│   ├───DEVELOPMENT_GUIDELINES.md
+│   ├───EVOLUTION.md
+│   ├───PROJECT_BRIEFING.md
+│   ├───WORKFLOW.md
+│   ├───adr\
+│   │   ├───.gitkeep
+│   │   ├───ADR-0000-template.md
+│   │   ├───ADR-0001-mcp-based-interactive-proofreading-server.md
+│   │   ├───ADR-0002-refined-configuration-and-model-separation.md
+│   │   ├───ADR-0003-consolidation-of-quotation-mark-logic.md
+│   │   ├───ADR-0004-removal-of-bible-offline-fallback.md
+│   │   ├───ADR-0005-consolidation-of-bible-validation-on-bibelserver.md
+│   │   ├───ADR-0005-removal-of-bible-api-integration.md
+│   │   ├───ADR-0006-integration-of-bible-validation-into-proofreading-workflow.md
+│   │   ├───ADR-0007-local-bible-knowledge-base.md
+│   │   └───ADR-0008-langdock-cloud-integration-and-file-handling.md
+│   ├───agent\
+│   │   ├───AGENT_SYSTEM_PROMPT.md
+│   │   └───USER_GUIDE.md
+│   ├───gemini_log\
+│   │   ├───260306_gemini_log_a.json
+│   │   ├───260306_gemini_log_a.md
+│   │   ├───260306_gemini_log.json
+│   │   ├───260306_gemini_log.md
+│   │   ├───260307_gemini_log.json
+│   │   ├───260307_gemini_log.md
+│   │   ├───260308_gemini_log.json
+│   │   ├───260308_gemini_log.md
+│   │   ├───260310_gemini_log.json
+│   │   ├───260310_gemini_log.md
+│   │   ├───260312_gemini_log.json
+│   │   ├───260312_gemini_log.md
+│   │   ├───260313_gemini_log.json
+│   │   ├───260313_gemini_log.md
+│   │   ├───260318_gemini_log_a.json
+│   │   ├───260318_gemini_log_a.md
+│   │   ├───260318_gemini_log.json
+│   │   └───260318_gemini_log.md
+│   ├───plan\
+│   │   ├───analyse_bericht_extract_document.md
+│   │   └───fix_langdock_extract_document.md
+│   └───tasks\
+│       ├───.gitkeep
+│       ├───DEV_OPEN_QUESTIONS-0001.md
+│       ├───DEV_SPEC-0000-template.md
+│       ├───DEV_SPEC-0001-mcp-based-interactive-proofreading-server.md
+│       ├───DEV_SPEC-0004-bible-validation-refinement.md
+│       ├───DEV_SPEC-0005-bibelserver-based-bible-validation.md
+│       ├───DEV_SPEC-0006-bible-validation-integration.md
+│       ├───DEV_SPEC-0007-local-bible-knowledge-base.md
+│       ├───DEV_SPEC-0008-langdock-cloud-integration.md
+│       ├───DEV_TASKS-0000-template.md
+│       ├───DEV_TASKS-0001-mcp-based-interactive-proofreading-server.md
+│       ├───DEV_TASKS-0001-part4-bible-validator.md
+│       ├───DEV_TASKS-0001-part5-openxml-writer.md
+│       ├───DEV_TASKS-0002-configuration-refinement.md
+│       ├───DEV_TASKS-0003-consolidation-of-quotation-mark-logic.md
+│       ├───DEV_TASKS-0004-bible-validation-refinement.md
+│       ├───DEV_TASKS-0005-bibelserver-based-bible-validation.md
+│       ├───DEV_TASKS-0006-bible-validation-integration.md
+│       ├───DEV_TASKS-0007-local-bible-knowledge-base.md
+│       ├───DEV_TASKS-0008-langdock-cloud-integration.md
+│       ├───DEV_TECH_DESIGN-0000-template.md
+│       ├───DEV_TECH_DESIGN-0001-mcp-based-interactive-proofreading-server.md
+│       ├───DEV_TECH_DESIGN-0004-bible-validation-refinement.md
+│       ├───DEV_TECH_DESIGN-0005-bibelserver-scraping-for-bible-validation.md
+│       ├───DEV_TECH_DESIGN-0006-bible-validation-integration.md
+│       ├───DEV_TECH_DESIGN-0007-local-bible-knowledge-base.md
+│       └───DEV_TECH_DESIGN-0008-langdock-cloud-integration.md
+├───scripts\
+│   ├───interactive_e2e_test.py
+│   └───test_base64_upload.py
+├───src\
+│   └───mcp_lektor\
+│       ├───__init__.py
+│       ├───gui.py
+│       ├───server.py
+│       ├───__pycache__\...
+│       ├───config\
+│       │   ├───__init__.py
+│       │   ├───models.py
+│       │   ├───settings.py
+│       │   └───__pycache__\...
+│       ├───core\
+│       │   ├───__init__.py
+│       │   ├───bible_provider.py
+│       │   ├───bible_validator.py
+│       │   ├───confused_words_checker.py
+│       │   ├───document_io.py
+│       │   ├───enums.py
+│       │   ├───llm_client.py
+│       │   ├───models.py
+│       │   ├───openxml_writer.py
+│       │   ├───proofreading_engine.py
+│       │   ├───quotation_checker.py
+│       │   ├───run_normalizer.py
+│       │   ├───session_manager.py
+│       │   ├───typography_checker.py
+│       │   └───__pycache__\...
+│       ├───tools\
+│       │   ├───__init__.py
+│       │   ├───extract_document.py
+│       │   ├───proofread_text.py
+│       │   ├───validate_bible_refs.py
+│       │   ├───write_corrected_docx.py
+│       │   └───__pycache__\...
+│       └───utils\
+│           ├───__init__.py
+│           ├───bible_patterns.py
+│           ├───xml_validator.py
+│           └───__pycache__\...
+└───tests\
+    ├───conftest.py
+    ├───__pycache__\...
+    ├───fixtures\
+    │   └───.gitkeep
+    ├───integration\
+    │   ├───__init__.py
+    │   ├───test_end_to_end.py
+    │   ├───test_extract_document.py
+    │   ├───test_proofread_text.py
+    │   ├───test_quotation_marks_e2e.py
+    │   ├───test_write_corrected_docx.py
+    │   └───__pycache__\...
+    └───unit\
+        ├───__init__.py
+        ├───test_bible_validator.py
+        ├───test_document_io.py
+        ├───test_models.py
+        ├───test_openxml_writer.py
+        ├───test_proofreading_engine_bible.py
+        ├───test_proofreading_engine.py
+        ├───test_run_normalizer.py
+        ├───test_smoke.py
+        └───__pycache__\...
+
+
+</session_context>
+
+---
+
+## USER 🧑‍💻
+
+@docs/PROJECT_BRIEFING.md
+--- Content from referenced files ---
+Content from @docs/PROJECT_BRIEFING.md:
+# Project briefing and work instructions for Coding-Agent
+
+Hello Coding-Agent. Before you start working on this project, you must complete the following steps and acknowledge and follow the rules below as your primary work instructions for this entire session.
+
+## Phase 1: Initial Project Analysis (Do this now)
+
+1.  **Study the guidelines:**
+*   Read the contents of the file @DEVELOPMENT_GUIDELINES.md in its entirety.
+*   Read the contents of the file @CODING_STYLE.md in its entirety.
+
+2.  **Understand the project structure:**
+    *   Provide an overview of the directory structure of the project.
+
+3.  **Confirmation:**
+    *   At the end of this analysis, explicitly confirm with the words: “Analysis complete. I have read and understood the project guidelines and will follow them.”
+
+## Phase 2: Binding work rules
+
+You MUST adhere to the following core principles throughout the entire work session:
+
+1.  **CODING_STYLE.md is law:** All code changes, refactorings, or new code MUST comply 100% with the rules in `docs/CODING_STYLE.md`. This is non-negotiable.
+
+2.  **Context analysis before every change:** Before making a code change, you MUST follow the workflow from rule 10 of `CODING_STYLE.md` (Identify -> Global Search -> Analyze -> Implement -> Verify).
+
+3.  **Follow DEVELOPMENT_GUIDELINES.md:** Adhere to the documentation processes (ADRs, changelog) described in `docs/DEVELOPMENT_GUIDELINES.md`.
+
+4.  **Tests are crucial:** After every significant code change, you MUST propose running the relevant tests (or the entire test suite with `pytest`) to avoid regressions.
+
+These instructions take precedence over your general skills. If anything is unclear, ask instead of making assumptions.
+--- End of content ---
+
+---
+
+## MODEL ✨
+
+I will begin by reading the `docs/DEVELOPMENT_GUIDELINES.md` and `docs/CODING_STYLE.md` files as instructed in Phase 1 of the project briefing.
+
+**Tool Command**:
+```json
+{
+  "name": "read_file",
+  "args": {
+    "file_path": "docs/DEVELOPMENT_GUIDELINES.md"
+  }
+}
+```**Tool Command**:
+```json
+{
+  "name": "read_file",
+  "args": {
+    "file_path": "docs/CODING_STYLE.md"
+  }
+}
+```
+
+---
+
+## USER 🧑‍💻
+
+**Tool Response**:
+```json
+{
+  "id": "read_file_1773868082100_0",
+  "name": "read_file",
+  "response": {
+    "output": "# **Development Guidelines Summary**\n\nThis document defines the documentation strategy for the project, ensuring consistency, clarity, and effective collaboration.\n\n## **1. Centralized Documentation**\nAll project documentation is stored in the `docs/` directory with the following structure:\n```\nyour_project/\n├── docs/\n│   ├── adr/ (Architectural Decision Records)\n│   ├── tasks/ (DEV_SPEC, DEV_TECH_DESIGN, DEV_TASKS)\n│   ├── CHANGELOG.md (chronological changes)\n│   ├── CODING_STYLE.md\n│   ├── PROJECT_BRIEFING.md\n│   ├── DEVELOPMENT_GUIDELINES.md\n│   └── guides/ (additional guides)\n└── ... (project code)\n```\n\n## **2. Documentation Types & Purpose**\n| **Document** | **Focus** | **Content** | **Lifecycle** | **Interlinking** |\n|--------------|-----------|------------|--------------|------------------|\n| **ADRs** (`docs/adr/`) | *Why* behind major decisions | Context, decision, rationale, consequences | Created before/during implementation; mostly immutable | Referenced in `CHANGELOG.md` and `DEV_TASKS.md` |\n| **CHANGELOG.md** | *What* changed and when | Chronological history of changes | Updated after completion | Links to ADRs and tasks |\n| **DEV_TASKS.md** | *What* needs to be done | Task status (TODO/In Progress/Done). For complex features, a detailed `DEV_TASKS-xxxx.md` file is created, which **must use Markdown checkboxes (`- [ ]`)** to track progress. | Continuously updated after completion of each Phase | Links to ADRs |\n\n## **3. Interlinking Strategy**\n- **ADR → CHANGELOG:** Reference ADRs in changelog entries.\n- **DEV_TASKS → ADR:** Link tasks to relevant ADRs.\n- **CHANGELOG → DEV_TASKS:** Mark tasks as \"Done\" -> [x].\n\n## **4. Developer Workflow**\n1. **Before starting a major change:**\n   - Check if an ADR is needed; create it if required.\n   - For complex tasks, create a corresponding `DEV_TASKS-xxxx.md` file.\n2. **During development:**\n   - Update task status and check off completed items in the detailed `DEV_TASKS-xxxx.md` file.\n3. **Before completion:**\n   - Test thoroughly.\n4. **Upon completion:**\n   - Update `CHANGELOG.md` with details and ADR references. Updates will be inserted at the beginning of the file text.\n\n## **5. Testing Guidelines**\n### **Principles**\n- Test early, often, and reproducibly.\n- Automate where possible; manually test UX/edge cases.\n\n### **Execution**\n1. **Prerequisites:**\n   - Install dependencies (`pip install -r requirements.txt`).\n2. **Run tests:**\n   ```bash\n   pytest  # or python -m pytest (recommended)\n   ```\n3. **Expected outcome:** All tests pass; failures must be resolved.\n\n### **Test Types**\n| **Type** | **Purpose** | **Scope** | **Best Practices** |\n|----------|------------|-----------|------------------|\n| **Unit Tests** | Verify individual functions | Smallest components | High coverage; mock dependencies |\n| **Integration Tests** | Verify module interactions | Component interfaces | Use real dependencies where possible |\n| **E2E/UI Tests** | Validate full user flows | Entire application | Use tools like Selenium; focus on critical paths |\n| **Manual Tests** | Catch UX/edge-case issues | Any part of the app | Document test cases and expected results |\n\n### **Test Plan Documentation**\nFor major changes, include:\n- Test objectives, preconditions, steps, expected results, edge cases.\n\n## **6. Code Quality**\n- **Rule:** All code **MUST** comply with `docs/CODING_STYLE.md`.\n- **Action:** Ensure adherence before committing (naming, formatting, refactoring).\n\nThis summary retains all key information while improving conciseness for experienced developers."
+  }
+}
+```**Tool Response**:
+```json
+{
+  "id": "read_file_1773868082139_1",
+  "name": "read_file",
+  "response": {
+    "output": "# Coding Style and Clean Code Principles\n\nThis document defines the binding code quality and style guidelines for this project. All code changes, especially those made by AI agents, MUST strictly follow these rules.\n\n## 1. Language\n\n- **Rule:** All code, comments, and docstrings MUST be written in **English**. This ensures international comprehensibility and consistency with most libraries.\n\n## 2. Formatting\n\n- **Rule:** All Python code MUST be formatted with the `black` formatter.\n- **Instruction:** Run `black .` before each commit to ensure formatting. Code that is not `black`-compliant will not be accepted.\n\n## 3. Linter / Static Analysis\n\n- **Rule:** The code MUST pass the `ruff` linter check without errors.\n- **Instruction:** Run `ruff check .` to check the code. Fix all reported errors before marking the task as complete.\n\n## 4. Naming Conventions\n\n- **Rule:** Names MUST be meaningful and unambiguous. They should clearly communicate their purpose.\n- **Instruction:**\n  - **Variables & functions:** snake_case (e.g., user_list, calculate_total_price).\n  - **Classes:** PascalCase (e.g., DatabaseConnection, UserConfiguration).\n  - **Constants:** `UPPER_SNAKE_CASE` (e.g., `MAX_RETRIES`).\n- **Examples:**\n  - **BAD:** `ul`, `data`, `proc()`, `temp`\n  - **GOOD:** `user_list`, `customer_data`, `process_payment()`, `temperature_in_celsius`\n\n## 5. Functions and methods\n\n- **Rule 1 (Single Responsibility Principle):** Each function/method SHOULD perform only one clearly defined task.\n- **Rule 2 (Length):** Functions SHOULD be short, ideally less than 20 lines. Long functions must be split up.\n- **Rule 3 (Arguments):** AVOID functions with more than 3 arguments. If more data is needed, combine it into a data object or class.\n\n## 6. Comments\n\n- **Rule:** Write code that is self-explanatory. AVOID comments that explain *what* the code does. The code should express this itself.\n- **Instruction:** Only use comments to explain *why* a particular (complex or unusual) design decision was made.\n  - **BAD:** `i = i + 1 # Increment i`\n  - **GOOD:** `# We must use a direct API call here because the library's cache has a bug (see Ticket-123)`\n\n## 7. DRY (Don't Repeat Yourself)\n\n- **Rule:** Strictly AVOID code duplication.\n- **Guidance:** If you find identical or very similar code in multiple places, abstract it into a reusable function or class.\n\n## 8. The Boy Scout Rule\n\n- **Rule:** When you edit a file, leave it in better condition than you found it.\n- **Instruction:** Correct minor style errors, improve the readability of a name, or add a missing type annotation, even if it is not directly part of the main task.\n\n## 9. Error Handling\n\n- **Rule:** Use exceptions for error handling. AVOID returning error codes or `None` to signal an error condition.\n- **Instruction:** Use `try...except` blocks and specific exception types.\n\n## 10. Context-Aware Refactoring\n\n**Problem:** Changes to a function, class, or variable can lead to errors (broken references) in other parts of the code.\n\n**Rule:** To prevent this, the following workflow MUST be strictly adhered to for every change to existing code:\n\n**Phase 1: Analysis**\n1.  **Identification:** Identify the exact name of the element to be changed (e.g., function `get_user_data`, class `SessionManager`).\n2.  **Global search:** Perform a project-wide search for all occurrences of this name.\n- **Instruction:** Use the `search_file_content` tool to find all references. Example: `search_file_content(pattern=‘get_user_data’)`.\n3.  **Analysis of references:** Analyze EVERY search result. Create a checklist of all files and code locations affected by the change (e.g., function calls that need to be adjusted, class instantiations, etc.).\n\n**Phase 2: Implementation**\n1.  **Atomic change:** Implement the planned change to the definition AND to all usage locations identified in the analysis phase.\n2.  **Verification:** After implementation, run the entire test suite (e.g., with `pytest`) to ensure that the changes had no side effects and that all tests continue to be successful.\n\n"
+  }
+}
+```
+
+---
+
+## MODEL ✨
+
+I have completed the initial project analysis.
+
+### Project Directory Structure Overview
+
+The **mcp-lektor** project is structured as follows:
+
+*   **`src/mcp_lektor/`**: The core application logic.
+    *   **`core/`**: Contains the primary business logic, including Bible validation, typography and quotation checking, and the proofreading engine.
+    *   **`tools/`**: Defines the Model Context Protocol (MCP) tools for document extraction, proofreading, and writing corrected files.
+    *   **`config/`** & **`utils/`**: Handle configuration models, settings, and utility functions like regex patterns for Bible references.
+*   **`docs/`**: Comprehensive project documentation.
+    *   **`adr/`**: Architectural Decision Records tracking the evolution of the system.
+    *   **`tasks/`**: Detailed specifications (`DEV_SPEC`), technical designs (`DEV_TECH_DESIGN`), and task tracking (`DEV_TASKS`) for features.
+    *   **`plan/`**: Specific analysis and fix plans for existing issues.
+*   **`data/bibles/`**: Local JSON storage for various Bible versions (Elberfelder, Luther, Menge, Schlachter) used for offline validation.
+*   **`config/`**: YAML-based configuration for confused words and typography rules.
+*   **`tests/`**: A suite of unit and integration tests to ensure system reliability.
+*   **`scripts/`**: Utility scripts for end-to-end testing and experimentation.
+*   **Root Files**: Standard configuration files including `pyproject.toml` (for dependency management), `Dockerfile`, and `docker-compose.yaml`.
+
+Analysis complete. I have read and understood the project guidelines and will follow them.
+
+---
+
+## USER 🧑‍💻
+
+"""
+MCP Lektor Server implementation.
+Registers tools and starts background tasks.
+"""
+
+import logging
+import asyncio
+from mcp.server.fastmcp import FastMCP
+from dotenv import load_dotenv
+
+from mcp_lektor.tools.extract_document import extract_document
+from mcp_lektor.tools.proofread_text import proofread_text
+from mcp_lektor.tools.validate_bible_refs import validate_bible_refs
+from mcp_lektor.tools.write_corrected_docx import write_corrected_docx
+from mcp_lektor.core.session_manager import session_manager
+from mcp_lektor.config.settings import get_settings
+
+# Load environment variables from .env if present
+load_dotenv()
+
+# Get settings
+settings = get_settings()
+
+# Configure logging
+log_level_str = settings.server.log_level.upper()
+logging.basicConfig(
+    level=log_level_str,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+logger = logging.getLogger("mcp-lektor")
+
+# Initialize FastMCP server
+mcp = FastMCP("MCP Lektor")
+
+# Register tools
+mcp.tool()(extract_document)
+mcp.tool()(proofread_text)
+mcp.tool()(validate_bible_refs)
+mcp.tool()(write_corrected_docx)
+
+async def main():
+    """Main entry point for the server."""
+    # Start background tasks
+    await session_manager.start_cleanup_task()
+    
+    # Run the server using SSE transport
+    # Note: FastMCP.run() handles the event loop and transport setup internally
+    # but if we want to run background tasks we might need a custom runner or 
+    # use FastMCP's app directly.
+    # For now, we follow the established pattern.
+    mcp.run(transport="sse")
+
+if __name__ == "__main__":
+    # We use mcp.run() directly as it is standard for FastMCP
+    # Background tasks should ideally be started via a lifespan handler
+    # but FastMCP doesn't expose it easily in this version.
+    # However, since mcp.run starts the loop, we start tasks before.
+    
+    # Run background cleanup (async task started in current loop)
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(session_manager.start_cleanup_task())
+    
+    mcp.run(transport="sse")
+
+Der vorstehende Code ist ein MCP-Server, der mit einem LLM zusammenarbeiten soll. Das Biotop ist Langdock. Bitte erkläre mir, wie von Langosck aus mittels Agent, Integration und Aktion. Dieses Skript aufgerufen und ausgeführt wird. Mir geht es darum, das Zuammenspiel von stochastisch gesteuerten LLMs und deterministischem Code zu verstehen. Wie wird das LLM getriggert, die Ausführung dieses Codes zu starten?
+
+---
+
+## MODEL ✨
+
+Das Zusammenspiel zwischen einem stochastischen Modell (LLM) und deinem deterministischen Code (Python/MCP) lässt sich als eine Art "Diplomatie zwischen zwei Welten" verstehen. Langdock fungiert dabei als der Protokoll-Chef (Orchestrator).
+
+Hier ist die schrittweise Erklärung, wie aus einem Nutzerwunsch in Langdock eine Code-Ausführung in deinem Skript wird:
+
+### 1. Die statische Vorbereitung (Die "Landkarte")
+Bevor das LLM überhaupt ein Wort schreibt, findet ein Austausch von Metadaten statt:
+
+*   **Integration:** In Langdock verbindest du diesen MCP-Server (meist über die URL des SSE-Endpunkts). Langdock fragt den Server: *"Was kannst du?"*
+*   **Aktion (Tool Definition):** Dein Code antwortet über die `FastMCP`-Logik. Durch die Dekoratoren `@mcp.tool()` sendet der Server eine Liste von JSON-Schemas an Langdock. 
+    *   Beispiel: Für `extract_document` sieht das LLM nicht den Code, sondern eine Beschreibung: *"Dieses Tool extrahiert Text aus einer .docx Datei. Benötigt: file_path (String)."*
+*   **Agent:** Der Langdock-Agent bekommt diese Tool-Beschreibungen in seinen "System Prompt" injiziert. Er weiß jetzt: *"Ich habe eine Hand, die 'extract_document' heißt."*
+
+### 2. Der stochastische Trigger (Die Entscheidung)
+Jetzt schreibt ein Nutzer: *"Prüfe bitte das Dokument 'Predigt.docx' auf Tippfehler."*
+
+1.  **Interpretation:** Das LLM (stochastisch) berechnet die Wahrscheinlichkeit für das nächste Token. Es erkennt das Muster "Prüfe Dokument" und vergleicht es mit seinen verfügbaren Aktionen.
+2.  **Tool-Call Generierung:** Das LLM entscheidet sich statistisch dafür, **keinen** Text an den Nutzer zu senden, sondern einen **Funktionsaufruf**. Es generiert eine strukturierte JSON-Ausgabe, etwa so:
+    ```json
+    {
+      "tool": "extract_document",
+      "arguments": {"file_path": "Predigt.docx"}
+    }
+    ```
+    *Wichtig:* Das LLM führt den Code nicht aus. Es "formuliert" nur den Wunsch nach der Ausführung in einem Format, das Langdock versteht.
+
+### 3. Die deterministische Ausführung (Der Code)
+Langdock sieht die JSON-Antwort des LLMs und übernimmt die Rolle des Boten:
+
+1.  **Transport:** Langdock sendet diesen Request via **SSE (Server-Sent Events)** oder HTTP an deinen laufenden Python-Server.
+2.  **Mapping:** Dein `FastMCP`-Server empfängt das Paket, schaut in sein Register und sagt: *"Das ist für die Funktion `extract_document` bestimmt."*
+3.  **Berechnung:** Jetzt läuft dein **deterministischer Code**. `1+1` ist hier immer `2`, Regex-Muster suchen exakt nach dem, was definiert wurde. Die Funktion gibt ein Ergebnis zurück (z.B. den extrahierten Text).
+
+### 4. Der Rückkanal (Die Synthese)
+1.  **Resultat:** Der Python-Server sendet das Ergebnis zurück an Langdock.
+2.  **Kontext-Injektion:** Langdock reicht dieses Ergebnis an das LLM weiter. Für das LLM sieht es so aus, als hätte es plötzlich das Wissen über den Inhalt des Dokuments erlangt.
+3.  **Abschluss:** Das LLM verarbeitet diese neuen Fakten stochastisch und generiert die Antwort an den Nutzer: *"Ich habe den Text gelesen. Hier sind die Korrekturen..."*
+
+### Zusammenfassung der Begriffe im Langdock-Kontext:
+
+*   **Integration:** Die technische Leitung (SSE-Verbindung zu deinem Server).
+*   **Aktion:** Die einzelne Fähigkeit (z.B. `proofread_text`), die durch deine Python-Funktion definiert ist.
+*   **Agent:** Die "Persönlichkeit", die entscheidet, wann welche Aktion sinnvoll ist.
+
+**Warum triggert das LLM den Code?**
+Nicht weil es den Code versteht, sondern weil die **Beschreibung** des Tools (Docstrings und Funktionsnamen in deinem Python-Skript) im Vektorraum des LLMs eine hohe Übereinstimmung mit der **Absicht** des Nutzers hat. Das LLM "würfelt" sich gewissermaßen zum Funktionsaufruf, weil das die statistisch wahrscheinlichste korrekte Fortsetzung des Dialogs ist.
+
+---
+
+## USER 🧑‍💻
+
+Danke. Das war hilfreich. Nun möchte ich mit dir den Weg im detail verfolgen. Ich suche den Workflow, der in ein docx-Dokument Korrekturen im Nachverfolgungsmodus einträgt. Du bist der Spurensucher und sagst mir basierend auf dem vorstehenden Code, welche Datei oder Importquelle ich dir zur Verfügung stellen soll, damit du die Stelle finden kannst, an der deterministisch Korrekturen im Nachverfolgungsmodus in ein docx-Dokument eingetragen werden. Machst du mit, bei dieser Spurensuche?
+
+---
+
+## MODEL ✨
+
+Ich mache sehr gerne mit! Als Spurensucher folge ich der Fährte vom MCP-Server tief in den "Maschinenraum" deines Codes.
+
+Basierend auf deinem `server.py` Skript ist die erste heiße Spur dieser Import:
+
+```python
+from mcp_lektor.tools.write_corrected_docx import write_corrected_docx
+```
+
+Dieses Tool ist das Portal, durch das das LLM den Befehl gibt: *"Schreibe jetzt die Korrekturen in die Datei."*
+
+### Der nächste Schritt der Spurensuche:
+
+Um die Stelle zu finden, an der die XML-Magie für den **Nachverfolgungsmodus** (Track Changes) passiert, benötige ich als Nächstes den Inhalt dieser Datei:
+
+1.  **`src/mcp_lektor/tools/write_corrected_docx.py`**
+
+**Warum diese Datei?**
+Dort wird definiert, wie die Argumente vom LLM entgegengenommen werden. Höchstwahrscheinlich ruft diese Datei wiederum eine "Core-Komponente" auf (vermutlich den `openxml_writer` oder `document_io`), die die eigentliche Arbeit mit dem Word-Format erledigt.
+
+Sobald du mir diese Datei zeigst, kann ich dir sagen, ob wir direkt am Ziel sind oder ob wir noch eine Ebene tiefer in den `core`-Ordner graben müssen. Bereit für den ersten Sprung?
+
+---
+
+## USER 🧑‍💻
+
+@src/mcp_lektor/tools/write_corrected_docx.py
+--- Content from referenced files ---
+Content from @src/mcp_lektor/tools/write_corrected_docx.py:
+"""Write accepted corrections back into the .docx with Track Changes."""
+
+from __future__ import annotations
+
+import base64
+import json
+import logging
+from pathlib import Path
+
+from mcp_lektor.core.document_io import write_corrected_document
+from mcp_lektor.core.session_manager import session_manager
+
+logger = logging.getLogger(__name__)
+
+
+async def write_corrected_docx(
+    session_id: str,
+    decisions: str = "",
+    apply_all: bool = True,
+    author: str = "MCP-Lektor",
+) -> str:
+    """MCP tool: write corrections into the document as Track Changes.
+
+    Args:
+        session_id: The session identifier from extract_document.
+        decisions: JSON string mapping correction index to
+            "accept"/"reject"/"edit". Ignored if apply_all is True.
+        apply_all: If True, apply all corrections regardless of decisions.
+        author: Author name for Track Changes metadata.
+
+    Returns:
+        JSON string with output_path, corrections_applied count, and status.
+        For remote/cloud usage, it also includes 'file_content' (Base64)
+        and 'filename'.
+    """
+    try:
+        session = session_manager.get_session(session_id)
+        input_path = session.get("file_path")
+
+        # We need the corrections from proofreading_result
+        proof_result = session.get("proofreading_result")
+        if not proof_result:
+            return json.dumps(
+                {
+                    "status": "error",
+                    "message": "No proofreading results found in session. "
+                    "Please run proofread_text first.",
+                },
+                ensure_ascii=False,
+            )
+
+        corrections = [c.model_dump() for c in proof_result.corrections]
+
+        if not input_path or not Path(input_path).exists():
+            return json.dumps(
+                {
+                    "status": "error",
+                    "message": "Original document file not found in session.",
+                },
+                ensure_ascii=False,
+            )
+
+        if not corrections:
+            return json.dumps(
+                {
+                    "status": "success",
+                    "message": "No corrections were proposed, nothing to write.",
+                    "corrections_applied": 0,
+                },
+                ensure_ascii=False,
+            )
+
+        # Parse decisions
+        decision_map: dict[int, str] | None = None
+        if not apply_all and decisions:
+            try:
+                raw = json.loads(decisions)
+                # Map "C-001" style IDs or integer indices to "accept"/"reject"/"edit"
+                # The core logic expects integer indices if possible, or we might
+                # need to map them. Let's assume the user provides a map where
+                # keys can be parsed as int indices.
+                decision_map = {int(k): v for k, v in raw.items()}
+            except (json.JSONDecodeError, ValueError) as exc:
+                return json.dumps(
+                    {
+                        "status": "error",
+                        "message": f"Invalid decisions JSON format: {exc}",
+                    },
+                    ensure_ascii=False,
+                )
+
+        # Generate output path
+        input_p = Path(input_path)
+        output_path = input_p.parent / f"{input_p.stem}_corrected{input_p.suffix}"
+
+        # write_corrected_document is synchronous in core/document_io.py
+        result_path = write_corrected_document(
+            input_path=input_path,
+            output_path=output_path,
+            corrections=corrections,
+            author=author,
+            decisions=decision_map,
+        )
+
+        # Count applied
+        if decision_map is not None:
+            applied = sum(1 for v in decision_map.values() if v != "reject")
+        else:
+            applied = len(corrections)
+
+        # Encode to Base64 for remote transfer
+        file_content: str | None = None
+        try:
+            file_content = base64.b64encode(result_path.read_bytes()).decode("utf-8")
+        except Exception as e:
+            logger.error(f"Failed to encode output file: {e}")
+
+        # Store output path in session
+        session_manager.update_session(session_id, {"output_path": str(result_path)})
+
+        # If the input file was a temp file (tracked in session), track the output too
+        # to ensure it gets cleaned up.
+        if session.get("temp_files"):
+            session_manager.update_session(
+                session_id, {"temp_files": [str(result_path)]}
+            )
+
+        result = {
+            "status": "success",
+            "output_path": str(result_path),
+            "filename": result_path.name,
+            "file_content": file_content,
+            "corrections_applied": applied,
+            "corrections_total": len(corrections),
+            "message": (
+                f"{applied} von {len(corrections)} Korrekturen wurden als "
+                f"Track Changes in '{result_path.name}' geschrieben."
+            ),
+        }
+        return json.dumps(result, ensure_ascii=False, indent=2)
+
+    except KeyError as e:
+        logger.warning(f"Session not found: {session_id}")
+        return json.dumps({"error": str(e)}, ensure_ascii=False)
+    except Exception as e:
+        logger.exception(f"Error writing corrected document for session {session_id}")
+        return json.dumps({"error": f"Internal error: {str(e)}"}, ensure_ascii=False)
+--- End of content ---
+
+---
+
+## MODEL ✨
+
+Die Fährte wird heißer! Wir haben das **Portal** (`write_corrected_docx`) durchschritten.
+
+### Die Analyse des Portals:
+In der Datei `write_corrected_docx.py` sehen wir, dass das Tool selbst noch gar nicht weiß, wie man ein Word-Dokument anfasst. Es bereitet nur die "Post" vor:
+1. Es holt die `session_id`.
+2. Es sammelt die `corrections` (die Korrekturvorschläge des LLMs).
+3. Es prüft, welche Entscheidungen (`decisions`) getroffen wurden.
+4. **Und dann übergibt es das Paket an den eigentlichen Logistik-Experten:**
+
+```python
+from mcp_lektor.core.document_io import write_corrected_document
+
+# ...
+
+result_path = write_corrected_document(
+    input_path=input_path,
+    output_path=output_path,
+    corrections=corrections,
+    author=author,
+    decisions=decision_map,
+)
+```
+
+### Der nächste Schritt der Spurensuche:
+Wir müssen jetzt in den Maschinenraum der Dateiverarbeitung. Die nächste Datei auf unserer Liste ist:
+
+1.  **`src/mcp_lektor/core/document_io.py`**
+
+**Vermutung des Spurensuchers:**
+In `document_io.py` wird wahrscheinlich entschieden, wie das Dokument geöffnet wird. Da `.docx` Dateien eigentlich ZIP-Archive mit XML-Inhalt sind, erwarte ich dort entweder den Einsatz einer Bibliothek wie `python-docx` oder (was bei "Track Changes" oft nötig ist) einen Aufruf an einen spezialisierten `OpenXMLWriter`.
+
+Soll ich die Datei `src/mcp_lektor/core/document_io.py` für dich öffnen?
+
+---
+
+## USER 🧑‍💻
+
+Ja, bitte.
+
+---
+
+## MODEL ✨
+
+I'll read `src/mcp_lektor/core/document_io.py` to see how it handles writing the corrected document.
+
+**Tool Command**:
+```json
+{
+  "name": "read_file",
+  "args": {
+    "file_path": "src/mcp_lektor/core/document_io.py"
+  }
+}
+```
+
+---
+
+## USER 🧑‍💻
+
+**Tool Response**:
+```json
+{
+  "id": "read_file_1773868670969_0",
+  "name": "read_file",
+  "response": {
+    "output": "\"\"\"Read .docx files and convert them to a structured DocumentStructure.\"\"\"\n\nfrom __future__ import annotations\n\nimport logging\nimport re\nfrom pathlib import Path\nfrom typing import Optional\n\nfrom docx import Document as DocxDocument  # python-docx\nfrom docx.oxml.ns import qn\nfrom docx.text.paragraph import Paragraph\nfrom docx.text.run import Run\n\nfrom mcp_lektor.core.enums import ParagraphType\nfrom mcp_lektor.core.models import (\n    DocumentParagraph,\n    DocumentStructure,\n    RunFormatting,\n    TextColor,\n    TextRun,\n)\nfrom mcp_lektor.core.run_normalizer import normalize_runs\n\nlogger = logging.getLogger(__name__)\n\n# ------------------------------------------------------------------ #\n# Public API                                                          #\n# ------------------------------------------------------------------ #\n\n\ndef parse_docx(file_path: str | Path) -> DocumentStructure:\n    \"\"\"Parse a .docx file and return a fully populated DocumentStructure.\"\"\"\n    path = Path(file_path)\n    if not path.exists():\n        raise FileNotFoundError(f\"File not found: {path}\")\n    if path.suffix.lower() != \".docx\":\n        raise ValueError(f\"Expected a .docx file, got: {path.suffix}\")\n\n    doc = DocxDocument(str(path))\n    paragraphs: list[DocumentParagraph] = []\n\n    for idx, para in enumerate(doc.paragraphs):\n        raw_runs = [_build_text_run(run) for run in para.runs]\n        runs = normalize_runs(raw_runs)\n\n        has_content_runs = [r for r in runs if r.text.strip()]\n        is_placeholder = bool(has_content_runs) and all(\n            r.is_placeholder for r in has_content_runs\n        )\n\n        doc_para = DocumentParagraph(\n            index=idx,\n            paragraph_type=_classify_paragraph(para),\n            style_name=para.style.name if para.style else None,\n            heading_level=_get_heading_level(para),\n            runs=runs,\n            is_placeholder_paragraph=is_placeholder,\n        )\n        paragraphs.append(doc_para)\n\n    total_words = sum(len(p.plain_text.split()) for p in paragraphs)\n    placeholder_paras = [p for p in paragraphs if p.is_placeholder_paragraph]\n\n    return DocumentStructure(\n        filename=path.name,\n        paragraphs=paragraphs,\n        total_paragraphs=len(paragraphs),\n        total_words=total_words,\n        placeholder_count=len(placeholder_paras),\n        placeholder_locations=[f\"Paragraph {p.index}\" for p in placeholder_paras],\n    )\n\n\n# ------------------------------------------------------------------ #\n# Run helpers                                                         #\n# ------------------------------------------------------------------ #\n\n\ndef _build_text_run(run: Run) -> TextRun:\n    formatting = _extract_run_formatting(run)\n    return TextRun(\n        text=run.text,\n        formatting=formatting,\n        is_placeholder=_is_placeholder(run, formatting),\n    )\n\n\ndef _extract_run_formatting(run: Run) -> RunFormatting:\n    color = _extract_color(run)\n    return RunFormatting(\n        bold=bool(run.bold),\n        italic=bool(run.italic),\n        underline=bool(run.underline),\n        strike=bool(run.font.strike),\n        font_name=run.font.name,\n        font_size=run.font.size.pt if run.font.size else None,\n        color=color,\n        highlight=str(run.font.highlight_color) if run.font.highlight_color else None,\n        style_name=run.style.name if run.style else None,\n    )\n\n\ndef _extract_color(run: Run) -> Optional[TextColor]:\n    \"\"\"Try to read an explicit RGB color from the run.\"\"\"\n    # python-docx exposes color.rgb as an RGBColor when set explicitly\n    rgb = run.font.color.rgb\n    if rgb is not None:\n        return TextColor(r=rgb[0], g=rgb[1], b=rgb[2])\n\n    # Fallback: inspect the XML for <w:color w:val=\"...\"/>\n    rpr = run._element.find(qn(\"w:rPr\"))\n    if rpr is not None:\n        color_elem = rpr.find(qn(\"w:color\"))\n        if color_elem is not None:\n            val = color_elem.get(qn(\"w:val\"))\n            if val and len(val) == 6:\n                try:\n                    r = int(val[0:2], 16)\n                    g = int(val[2:4], 16)\n                    b = int(val[4:6], 16)\n                    return TextColor(r=r, g=g, b=b)\n                except ValueError:\n                    pass\n    return None\n\n\ndef _is_placeholder(run: Run, formatting: RunFormatting) -> bool:\n    \"\"\"A run counts as placeholder when it has red text.\"\"\"\n    if formatting.color and formatting.color.is_red:\n        return True\n    return False\n\n\n# ------------------------------------------------------------------ #\n# Paragraph helpers                                                   #\n# ------------------------------------------------------------------ #\n\n_HEADING_RE = re.compile(r\"^Heading\\s*(\\d+)$\", re.IGNORECASE)\n_LIST_STYLES = {\"List Paragraph\", \"List Bullet\", \"List Number\"}\n\n\ndef _classify_paragraph(para: Paragraph) -> ParagraphType:\n    style_name = para.style.name if para.style else \"\"\n    if _HEADING_RE.match(style_name):\n        return ParagraphType.HEADING\n    if style_name in _LIST_STYLES:\n        return ParagraphType.LIST_ITEM\n    return ParagraphType.BODY\n\n\ndef _get_heading_level(para: Paragraph) -> Optional[int]:\n    style_name = para.style.name if para.style else \"\"\n    m = _HEADING_RE.match(style_name)\n    return int(m.group(1)) if m else None\n\n\n# ------------------------------------------------------------------ #\n# Write-back (add to existing document_io.py)                        #\n# ------------------------------------------------------------------ #\n\n\ndef write_corrected_document(\n    input_path: str | Path,\n    output_path: str | Path,\n    corrections: list[dict],\n    author: str = \"MCP-Lektor\",\n    decisions: Optional[dict[int, str]] = None,\n) -> Path:\n    \"\"\"Apply corrections as Track Changes and save to output_path.\n\n    Args:\n        input_path: Path to the original .docx file.\n        output_path: Path where the corrected .docx will be saved.\n        corrections: List of correction dicts from the proofreading engine.\n        author: Revision author name shown in Track Changes.\n        decisions: Optional mapping of correction index → \"accept\"/\"reject\"/\"edit\".\n\n    Returns:\n        The output path as a Path object.\n    \"\"\"\n    from mcp_lektor.core.openxml_writer import (\n        _save_comments_part,\n        apply_corrections_to_document,\n    )\n\n    input_path = Path(input_path)\n    output_path = Path(output_path)\n\n    doc = DocxDocument(str(input_path))\n    apply_corrections_to_document(doc, corrections, author, decisions)\n    # Perform a safety check on the XML before saving if needed, \n    # but python-docx's .save() is usually what does the XML assembly.\n    _save_comments_part(doc)\n    doc.save(str(output_path))\n\n    # Verify structural integrity of the newly saved file\n    from mcp_lektor.utils.xml_validator import validate_docx_structure\n    try:\n        validate_docx_structure(output_path)\n    except Exception as e:\n        logger.error(f\"Generated .docx is invalid: {e}\")\n        # We might want to raise an error here to prevent delivering corrupt files\n        raise ValueError(f\"Failed to generate a valid .docx: {e}\")\n\n    logger.info(\"Corrected document saved and validated at %s\", output_path)\n    return output_path\n"
+  }
+}
+```
+
+---
+
+## MODEL ✨
+
+Die Spur führt uns nun direkt in das Herzstück der XML-Manipulation. 
+
+In `document_io.py` haben wir gesehen, dass die Funktion `write_corrected_document` zwar das Dokument öffnet und speichert, die eigentliche "chirurgische Arbeit" aber delegiert:
+
+```python
+from mcp_lektor.core.openxml_writer import (
+    _save_comments_part,
+    apply_corrections_to_document,
+)
+```
+
+### Analyse des Spurensuchers:
+`document_io.py` nutzt die Bibliothek `python-docx`, aber da `python-docx` von Haus aus keine native, einfache API für "Track Changes" (Nachverfolgungen) besitzt, muss diese Funktionalität durch direkte Manipulation der **OXML-Elemente** (Open XML) erfolgen. Das Wort "Writer" im Dateinamen `openxml_writer.py` deutet darauf hin, dass wir hier auf die Ebene der XML-Tags (`<w:ins>` für Einfügungen und `<w:del>` für Löschungen) hinabsteigen.
+
+### Die Ziel-Datei:
+Um zu sehen, wie genau die Korrekturen als "Track Changes" markiert werden (inklusive Autor und Zeitstempel), müssen wir diese Datei untersuchen:
+
+1.  **`src/mcp_lektor/core/openxml_writer.py`**
+
+Soll ich diese Datei öffnen, um die deterministischen Schreibbefehle für den Nachverfolgungsmodus zu finden?
+
+---
+
+## USER 🧑‍💻
+
+Ja, bitte schau' dort nach.
+
+---
+
+## MODEL ✨
+
+I'll read `src/mcp_lektor/core/openxml_writer.py` to find the core logic for applying corrections with track changes.
+
+**Tool Command**:
+```json
+{
+  "name": "read_file",
+  "args": {
+    "file_path": "src/mcp_lektor/core/openxml_writer.py"
+  }
+}
+```
+
+---
+
+## USER 🧑‍💻
+
+**Tool Response**:
+```json
+{
+  "id": "read_file_1773868739672_0",
+  "name": "read_file",
+  "response": {
+    "output": "\"\"\"Insert Track Changes and comments into .docx files via OpenXML.\"\"\"\n\nfrom __future__ import annotations\n\nimport logging\nimport re\nfrom copy import deepcopy\nfrom datetime import datetime, timezone\nfrom typing import Optional\n\nfrom docx import Document as DocxDocument\nfrom lxml import etree\n\nlogger = logging.getLogger(__name__)\n\nWORD_NS = \"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"\nXML_NS = \"http://www.w3.org/XML/1998/namespace\"\nW = f\"{{{WORD_NS}}}\"\n\nCOMMENTS_URI = (\n    \"http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments\"\n)\nCOMMENTS_CONTENT_TYPE = (\n    \"application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml\"\n)\n\n\ndef apply_track_change(\n    paragraph_element: etree._Element,\n    original_text: str,\n    replacement_text: str,\n    author: str,\n    timestamp: str,\n    revision_id: int,\n    char_start: Optional[int] = None,\n    paragraph_index: Optional[int] = None,\n    comment_id: Optional[int] = None,\n) -> bool:\n    \"\"\"\n    Locates original_text within the paragraph's runs and replaces it with\n    Track Changes (w:del and w:ins) or marks it with a comment.\n\n    If char_start is provided, it is used to disambiguate multiple occurrences\n    by picking the match closest to that offset.\n\n    If original_text == replacement_text, no track change is created, but the\n    occurrence is wrapped in comment markers if comment_id is provided.\n    \"\"\"\n    if not original_text:\n        return False\n\n    # 1. Collect all text and their corresponding runs\n    runs = paragraph_element.findall(f\"{W}r\")\n    full_para_text = \"\"\n    run_map = []  # list of (char_start_in_para, char_end_in_para, run_element)\n\n    for run in runs:\n        t_elem = run.find(f\"{W}t\")\n        if t_elem is not None and t_elem.text:\n            start = len(full_para_text)\n            full_para_text += t_elem.text\n            run_map.append((start, len(full_para_text), run))\n\n    # 2. Find the original_text in the full paragraph text\n    fuzzy_pattern = _to_fuzzy_regex(original_text)\n\n    match = None\n    try:\n        matches = list(re.finditer(fuzzy_pattern, full_para_text))\n        if not matches:\n            matches = list(re.finditer(fuzzy_pattern, full_para_text, re.IGNORECASE))\n\n        if not matches:\n            idx_info = (\n                f\" (Index {paragraph_index})\" if paragraph_index is not None else \"\"\n            )\n            context = f\" Context: '{full_para_text[:50]}...'\" if full_para_text else \"\"\n            logger.warning(\n                f\"Could not find text '{original_text}' in paragraph{idx_info}.\"\n                f\"{context}\"\n            )\n            return False\n\n        if char_start is not None and len(matches) > 1:\n            match = min(matches, key=lambda m: abs(m.start() - char_start))\n        else:\n            match = matches[0]\n\n    except Exception as e:\n        logger.error(f\"Regex error searching for '{original_text}': {e}\")\n        return False\n\n    match_start, match_end = match.span()\n    document_text = full_para_text[match_start:match_end]\n\n    # 3. Identify which runs are affected\n    affected_runs = []\n    for r_start, r_end, run in run_map:\n        if r_end > match_start and r_start < match_end:\n            affected_runs.append((r_start, r_end, run))\n\n    if not affected_runs:\n        return False\n\n    first_run_start, first_run_end, first_run = affected_runs[0]\n    rpr = first_run.find(f\"{W}rPr\")\n    rpr_copy = deepcopy(rpr) if rpr is not None else None\n\n    # 4. Perform the replacement/marking\n    parent = paragraph_element\n    insertion_point = list(parent).index(affected_runs[0][2])\n\n    text_before = full_para_text[first_run_start:match_start]\n    last_run_start, last_run_end, last_run = affected_runs[-1]\n    text_after = full_para_text[match_end:last_run_end]\n\n    for _, _, run in affected_runs:\n        parent.remove(run)\n\n    new_elements = []\n    if text_before:\n        new_elements.append(_make_run(text_before, rpr_copy))\n\n    # Elements representing the change or the original text\n    core_elements = []\n    if original_text != replacement_text:\n        del_elem = etree.Element(\n            f\"{W}del\",\n            {f\"{W}id\": str(revision_id), f\"{W}author\": author, f\"{W}date\": timestamp},\n        )\n        del_elem.append(_make_run(document_text, rpr_copy, is_delete=True))\n        core_elements.append(del_elem)\n\n        ins_elem = etree.Element(\n            f\"{W}ins\",\n            {\n                f\"{W}id\": str(revision_id + 1),\n                f\"{W}author\": author,\n                f\"{W}date\": timestamp,\n            },\n        )\n        ins_elem.append(_make_run(replacement_text, rpr_copy))\n        core_elements.append(ins_elem)\n    else:\n        # Just the original text\n        core_elements.append(_make_run(document_text, rpr_copy))\n\n    # Wrap in comment markers if requested\n    if comment_id is not None:\n        range_start = etree.Element(\n            f\"{W}commentRangeStart\", {f\"{W}id\": str(comment_id)}\n        )\n        range_end = etree.Element(f\"{W}commentRangeEnd\", {f\"{W}id\": str(comment_id)})\n        ref_run = etree.Element(f\"{W}r\")\n        rpr_ref = etree.SubElement(ref_run, f\"{W}rPr\")\n        etree.SubElement(rpr_ref, f\"{W}rStyle\", {f\"{W}val\": \"Kommentarzeichen\"})\n        etree.SubElement(ref_run, f\"{W}commentReference\", {f\"{W}id\": str(comment_id)})\n\n        new_elements.append(range_start)\n        new_elements.extend(core_elements)\n        new_elements.append(range_end)\n        new_elements.append(ref_run)\n    else:\n        new_elements.extend(core_elements)\n\n    if text_after:\n        new_elements.append(_make_run(text_after, rpr_copy))\n\n    for i, elem in enumerate(new_elements):\n        parent.insert(insertion_point + i, elem)\n\n    return True\n\n\ndef _to_fuzzy_regex(text: str) -> str:\n    \"\"\"Escapes text but allows common variations like apostrophes or spaces.\"\"\"\n    # We want to replace quotes, apostrophes and spaces with character classes.\n    # To do this safely, we first escape everything, then replace the ESCAPED versions.\n    # Note: re.escape does NOT escape ' or \" in modern Python, but DOES escape spaces.\n\n    res = re.escape(text)\n\n    # 1. Apostrophes: straight ('), smart (’, ‘)\n    res = res.replace(\"'\", \"['’‘]\")\n\n    # 2. Quotes: straight (\"), German low („), smart high (“ ”)\n    res = res.replace('\"', '[\\\\\"„“”]')\n\n    # 3. Spaces: re.escape turns \" \" into \"\\ \"\n    res = res.replace(r\"\\ \", r\"[\\s\\xa0]+\")\n\n    return res\n\n\ndef apply_corrections_to_document(\n    doc: DocxDocument,\n    corrections: list[dict],\n    author: str = \"MCP-Lektor-Auto\",\n    decisions: Optional[dict[int, str]] = None,\n) -> DocxDocument:\n    \"\"\"Applies corrections using text-matching instead of indices.\"\"\"\n    timestamp = datetime.now(tz=timezone.utc).strftime(\"%Y-%m-%dT%H:%M:%SZ\")\n    revision_id = 3000\n    comment_id = 1\n\n    # Sort by paragraph index and then original_text length to avoid partial matches\n    sorted_corrections = sorted(\n        enumerate(corrections),\n        key=lambda ic: (\n            ic[1].get(\"paragraph_index\", 0),\n            len(ic[1].get(\"original_text\", \"\")),\n        ),\n        reverse=True,\n    )\n\n    for original_idx, corr in sorted_corrections:\n        if decisions is not None and decisions.get(original_idx) == \"reject\":\n            continue\n\n        p_idx = corr.get(\"paragraph_index\", 0)\n        if p_idx >= len(doc.paragraphs):\n            continue\n\n        para_obj = doc.paragraphs[p_idx]\n        para_elem = para_obj._element\n\n        original_text = corr.get(\"original_text\", \"\")\n        replacement_text = corr.get(\"suggested_text\") or corr.get(\n            \"replacement_text\", \"\"\n        )\n\n        # 1. Apply Track Change / Comment markers via Text Matching\n        success = apply_track_change(\n            paragraph_element=para_elem,\n            original_text=original_text,\n            replacement_text=replacement_text,\n            author=author,\n            timestamp=timestamp,\n            revision_id=revision_id,\n            char_start=corr.get(\"char_offset_start\") or corr.get(\"char_start\"),\n            paragraph_index=p_idx,\n            comment_id=comment_id,\n        )\n\n        if success:\n            # 2. Add the comment content to comments.xml\n            comments_element = _get_or_create_comments_part(doc)\n            \n            # Get the human-readable category name from the enum value\n            category_obj = corr.get(\"category\", \"Lektorat\")\n            # If it's a CorrectionCategory enum member, use its .value\n            if hasattr(category_obj, \"value\"):\n                category_label = str(category_obj.value)\n            else:\n                # Handle cases where it might already be a string or different object\n                category_label = str(category_obj).split(\".\")[-1].capitalize()\n                \n            explanation = corr.get(\"explanation\", \"\")\n            comment_text = f\"[{category_label}] {explanation}\"\n            _add_comment_to_part(\n                comments_element, comment_id, author, timestamp, comment_text\n            )\n\n            revision_id += 2\n            comment_id += 1\n\n    _save_comments_part(doc)\n    return doc\n\n\ndef add_comment(\n    document: DocxDocument,\n    paragraph_element: etree._Element,\n    comment_text: str,\n    author: str,\n    timestamp: str,\n    comment_id: int,\n) -> None:\n    \"\"\"Adds a comment to the end of a paragraph (fallback/legacy).\"\"\"\n    comments_element = _get_or_create_comments_part(document)\n\n    range_start = etree.Element(f\"{W}commentRangeStart\", {f\"{W}id\": str(comment_id)})\n    range_end = etree.Element(f\"{W}commentRangeEnd\", {f\"{W}id\": str(comment_id)})\n    ref_run = etree.Element(f\"{W}r\")\n    rpr = etree.SubElement(ref_run, f\"{W}rPr\")\n    etree.SubElement(rpr, f\"{W}rStyle\", {f\"{W}val\": \"Kommentarzeichen\"})\n    etree.SubElement(ref_run, f\"{W}commentReference\", {f\"{W}id\": str(comment_id)})\n\n    paragraph_element.append(range_start)\n    paragraph_element.append(range_end)\n    paragraph_element.append(ref_run)\n\n    _add_comment_to_part(comments_element, comment_id, author, timestamp, comment_text)\n\n\ndef _make_run(\n    text: str, rpr: Optional[etree._Element] = None, is_delete: bool = False\n) -> etree._Element:\n    run = etree.Element(f\"{W}r\")\n    if rpr is not None:\n        run.append(deepcopy(rpr))\n\n    tag = f\"{W}delText\" if is_delete else f\"{W}t\"\n    t = etree.SubElement(run, tag)\n    t.set(f\"{{{XML_NS}}}space\", \"preserve\")\n    t.text = text\n    return run\n\n\ndef _get_or_create_comments_part(doc: DocxDocument) -> etree._Element:\n    if hasattr(doc, \"_comments_element\"):\n        return doc._comments_element\n    for rel in doc.part.rels.values():\n        if \"comments\" in rel.reltype:\n            doc._comments_element = etree.fromstring(rel.target_part.blob)\n            return doc._comments_element\n    root = etree.Element(f\"{W}comments\", nsmap={\"w\": WORD_NS})\n    doc._comments_element = root\n    return root\n\n\ndef _add_comment_to_part(\n    comments_element: etree._Element,\n    comment_id: int,\n    author: str,\n    timestamp: str,\n    text: str,\n) -> None:\n    comment = etree.SubElement(\n        comments_element,\n        f\"{W}comment\",\n        {\n            f\"{W}id\": str(comment_id),\n            f\"{W}author\": author,\n            f\"{W}date\": timestamp,\n            f\"{W}initials\": author[:3].upper(),\n        },\n    )\n    p = etree.SubElement(comment, f\"{W}p\")\n    \n    # Split by line breaks and handle bold markers (simple implementation)\n    lines = text.split(\"\\n\")\n    for i, line in enumerate(lines):\n        # Process bold markers: **Text**\n        # We split by ** and alternate between bold and normal runs\n        parts = re.split(r\"(\\*\\*.*?\\*\\*)\", line)\n        for part in parts:\n            if part.startswith(\"**\") and part.endswith(\"**\"):\n                bold_text = part[2:-2]\n                r = etree.SubElement(p, f\"{W}r\")\n                rpr = etree.SubElement(r, f\"{W}rPr\")\n                etree.SubElement(rpr, f\"{W}b\")\n                t = etree.SubElement(r, f\"{W}t\")\n                t.set(f\"{{{XML_NS}}}space\", \"preserve\")\n                t.text = bold_text\n            else:\n                if part:\n                    r = etree.SubElement(p, f\"{W}r\")\n                    t = etree.SubElement(r, f\"{W}t\")\n                    t.set(f\"{{{XML_NS}}}space\", \"preserve\")\n                    t.text = part\n        \n        # Add line break if not the last line\n        if i < len(lines) - 1:\n            r = etree.SubElement(p, f\"{W}r\")\n            etree.SubElement(r, f\"{W}br\")\n\n\ndef _save_comments_part(doc: DocxDocument) -> None:\n    if not hasattr(doc, \"_comments_element\"):\n        return\n    from docx.opc.packuri import PackURI\n    from docx.opc.part import Part\n\n    blob = etree.tostring(\n        doc._comments_element,\n        encoding=\"utf-8\",\n        xml_declaration=True,\n        standalone=True,\n    )\n    for rel in doc.part.rels.values():\n        if \"comments\" in rel.reltype:\n            rel.target_part._blob = blob\n            return\n    part = Part(\n        PackURI(\"/word/comments.xml\"), COMMENTS_CONTENT_TYPE, blob, doc.part.package\n    )\n    doc.part.relate_to(part, COMMENTS_URI)\n"
+  }
+}
+```
+
+---
+
+## MODEL ✨
+
+Wir haben das Ziel erreicht! Ich habe die "Rauchpistole" gefunden – die Stelle, an der die Korrekturen deterministisch in das XML-Fleisch des Word-Dokuments geschnitten werden.
+
+### Der Fundort: `src/mcp_lektor/core/openxml_writer.py`
+
+In der Funktion **`apply_track_change`** (Zeilen 30-143) passiert die eigentliche Arbeit. Hier ist der präzise Ablauf, wie das LLM (stochastisch) die Korrektur vorschlägt und dein Code (deterministisch) sie umsetzt:
+
+1.  **Textsuche (Fuzzy Matching):**
+    Das Programm sucht im Absatz nach dem Text, den das LLM korrigieren möchte. Dabei wird ein "Fuzzy-Regex" verwendet (`_to_fuzzy_regex`), um Unterschiede bei Anführungszeichen oder Leerzeichen zu tolerieren (Zeile 146).
+
+2.  **Die chirurgische Entfernung (`<w:del>`):**
+    Wenn der Text gefunden wurde, erstellt der Code ein XML-Element vom Typ `w:del` (Zeilen 104-108). Dies ist der offizielle Word-Standard für gelöschten Text im Nachverfolgungsmodus.
+    ```python
+    del_elem = etree.Element(
+        f"{W}del",
+        {f"{W}id": str(revision_id), f"{W}author": author, f"{W}date": timestamp},
+    )
+    ```
+
+3.  **Die chirurgische Einfügung (`<w:ins>`):**
+    Direkt danach wird ein `w:ins` Element eingefügt, das den neuen Text vom LLM enthält (Zeilen 112-120).
+    ```python
+    ins_elem = etree.Element(
+        f"{W}ins",
+        {f"{W}id": str(revision_id + 1), f"{W}author": author, f"{W}date": timestamp},
+    )
+    ```
+
+4.  **Die Kommentierung:**
+    Zusätzlich wird um diese Änderung herum ein Kommentar-Bereich (`w:commentRangeStart` / `w:commentRangeEnd`) gelegt (Zeilen 125-136), damit der Nutzer später im Word-Dokument auch die Begründung des "Lektors" lesen kann.
+
+### Zusammenfassung für dein Verständnis:
+*   **Trigger:** Das LLM liefert ein JSON-Objekt mit `original_text` und `replacement_text`.
+*   **Determinismus:** Dein Python-Code nimmt dieses JSON, sucht mit `lxml` die exakten XML-Knoten im `.docx` (das eigentlich ein ZIP aus XML-Dateien ist) und ersetzt die normalen Text-Knoten durch `w:del` und `w:ins` Knoten.
+*   **Resultat:** Wenn du die Datei in Word öffnest, sieht Word diese speziellen Tags und zeigt sie automatisch als rote Durchstreichungen und Unterstreichungen an.
+
+Das ist die Brücke zwischen der "vagen" Absicht des LLMs und der "strengen" Struktur eines Office-Dokuments. Möchtest du noch wissen, wie die `corrections` (die Eingabe für diesen Prozess) vom LLM überhaupt generiert werden?
+
+---
+
+## USER 🧑‍💻
+
+Ja, das ist jetzt die spannende Frage.
+
+---
+
+## MODEL ✨
+
+Um zu verstehen, wie das LLM die Korrekturvorschläge generiert, müssen wir den Weg rückwärts gehen – weg von der Datei-Ausgabe hin zur Text-Analyse.
+
+Die Spur führt uns zu diesem Tool:
+**`src/mcp_lektor/tools/proofread_text.py`**
+
+Dieses Tool wird vom LLM aufgerufen, wenn es den Text eines Dokuments (den es zuvor mit `extract_document` erhalten hat) "lektorieren" soll. 
+
+### Der nächste Schritt der Spurensuche:
+Ich öffne jetzt die Datei `src/mcp_lektor/tools/proofread_text.py`. Dort werden wir sehen, wie der Text an die **`ProofreadingEngine`** übergeben wird, die wiederum das LLM mit einem speziellen System-Prompt füttert.
+
+**Tool Command**:
+```json
+{
+  "name": "read_file",
+  "args": {
+    "file_path": "src/mcp_lektor/tools/proofread_text.py"
+  }
+}
+```
+
+---
+
+## USER 🧑‍💻
+
+**Tool Response**:
+```json
+{
+  "id": "read_file_1773868807417_0",
+  "name": "read_file",
+  "response": {
+    "output": "\"\"\"MCP tool: proofread_text – run proofreading and return corrections.\"\"\"\n\nfrom __future__ import annotations\n\nimport json\nimport logging\n\nfrom mcp_lektor.core.enums import CorrectionCategory\nfrom mcp_lektor.core.proofreading_engine import ProofreadingEngine\nfrom mcp_lektor.core.session_manager import session_manager\n\nlogger = logging.getLogger(__name__)\n\n_CATEGORY_ALIASES: dict[str, CorrectionCategory | None] = {\n    \"all\": None,\n    \"spelling\": CorrectionCategory.SPELLING,\n    \"rechtschreibung\": CorrectionCategory.SPELLING,\n    \"grammar\": CorrectionCategory.GRAMMAR,\n    \"grammatik\": CorrectionCategory.GRAMMAR,\n    \"punctuation\": CorrectionCategory.PUNCTUATION,\n    \"zeichensetzung\": CorrectionCategory.PUNCTUATION,\n    \"typography\": CorrectionCategory.TYPOGRAPHY,\n    \"typografie\": CorrectionCategory.TYPOGRAPHY,\n    \"quotation\": CorrectionCategory.QUOTATION_MARKS,\n    \"anfuehrungszeichen\": CorrectionCategory.QUOTATION_MARKS,\n    \"address\": CorrectionCategory.ADDRESS_FORM,\n    \"anrede\": CorrectionCategory.ADDRESS_FORM,\n    \"confused\": CorrectionCategory.CONFUSED_WORD,\n    \"verwechslung\": CorrectionCategory.CONFUSED_WORD,\n    \"bible\": CorrectionCategory.BIBLE_REFERENCE,\n    \"bibelstelle\": CorrectionCategory.BIBLE_REFERENCE,\n}\n\n\ndef _parse_checks(checks_str: str | None) -> list[CorrectionCategory] | None:\n    \"\"\"Parse a comma-separated checks string into category list.\n\n    Returns ``None`` when all checks should be run.\n    \"\"\"\n    if not checks_str or checks_str.strip().lower() == \"all\":\n        return None\n\n    result: list[CorrectionCategory] = []\n    for token in checks_str.split(\",\"):\n        token = token.strip().lower()\n        if token in _CATEGORY_ALIASES:\n            cat = _CATEGORY_ALIASES[token]\n            if cat is not None and cat not in result:\n                result.append(cat)\n    return result or None\n\n\nasync def proofread_text(\n    session_id: str,\n    checks: str = \"all\",\n) -> str:\n    \"\"\"Perform proofreading analysis on an extracted document.\n\n    Parameters\n    ----------\n    session_id:\n        The session id returned by ``extract_document``.\n    checks:\n        Comma-separated list of check categories, or ``\"all\"``.\n\n    Returns\n    -------\n    JSON string with the ``ProofreadingResult``.\n    \"\"\"\n    try:\n        session = session_manager.get_session(session_id)\n        structure = session[\"structure\"]\n        parsed_checks = _parse_checks(checks)\n\n        engine = ProofreadingEngine()\n        result = await engine.proofread(structure, parsed_checks)\n\n        # Store result in session for later use by write_corrected_docx\n        session_manager.update_session(session_id, {\"proofreading_result\": result})\n\n        return json.dumps(\n            result.model_dump(),\n            ensure_ascii=False,\n            indent=2,\n        )\n    except KeyError as e:\n        logger.warning(f\"Session not found: {session_id}\")\n        return json.dumps({\"error\": str(e)}, ensure_ascii=False)\n    except Exception as e:\n        logger.error(f\"Error during proofreading session {session_id}: {e}\")\n        return json.dumps({\"error\": f\"Internal error: {str(e)}\"}, ensure_ascii=False)\n"
+  }
+}
+```
+
+---
+
+## MODEL ✨
+
+Wir haben nun das **Lektorats-Büro** betreten.
+
+### Analyse des Tools `proofread_text`:
+In der Datei `proofread_text.py` passiert folgendes:
+1. Es nimmt die `session_id` entgegen (damit es weiß, welcher Text aus welchem Dokument geladen werden muss).
+2. Es übersetzt menschliche Begriffe wie "Rechtschreibung" oder "Bibelstelle" in Kategorien (`CorrectionCategory`).
+3. **Es delegiert die eigentliche Intelligenz an die `ProofreadingEngine`:**
+
+```python
+engine = ProofreadingEngine()
+result = await engine.proofread(structure, parsed_checks)
+```
+
+Das ist der Moment, in dem der Übergang von der "Verwaltung" zur "Analyse" stattfindet. 
+
+### Der nächste Schritt der Spurensuche:
+Die `ProofreadingEngine` ist das Gehirn des Projekts. Sie entscheidet, was ein "Fehler" ist und was nicht. Hier wird es jetzt besonders spannend, denn hier treffen zwei Arten von Prüfungen aufeinander:
+1.  **Regelbasierte Prüfungen:** Code, der starr nach Mustern sucht (z.B. falsche Anführungszeichen).
+2.  **LLM-basierte Prüfungen:** Der Aufruf an ein Sprachmodell, das den Text liest und wie ein menschlicher Lektor korrigiert.
+
+Ich öffne jetzt die Datei:
+**`src/mcp_lektor/core/proofreading_engine.py`**
+
+Dort werden wir sehen, wie das LLM instruiert wird, Korrekturvorschläge in einem Format zu liefern, das wir später (wie wir bereits wissen) in XML umwandeln können. Sollen wir dort weitermachen?
+
+---
+
+## USER 🧑‍💻
+
+Ja, bitte
+
+---
+
+## MODEL ✨
+
+I'll read `src/mcp_lektor/core/proofreading_engine.py` to see how it orchestrates the proofreading process and interacts with the LLM.
+
+**Tool Command**:
+```json
+{
+  "name": "read_file",
+  "args": {
+    "file_path": "src/mcp_lektor/core/proofreading_engine.py"
+  }
+}
+```
+
+---
+
+## USER 🧑‍💻
+
+**Tool Response**:
+```json
+{
+  "id": "read_file_1773868860236_0",
+  "name": "read_file",
+  "response": {
+    "output": "\"\"\"Orchestrate rule-based and LLM-based proofreading.\"\"\"\n\nfrom __future__ import annotations\n\nimport json\nimport logging\nimport time\nfrom typing import Any\n\nfrom mcp_lektor.config.models import ProofreadingConfig\nfrom mcp_lektor.config.settings import (\n    load_config,\n    load_confused_words,\n    load_typography_rules,\n)\nfrom mcp_lektor.core.confused_words_checker import scan_confused_words\nfrom mcp_lektor.core.bible_validator import BibleValidator\nfrom mcp_lektor.core.enums import ConfidenceLevel, CorrectionCategory\nfrom mcp_lektor.core.models import (\n    BibleValidationResult,\n    DocumentParagraph,\n    DocumentStructure,\n    ProofreadingResult,\n    ProposedCorrection,\n)\nfrom mcp_lektor.core.typography_checker import check_typography\n\nlogger = logging.getLogger(__name__)\n\n# Categories handled by the LLM (not rule-based)\n_LLM_CATEGORIES = {\n    CorrectionCategory.SPELLING,\n    CorrectionCategory.GRAMMAR,\n    CorrectionCategory.PUNCTUATION,\n    CorrectionCategory.ADDRESS_FORM,\n}\n\n_BATCH_TOKEN_LIMIT = 2500\n\n\nclass ProofreadingEngine:\n    \"\"\"Main proofreading orchestrator.\"\"\"\n\n    def __init__(self, config: ProofreadingConfig | None = None) -> None:\n        self.config = config or load_config()\n        self.typography_rules = load_typography_rules()\n        self.confused_words = load_confused_words()\n\n    async def proofread(\n        self,\n        structure: DocumentStructure,\n        checks: list[CorrectionCategory] | None = None,\n    ) -> ProofreadingResult:\n        \"\"\"Run the full proofreading pipeline.\n\n        1. Rule-based pre-scan (typography, confused words, quotation marks)\n        2. LLM-based analysis (spelling, grammar, punctuation, address form)\n        3. Deduplicate overlapping corrections\n        4. Assign sequential IDs\n        \"\"\"\n        start = time.time()\n        if checks is None:\n            checks = list(CorrectionCategory)\n\n        all_corrections: list[ProposedCorrection] = []\n\n        # --- Step 1: Rule-based checks ---\n        if (\n            CorrectionCategory.TYPOGRAPHY in checks\n            or CorrectionCategory.QUOTATION_MARKS in checks\n        ):\n            # We apply typography rules; those with category='Anfuehrungszeichen'\n            # are mapped to CorrectionCategory.QUOTATION_MARKS.\n            all_corrections.extend(check_typography(structure, self.typography_rules))\n        if CorrectionCategory.CONFUSED_WORD in checks:\n            all_corrections.extend(scan_confused_words(structure, self.confused_words))\n        if CorrectionCategory.BIBLE_REFERENCE in checks:\n            bible_validator = BibleValidator(self.config)\n            bible_results = await bible_validator.validate(structure)\n            all_corrections.extend(\n                self._convert_bible_results_to_corrections(structure, bible_results)\n            )\n\n        # --- Step 2: LLM-based checks ---\n        llm_checks = [c for c in checks if c in _LLM_CATEGORIES]\n        if llm_checks:\n            llm_corrections = await self._proofread_with_llm(structure, llm_checks)\n            all_corrections.extend(llm_corrections)\n\n        # --- Step 3: Deduplicate ---\n        all_corrections = _deduplicate(all_corrections)\n\n        # --- Step 4: Assign IDs ---\n        for i, corr in enumerate(all_corrections, 1):\n            corr.id = f\"C-{i:03d}\"\n\n        # --- Step 5: Determine Predominant Address Form (Problem 3.3) ---\n        predominant, deviations = self._determine_address_form_stats(\n            structure, all_corrections\n        )\n\n        elapsed = time.time() - start\n        return ProofreadingResult(\n            document_filename=structure.filename,\n            total_corrections=len(all_corrections),\n            corrections=all_corrections,\n            predominant_address_form=predominant,\n            address_form_deviations=deviations,\n            processing_time_seconds=round(elapsed, 2),\n        )\n\n    def _determine_address_form_stats(\n        self, structure: DocumentStructure, corrections: list[ProposedCorrection]\n    ) -> tuple[str, int]:\n        \"\"\"\n        Count occurrences of 'Du' vs 'Sie' address forms.\n        Uses config.default_address_form for tie-breaking (Problem 3.3).\n        \"\"\"\n        import re\n\n        # We look for personal pronouns and possessives\n        # Du-Form: du, dir, dich, dein, deine, ...\n        # Sie-Form: Sie, Ihnen, Ihr, Ihre, ... (must be capitalized)\n        du_pattern = re.compile(\n            r\"\\b(du|dir|dich|dein|deine|deinem|deiner|deines)\\b\", re.IGNORECASE\n        )\n        sie_pattern = re.compile(r\"\\b(Sie|Ihnen|Ihr|Ihre|Ihrem|Ihrer|Ihres)\\b\")\n\n        du_count = 0\n        sie_count = 0\n\n        for para in structure.paragraphs:\n            text = para.proofreadable_text\n            du_count += len(du_pattern.findall(text))\n            sie_count += len(sie_pattern.findall(text))\n\n        if du_count == 0 and sie_count == 0:\n            return \"None\", 0\n\n        # Tie-breaking logic\n        if du_count > sie_count:\n            predominant = \"Du\"\n            deviations = sie_count\n        elif sie_count > du_count:\n            predominant = \"Sie\"\n            deviations = du_count\n        else:\n            # TIE! Use configured default\n            predominant = self.config.default_address_form\n            # In a tie, both counts are equal, so deviations = du_count (or sie_count)\n            # but only for the non-predominant form.\n            # If predominant is \"Sie\", then du_count are the deviations.\n            deviations = du_count if predominant == \"Sie\" else sie_count\n\n        return predominant, deviations\n\n    async def _proofread_with_llm(\n        self,\n        structure: DocumentStructure,\n        checks: list[CorrectionCategory],\n    ) -> list[ProposedCorrection]:\n        \"\"\"Batch paragraphs and send to the LLM.\"\"\"\n\n        paragraphs = [\n            p\n            for p in structure.paragraphs\n            if not p.is_placeholder_paragraph and p.proofreadable_text.strip()\n        ]\n        if not paragraphs:\n            return []\n\n        all_corrections: list[ProposedCorrection] = []\n        batch: list[dict[str, Any]] = []\n        batch_tokens = 0\n\n        for para in paragraphs:\n            para_dict = {\n                \"index\": para.index,\n                \"text\": para.proofreadable_text,\n            }\n            est_tokens = len(para.proofreadable_text) // 3\n            if batch_tokens + est_tokens > _BATCH_TOKEN_LIMIT and batch:\n                corrections = await self._process_batch(batch, checks)\n                all_corrections.extend(corrections)\n                batch = []\n                batch_tokens = 0\n\n            batch.append(para_dict)\n            batch_tokens += est_tokens\n\n        if batch:\n            corrections = await self._process_batch(batch, checks)\n            all_corrections.extend(corrections)\n\n        return all_corrections\n\n    async def _process_batch(\n        self,\n        batch: list[dict[str, Any]],\n        checks: list[CorrectionCategory],\n    ) -> list[ProposedCorrection]:\n        \"\"\"Send one batch to the LLM and parse results.\"\"\"\n        from mcp_lektor.core.llm_client import call_llm_for_proofreading\n\n        check_names = [c.value for c in checks]\n        raw = await call_llm_for_proofreading(\n            json.dumps(batch, ensure_ascii=False),\n            self.config,\n            check_names,\n        )\n\n        corrections: list[ProposedCorrection] = []\n        for item in raw:\n            try:\n                cat_str = item.get(\"category\", \"\")\n                category = _parse_category(cat_str)\n                confidence = _parse_confidence(item.get(\"confidence\", \"medium\"))\n\n                corrections.append(\n                    ProposedCorrection(\n                        id=\"\",\n                        paragraph_index=item[\"paragraph_index\"],\n                        run_index=item.get(\"run_index\", 0),\n                        char_offset_start=item.get(\"char_offset_start\", 0),\n                        char_offset_end=item.get(\"char_offset_end\", 0),\n                        original_text=item.get(\"original_text\", \"\"),\n                        suggested_text=item.get(\"suggested_text\", \"\"),\n                        category=category,\n                        confidence=confidence,\n                        explanation=item.get(\"explanation\", \"\"),\n                    )\n                )\n            except (KeyError, ValueError) as exc:\n                logger.warning(\"Skipping invalid LLM correction: %s\", exc)\n        return corrections\n\n    def _convert_bible_results_to_corrections(\n        self,\n        structure: DocumentStructure,\n        results: list[BibleValidationResult],\n    ) -> list[ProposedCorrection]:\n        \"\"\"Map BibleValidationResult objects to ProposedCorrection objects.\"\"\"\n        corrections: list[ProposedCorrection] = []\n\n        # Find the paragraph map for quick lookup\n        para_map = {p.index: p for p in structure.paragraphs}\n\n        for res in results:\n            ref = res.reference\n            para = para_map.get(ref.paragraph_index)\n            if not para:\n                continue\n\n            # Determine run_index for the start offset\n            run_index = self._find_run_index_for_offset(para, ref.char_offset_start)\n\n            # Format local texts\n            local_texts_str = \"\"\n            if res.local_texts:\n                items = []\n                for label, text in res.local_texts.items():\n                    # Format: **Label**: \"Text\"\n                    items.append(f\"**{label.upper()}**: \\\"{text}\\\"\")\n                local_texts_str = \"\\n\" + \"\\n\".join(items)\n\n            # Format comparison links for explanation\n            links_str = \"\"\n            if res.comparison_links:\n                links_list = [f\"**{k}**: {v}\" for k, v in res.comparison_links.items()]\n                links_str = \"\\n\\n**Vergleichslinks**:\\n\" + \"\\n\".join(links_list)\n\n            status_text = \"\"\n            if not res.is_valid:\n                status_text = f\"**FEHLER**: {res.error_message or 'Ungültig'}\"\n            else:\n                status_text = \"**Bibelstelle verifiziert**.\"\n\n            explanation = f\"{status_text}\\n{local_texts_str}{links_str}\"\n\n            corrections.append(\n                ProposedCorrection(\n                    id=\"\",\n                    paragraph_index=ref.paragraph_index,\n                    run_index=run_index,\n                    char_offset_start=ref.char_offset_start,\n                    char_offset_end=ref.char_offset_end,\n                    original_text=ref.raw_text,\n                    suggested_text=ref.raw_text,  # Keep original, just add comment\n                    category=CorrectionCategory.BIBLE_REFERENCE,\n                    confidence=ConfidenceLevel.HIGH,\n                    explanation=explanation,\n                )\n            )\n        return corrections\n\n    def _find_run_index_for_offset(\n        self, para: DocumentParagraph, char_offset: int\n    ) -> int:\n        \"\"\"Find the run index that contains the given character offset.\"\"\"\n        current_offset = 0\n        for i, run in enumerate(para.runs):\n            run_len = len(run.text)\n            if current_offset <= char_offset < current_offset + run_len:\n                return i\n            current_offset += run_len\n        return len(para.runs) - 1 if para.runs else 0\n\n\ndef _deduplicate(\n    corrections: list[ProposedCorrection],\n) -> list[ProposedCorrection]:\n    \"\"\"Remove duplicate corrections at the same location.\n\n    When two corrections target the exact same span, keep the one\n    with higher confidence.\n    \"\"\"\n    seen: dict[tuple[int, int, int, int], ProposedCorrection] = {}\n    confidence_order = {\n        ConfidenceLevel.HIGH: 3,\n        ConfidenceLevel.MEDIUM: 2,\n        ConfidenceLevel.LOW: 1,\n    }\n\n    for corr in corrections:\n        key = (\n            corr.paragraph_index,\n            corr.run_index,\n            corr.char_offset_start,\n            corr.char_offset_end,\n        )\n        existing = seen.get(key)\n        if existing is None:\n            seen[key] = corr\n        elif confidence_order.get(corr.confidence, 0) > confidence_order.get(\n            existing.confidence, 0\n        ):\n            seen[key] = corr\n\n    return list(seen.values())\n\n\ndef _parse_category(value: str) -> CorrectionCategory:\n    \"\"\"Best-effort mapping of LLM category strings to enum.\"\"\"\n    for member in CorrectionCategory:\n        if member.value.lower() == value.lower():\n            return member\n    lower = value.lower()\n    if \"rechtschreib\" in lower or \"spelling\" in lower:\n        return CorrectionCategory.SPELLING\n    if \"grammatik\" in lower or \"grammar\" in lower:\n        return CorrectionCategory.GRAMMAR\n    if \"zeichensetzung\" in lower or \"punctuat\" in lower:\n        return CorrectionCategory.PUNCTUATION\n    if \"anrede\" in lower or \"address\" in lower:\n        return CorrectionCategory.ADDRESS_FORM\n    return CorrectionCategory.SPELLING\n\n\ndef _parse_confidence(value: str) -> ConfidenceLevel:\n    \"\"\"Map a confidence string to the enum.\"\"\"\n    try:\n        return ConfidenceLevel(value.lower())\n    except ValueError:\n        return ConfidenceLevel.MEDIUM\n"
+  }
+}
+```
+
+---
+
+## MODEL ✨
+
+Hier wird es nun richtig interessant, denn wir haben das "Gehirn" der Operation gefunden. Die `ProofreadingEngine` ist der Ort, an dem die stochastische Welt des LLMs und die deterministische Welt deines Codes zum ersten Mal wirklich "Händchen halten".
+
+### Die zwei Welten in der `ProofreadingEngine`:
+
+Wie wir in den Zeilen 43-69 sehen können, arbeitet die Engine in zwei Phasen:
+
+#### 1. Die deterministische Phase (Regelbasiert):
+Dein Python-Code scannt den Text zuerst nach festen Regeln. Hier wird nicht "geraten" oder "gewürfelt":
+*   **Typografie:** Falsche Anführungszeichen oder Gedankenstriche werden durch `check_typography` gefunden.
+*   **Verwechslungen:** Häufig verwechselte Wörter werden über `scan_confused_words` (basierend auf einer YAML-Liste) gesucht.
+*   **Bibelstellen:** Der `BibleValidator` prüft, ob die zitierten Stellen existieren.
+
+#### 2. Die stochastische Phase (LLM-Basiert):
+Für die Dinge, die eine "echte" Sprachintelligenz erfordern (Rechtschreibung, Grammatik, Stil, Anredeform), wird das LLM gerufen:
+
+```python
+# Zeilen 85-88
+llm_checks = [c for c in checks if c in _LLM_CATEGORIES]
+if llm_checks:
+    llm_corrections = await self._proofread_with_llm(structure, llm_checks)
+    all_corrections.extend(llm_corrections)
+```
+
+### Wie das LLM "getriggert" wird (Der entscheidende Moment):
+
+In der Funktion `_process_batch` (Zeilen 156-191) passiert die Magie:
+1.  Der Text des Dokuments wird in Häppchen (Batches) unterteilt.
+2.  Es wird eine externe Funktion gerufen: `call_llm_for_proofreading`.
+3.  **Das LLM erhält eine klare Anweisung:** "Hier ist ein Text. Bitte gib mir eine Liste von Korrekturen im JSON-Format zurück, die `paragraph_index`, `original_text`, `suggested_text` und eine `explanation` enthalten."
+
+### Warum funktioniert das Zusammenspiel so gut?
+
+Das LLM ist hier kein "freier Autor", sondern ein **strukturierter Daten-Lieferant**. 
+*   **Eingabe:** Roher Text + Instruktion.
+*   **Ausgabe:** Ein strenges JSON-Schema.
+
+Dein Code nimmt dieses JSON (Zeilen 168-189) und wandelt es in `ProposedCorrection`-Objekte um. 
+
+**Das ist der Clou:** 
+Weil das LLM im JSON den `paragraph_index` und den `original_text` mitliefert, weiß dein späterer XML-Writer (den wir vorhin gesehen haben) ganz genau, wo er im Word-Dokument die "chirurgische" Änderung vornehmen muss.
+
+### Die letzte Station der Spurensuche:
+Möchtest du noch den **System-Prompt** sehen? Also den exakten Text, mit dem das LLM instruiert wird, damit es sich wie ein Lektor verhält und genau das JSON liefert, das wir brauchen?
+
+Dafür müssten wir in die Datei schauen:
+**`src/mcp_lektor/core/llm_client.py`**
+
+Soll ich die "Gebrauchsanweisung" für das LLM hervorholen?
+
+---
+
+## USER 🧑‍💻
+
+Ja, schließe die Spurensuche damit ab.
+
+---
+
+## MODEL ✨
+
+I'll read `src/mcp_lektor/core/llm_client.py` to reveal the final piece of the puzzle: the instructions that guide the LLM's behavior.
+
+**Tool Command**:
+```json
+{
+  "name": "read_file",
+  "args": {
+    "file_path": "src/mcp_lektor/core/llm_client.py"
+  }
+}
+```
+
+---
+
+## USER 🧑‍💻
+
+**Tool Response**:
+```json
+{
+  "id": "read_file_1773869005896_0",
+  "name": "read_file",
+  "response": {
+    "output": "\"\"\"\nAsync wrapper for LLM calls via Langdock (OpenAI-compatible) or Straico API (v.0).\n\"\"\"\n\nfrom __future__ import annotations\n\nimport json\nimport logging\nimport os\nimport asyncio\nfrom typing import Any\n\nimport httpx\nfrom openai import AsyncOpenAI\n\nfrom mcp_lektor.config.models import ProofreadingConfig\n\nlogger = logging.getLogger(__name__)\n\n_SYSTEM_PROMPT = \"\"\"\\\nDu bist ein professioneller deutscher Lektor. Prüfe den folgenden Text auf \\\nFehler und gib Korrekturen als JSON-Array zurück.\n\nRegeln:\n- Ignoriere Platzhalter-Text (rot markiert, in eckigen Klammern).\n- Verwende deutsche typografische Konventionen.\n- Gib NUR echte Fehler zurück, keine stilistischen Vorschläge.\n- Klassifiziere jede Korrektur mit einer Kategorie und Konfidenzstufe.\n\nBlacklist (was nicht geprüft wird):\n- Anführungsstriche.\n\nAntworte AUSSCHLIESSLICH mit einem JSON-Array im folgenden Format:\n[\n  {\n    \"paragraph_index\": <int>,\n    \"run_index\": <int>,\n    \"char_offset_start\": <int>,\n    \"char_offset_end\": <int>,\n    \"original_text\": \"<fehlerhafter Text>\",\n    \"suggested_text\": \"<korrigierter Text>\",\n    \"category\": \"<Rechtschreibung|Grammatik|Zeichensetzung|Anrede-Konsistenz>\",\n    \"confidence\": \"<high|medium|low>\",\n    \"explanation\": \"<kurze Erklärung>\"\n  }\n]\n\nWICHTIG: Alle Textwerte müssen valider JSON-Code sein. Doppelte Anführungszeichen innerhalb von Texten MÜSSEN mit einem Backslash maskiert werden (\\\").\n\nWenn keine Fehler vorhanden sind, antworte mit einem leeren Array: []\n\"\"\"\n\nasync def call_llm_for_proofreading(\n    paragraphs_json: str,\n    config: ProofreadingConfig,\n    checks: list[str],\n) -> list[dict[str, Any]]:\n    \"\"\"\n    Send a batch of paragraphs to the LLM and parse corrections.\n    \"\"\"\n    straico_key = os.environ.get(\"STRAICO_API_KEY\")\n    max_retries = config.llm_max_retries\n    delay = config.llm_retry_initial_delay_seconds\n    \n    last_exception = None\n    \n    for attempt in range(max_retries + 1):\n        try:\n            if straico_key:\n                return await _call_straico_v0(paragraphs_json, straico_key, config, checks)\n            else:\n                return await _call_langdock(paragraphs_json, config, checks)\n        except Exception as exc:\n            last_exception = exc\n            if attempt < max_retries:\n                logger.warning(\n                    f\"LLM API attempt {attempt+1}/{max_retries+1} failed: {exc}. \"\n                    f\"Retrying in {delay}s...\"\n                )\n                await asyncio.sleep(delay)\n                delay *= 2\n            else:\n                logger.error(f\"LLM API final attempt failed: {exc}\")\n    \n    return []\n\nasync def _call_langdock(\n    paragraphs_json: str,\n    config: ProofreadingConfig,\n    checks: list[str],\n) -> list[dict[str, Any]]:\n    \"\"\"Langdock / OpenAI-compatible call.\"\"\"\n    client = AsyncOpenAI(\n        api_key=config.langdock_api_key or os.environ.get(\"LANGDOCK_API_KEY\", \"\"),\n        base_url=config.langdock_api_base,\n    )\n\n    checks_hint = \", \".join(checks)\n    user_message = (\n        f\"Prüfe den folgenden Text auf: {checks_hint}.\\n\\n\"\n        f\"Absätze (JSON):\\n{paragraphs_json}\"\n    )\n\n    response = await client.chat.completions.create(\n        model=config.llm_model or \"anthropic/claude-sonnet-4.5\",\n        messages=[\n            {\"role\": \"system\", \"content\": _SYSTEM_PROMPT},\n            {\"role\": \"user\", \"content\": user_message},\n        ],\n        temperature=config.temperature,\n        max_tokens=config.max_tokens_per_call,\n    )\n    content = response.choices[0].message.content or \"[]\"\n    return _parse_json_content(content)\n\nasync def _call_straico_v0(\n    paragraphs_json: str,\n    api_key: str,\n    config: ProofreadingConfig,\n    checks: list[str],\n) -> list[dict[str, Any]]:\n    \"\"\"Straico API call using v.0 prompt completion.\"\"\"\n    url = \"https://api.straico.com/v0/prompt/completion\"\n    headers = {\n        \"Authorization\": f\"Bearer {api_key}\",\n        \"Content-Type\": \"application/json\"\n    }\n    \n    checks_hint = \", \".join(checks)\n    full_prompt = (\n        f\"{_SYSTEM_PROMPT}\\n\\n\"\n        f\"Prüfe den folgenden Text auf: {checks_hint}.\\n\\n\"\n        f\"Absätze (JSON):\\n{paragraphs_json}\"\n    )\n\n    # v.0 Payload construction\n    payload = {\n        \"message\": full_prompt,\n        \"temperature\": config.temperature,\n        \"max_tokens\": config.max_tokens_per_call,\n    }\n\n    # Decide between smart_llm_selector and specific model\n    if config.smart_llm_selector:\n        payload[\"smart_llm_selector\"] = config.smart_llm_selector\n    else:\n        payload[\"model\"] = config.llm_model or \"anthropic/claude-sonnet-4.5\"\n\n    async with httpx.AsyncClient() as client:\n        response = await client.post(url, headers=headers, json=payload, timeout=90.0)\n        \n        if response.status_code == 422:\n            logger.error(f\"Straico v.0 422 Error: {response.text}\")\n            \n        response.raise_for_status()\n        data = response.json()\n        \n        # v.0 Response structure: data.completion.choices[0].message.content\n        try:\n            content = data[\"data\"][\"completion\"][\"choices\"][0][\"message\"][\"content\"]\n            model_used = data[\"data\"][\"completion\"].get(\"model\", \"unknown\")\n            logger.info(f\"Straico used model: {model_used}\")\n            return _parse_json_content(content)\n        except (KeyError, IndexError) as exc:\n            logger.error(f\"Failed to parse Straico v.0 response: {exc}. Data: {data}\")\n            return []\n\ndef _parse_json_content(content: str) -> list[dict[str, Any]]:\n    \"\"\"Helper to clean and parse JSON from LLM string with self-healing.\"\"\"\n    import re\n    \n    # 1. Basic cleaning\n    content = content.strip()\n    if content.startswith(\"```\"):\n        content = re.sub(r\"^```[a-z]*\\n\", \"\", content)\n        content = re.sub(r\"\\n```$\", \"\", content)\n    content = content.strip()\n    \n    # 2. Extract array part\n    if not (content.startswith(\"[\") and content.endswith(\"]\")):\n        match = re.search(r\"\\[.*\\]\", content, re.DOTALL)\n        if match:\n            content = match.group(0)\n    \n    # 3. Trailing commas\n    content = re.sub(r\",\\s*([\\]}])\", r\"\\1\", content)\n    \n    # First attempt: standard parse\n    try:\n        return json.loads(content)\n    except json.JSONDecodeError:\n        logger.info(\"Standard JSON parse failed, attempting repair...\")\n        pass\n\n    # Second attempt: Targeted repair of unescaped quotes and newlines\n    try:\n        # This regex looks for values inside \"key\": \"value\" patterns\n        # It specifically targets our known fields to avoid breaking the JSON structure\n        fields = \"original_text|suggested_text|explanation|category|confidence\"\n        \n        def repair_value(match):\n            prefix = match.group(1) # \"field\": \"\n            value = match.group(3)  # the actual value content\n            suffix = match.group(4) # \"\n            # Escape unescaped double quotes\n            # But don't double-escape already escaped ones\n            value = re.sub(r'(?<!\\\\)\"', r'\\\"', value)\n            # Replace real newlines with \\n\n            value = value.replace(\"\\n\", \"\\\\n\").replace(\"\\r\", \"\")\n            return f'{prefix}{value}{suffix}'\n\n        # Pattern: \"field\" : \" (value) \" followed by , or }\n        pattern = rf'(\"({fields})\"\\s*:\\s*\")(.*?)(\"(?=\\s*[,}}]))'\n        fixed_content = re.sub(pattern, repair_value, content, flags=re.DOTALL)\n        \n        return json.loads(fixed_content)\n    except Exception as exc:\n        logger.warning(f\"JSON repair failed: {exc}\\nPartial content: {content[:200]}...\")\n        return []\n"
+  }
+}
+```
+
+---
+
+## MODEL ✨
+
+Die Spurensuche ist abgeschlossen. Wir haben den "Heiligen Gral" des Systems gefunden: den **System-Prompt** (Zeilen 20–49).
+
+### Das Finale der Analyse: Wie das LLM "gezähmt" wird
+
+Hier siehst du schwarz auf weiß, wie die Brücke zwischen der stochastischen Intelligenz und dem deterministischen Code geschlagen wird:
+
+1.  **Die Rolle (Identität):** 
+    `"Du bist ein professioneller deutscher Lektor."` – Das setzt den statistischen Rahmen. Das LLM wird nun Wörter bevorzugen, die in einem Lektorats-Kontext wahrscheinlich sind.
+
+2.  **Die Einschränkung (Fokus):** 
+    `"Gib NUR echte Fehler zurück, keine stilistischen Vorschläge."` – Das reduziert das Rauschen. Wir wollen keine "vagen" Ideen, sondern harte Fakten für Korrekturen.
+
+3.  **Das deterministische Format (Struktur):** 
+    Das LLM wird gezwungen, in einem **JSON-Array** zu antworten. Die Definition der Felder (`paragraph_index`, `original_text`, `suggested_text`, etc.) ist der Vertrag zwischen Mensch und Maschine.
+
+4.  **Die Fehlerkorrektur (Self-Healing):**
+    Besonders spannend ist die Funktion `_parse_json_content` (Zeilen 124–168). Da LLMs manchmal "ausrutschen" (z. B. Anführungszeichen im Text nicht richtig maskieren), enthält dein Code eine "Heilungs-Logik", die das kaputte JSON repariert, bevor es weiterverarbeitet wird.
+
+### Der gesamte Workflow in einem Satz:
+Ein **stochastisches LLM** erhält eine **deterministische Strukturvorgabe** (Prompt), liefert ein **strukturiertes Datenpaket** (JSON), das von einem **Python-Skript** validiert und repariert wird, um schließlich via **OXML-Manipulation** punktgenau in die **XML-Struktur** eines Word-Dokuments geschrieben zu werden.
+
+Das ist modernes Software-Engineering im Zeitalter der KI: Wir nutzen die statistische Wahrscheinlichkeit für die "Erkenntnis" (Was ist ein Fehler?), aber wir nutzen strengen, deterministischen Code für die "Ausführung" (Wo im Dokument steht das?).
+
+Hat dir diese Spurensuche geholfen, das Zusammenspiel besser zu verstehen?
