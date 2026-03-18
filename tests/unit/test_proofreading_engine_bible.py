@@ -48,34 +48,36 @@ class TestProofreadingEngineBible:
         """Test that Bible references are integrated into proofread result with local texts."""
         # Mock BibleProvider
         mock_provider = MagicMock(spec=BibleProvider)
+        mock_provider._data = {"menge": {}, "neu": {}}  # Mock internal data
         mock_provider.exists.return_value = True
         mock_provider.normalize_book_name.return_value = "GEN"
         mock_provider.get_texts.return_value = {
             "menge": "Am Anfang...",
             "neu": "Im Anfang..."
         }
-        
+
         # Patch BibleValidator to use our mock provider
         mocker.patch("mcp_lektor.core.bible_validator.BibleProvider", return_value=mock_provider)
-        
+
         engine = ProofreadingEngine()
         structure = self._make_structure(["Lies Gen 1,1 heute."])
-        
+
         result = await engine.proofread(structure, checks=[CorrectionCategory.BIBLE_REFERENCE])
-        
+
         assert result.total_corrections == 1
         corr = result.corrections[0]
         assert corr.category == CorrectionCategory.BIBLE_REFERENCE
         assert corr.original_text == "Gen 1,1"
         assert "verifiziert" in corr.explanation
-        assert "Menge: \"Am Anfang...\"" in corr.explanation
-        assert "Neu: \"Im Anfang...\"" in corr.explanation
+        assert "**MENGE**: \"Am Anfang...\"" in corr.explanation
+        assert "**NEU**: \"Im Anfang...\"" in corr.explanation
 
     @pytest.mark.asyncio
     async def test_bible_integration_error(self, mocker):
         """Test that invalid Bible references are marked as errors in proofread result."""
         # Mock BibleProvider
         mock_provider = MagicMock(spec=BibleProvider)
+        mock_provider._data = {"menge": {}}  # Mock internal data
         mock_provider.exists.return_value = False
         
         mocker.patch("mcp_lektor.core.bible_validator.BibleProvider", return_value=mock_provider)

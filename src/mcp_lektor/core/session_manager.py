@@ -8,6 +8,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import threading
+import pathlib
 from datetime import datetime, timedelta, timezone
 from typing import Any
 from uuid import uuid4
@@ -40,9 +41,10 @@ class SessionManager:
         session_id = uuid4().hex
         with self._lock:
             self._sessions[session_id] = {
-                **data,
                 "created_at": datetime.now(timezone.utc),
                 "last_accessed": datetime.now(timezone.utc),
+                "temp_files": [],  # Track temporary files for cleanup
+                **data,
             }
         logger.info(f"Created session: {session_id}")
         return session_id
@@ -60,6 +62,7 @@ class SessionManager:
             session = self._sessions[session_id]
             # Check expiration manually as a safety measure
             if self._is_expired(session):
+                self._cleanup_temp_files(session)
                 del self._sessions[session_id]
                 raise KeyError(f"Session expired: {session_id}")
             
@@ -71,13 +74,21 @@ class SessionManager:
         with self._lock:
             if session_id not in self._sessions:
                 raise KeyError(f"Session not found: {session_id}")
+            
+            # If new temp_files are provided, extend the existing list
+            new_temp_files = data.pop("temp_files", None)
+            if new_temp_files:
+                 self._sessions[session_id].setdefault("temp_files", []).extend(new_temp_files)
+            
             self._sessions[session_id].update(data)
             self._sessions[session_id]["last_accessed"] = datetime.now(timezone.utc)
 
     def delete_session(self, session_id: str) -> None:
-        """Remove a session from the store."""
+        """Remove a session from the store and clean up resources."""
         with self._lock:
-            self._sessions.pop(session_id, None)
+            session = self._sessions.pop(session_id, None)
+            if session:
+                self._cleanup_temp_files(session)
         logger.info(f"Deleted session: {session_id}")
 
     def list_sessions(self) -> list[str]:
@@ -94,6 +105,21 @@ class SessionManager:
         # Use last_accessed for sliding window expiration, or created_at for fixed.
         # Design choice: sliding window.
         return session.get("last_accessed", datetime.min.replace(tzinfo=timezone.utc)) < expiry_limit
+
+    def _cleanup_temp_files(self, session_data: dict[str, Any]) -> None:
+        """Delete temporary files associated with the session."""
+        temp_files = session_data.get("temp_files", [])
+        if not temp_files:
+            return
+
+        for file_path in temp_files:
+            try:
+                path = pathlib.Path(file_path)
+                if path.exists():
+                    path.unlink()
+                    logger.info(f"Deleted temporary file: {file_path}")
+            except Exception as e:
+                logger.error(f"Failed to delete temporary file {file_path}: {e}")
 
     async def start_cleanup_task(self, interval_seconds: int | None = None):
         """
@@ -126,7 +152,8 @@ class SessionManager:
                 if self._is_expired(s)
             ]
             for sid in expired_ids:
-                del self._sessions[sid]
+                session = self._sessions.pop(sid)
+                self._cleanup_temp_files(session)
                 count += 1
         
         if count > 0:

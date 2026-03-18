@@ -20,13 +20,7 @@ The primary goal is to decouple the MCP tools from the local filesystem to allow
 *   The `write_corrected_docx` tool must be updated to return the corrected document's content as a Base64 string in its JSON response.
 *   The response must include the `filename`, `content_type` (application/vnd.openxmlformats-officedocument.wordprocessingml.document), and the `file_content` (Base64).
 
-#### 1.3 API Key Authentication
-*   The MCP server (FastMCP/SSE) must implement a mechanism to verify an API key.
-*   The API key should be passed via a custom HTTP header (e.g., `X-API-Key`).
-*   The key must be configurable via an environment variable (`LEKTOR_API_KEY`).
-*   Unauthorized requests must be rejected with a 401 Unauthorized status.
-
-#### 1.4 Tool Documentation (LLM Guidance)
+#### 1.3 Tool Documentation (LLM Guidance)
 *   Docstrings for all tools must be updated to clearly explain the transition from local paths to session-based interaction.
 *   The LLM must be instructed to use the `session_id` returned by `extract_document` for all subsequent calls.
 
@@ -51,13 +45,6 @@ The primary goal is to decouple the MCP tools from the local filesystem to allow
         *   The returned Base64 string can be decoded back into a valid, readable `.docx` file.
         *   The `filename` is preserved or correctly generated.
 
-*   **User Story 3: Secure Remote Endpoint**
-    *   **As a System Administrator,** I want the MCP server to require an API key **so that** only authorized Langdock instances can use the expensive LLM resources.
-    *   **Acceptance Criteria:**
-        *   Server rejects requests without a valid `X-API-Key` header.
-        *   API key is configurable via `.env` or environment variables.
-        *   Successful authentication allows full access to all MCP tools.
-
 ---
 
 ### 3. Prioritization and Dependency Analysis
@@ -66,19 +53,16 @@ The primary goal is to decouple the MCP tools from the local filesystem to allow
     *   **Must-Have (MVP):**
         *   Base64 input for `extract_document`.
         *   Base64 output for `write_corrected_docx`.
-        *   API Key authentication (for public endpoint safety).
     *   **Should-Have:**
         *   Automated cleanup of temporary files created from Base64 inputs.
         *   Improved error handling for large files.
     *   **Could-Have:**
         *   Temporary signed download URLs instead of large Base64 strings.
-        *   Multiple API key support for different users.
     *   **Won't-Have (in this increment):**
         *   Persistent database storage for documents (staying with `session_manager` for now).
 
 *   **Dependencies:**
     1.  **Base64 Logic:** Depends on `python-docx` (already present) and standard library `base64`.
-    2.  **Authentication:** Depends on how `FastMCP` exposes its underlying ASGI/FastAPI app (might need a custom wrapper).
 
 ---
 
@@ -88,9 +72,7 @@ The primary goal is to decouple the MCP tools from the local filesystem to allow
 | :-- | :--- | :--- | :--- |
 | BL-001 | Cloud Integration | Implement Base64 decoding in `extract_document` | Must |
 | BL-002 | Cloud Integration | Implement Base64 encoding in `write_corrected_docx` | Must |
-| BL-003 | Security | Add API Key validation middleware to SSE server | Must |
 | BL-004 | Documentation | Update tool docstrings for Langdock compatibility | Should |
-| BL-005 | DevOps | Update `Dockerfile` and `docker-compose` for new ENV vars | Must |
 
 ---
 
@@ -101,7 +83,7 @@ A Product Backlog Item is considered "Done" when all of the following criteria a
 *   **Code Quality:** The code is written and formatted according to the guidelines in `docs/CODING_STYLE.md` (`black .`, `ruff check .`).
 *   **Tests:**
     *   Unit tests for Base64 encoding/decoding logic.
-    *   Integration test simulating a remote MCP call with Base64 data and API Key.
+    *   Integration test simulating a remote MCP call with Base64 data.
     *   All existing tests continue to pass.
 *   **Acceptance Criteria:** All acceptance criteria defined for the story have been met.
 *   **Documentation:** `CHANGELOG.md` is updated.

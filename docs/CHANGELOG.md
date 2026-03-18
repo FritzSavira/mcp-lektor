@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- **Cloud-Native File Handling**: Implemented Base64 support for `extract_document` and `write_corrected_docx` to enable stateless file transfer in containerized environments (Langdock integration).
+- **Session Cleanup**: `SessionManager` now tracks and automatically deletes temporary files created during Base64 uploads to prevent disk bloat.
+- **Enhanced Tool Metadata**: Updated docstrings for all tools to guide LLMs on using the new `file_content` parameter for remote operations.
+
+### Changed
+- **Tool Interfaces**: `extract_document` now accepts `file_content` (Base64) and `filename` alongside `file_path`. `write_corrected_docx` returns `file_content` (Base64) in its JSON response.
+- **Testing Infrastructure**: Added `scripts/test_base64_upload.py` and updated integration tests to verify the full cloud-native workflow.
+
 ## [2026-03-13] - UI and Robustness Refinement
 
 ### Added

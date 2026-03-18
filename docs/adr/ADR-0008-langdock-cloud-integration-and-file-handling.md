@@ -12,7 +12,6 @@ The project is now transitioning to a production-ready Langdock integration. The
 1.  **Isolated Filesystems:** The Langdock agent (client) does not have direct access to the server's local filesystem.
 2.  **Data Transfer:** The agent needs to send the document content to the server and receive the corrected document back.
 3.  **Statelessness vs. Sessions:** While the server currently uses an in-memory `session_manager`, the initial "handshake" (sending the file) must support non-local data.
-4.  **Security:** A public endpoint requires authentication to prevent unauthorized use of the LLM-powered proofreading engine.
 
 #### **2. Decision**
 
@@ -27,11 +26,7 @@ To enable seamless Langdock integration, we will implement the following archite
     *   Update `write_corrected_docx` to return not just the `output_path` (which is useless to a remote client), but also the `file_content` as a Base64 string.
     *   Optionally, if file sizes become an issue for MCP message limits, implement a temporary "download URL" mechanism (though Base64 is preferred for initial simplicity as most `.docx` files are < 5MB).
 
-3.  **API Key Authentication:**
-    *   Implement an API Key check in the FastMCP/SSE server setup.
-    *   Clients must provide a valid `X-API-Key` header (supported by Langdock custom MCP headers).
-
-4.  **Tool Metadata Optimization:**
+3.  **Tool Metadata Optimization:**
     *   Refine the tool descriptions (docstrings) to explicitly guide the Langdock LLM on how to handle the file content vs. session IDs.
 
 #### **3. Consequences of the Decision**
@@ -39,7 +34,6 @@ To enable seamless Langdock integration, we will implement the following archite
 **Positive Consequences (Advantages):**
 *   **Cloud Compatibility:** Enables the server to run in a containerized cloud environment without shared storage.
 *   **Agent Autonomy:** Langdock agents can "read" files from their own context and "upload" them to the server via the tool call.
-*   **Security:** Protects the endpoint from unauthorized API consumption.
 *   **Backward Compatibility:** Existing local/GUI workflows can still use `file_path` if the server is configured for local access.
 
 **Negative Consequences (Disadvantages):**

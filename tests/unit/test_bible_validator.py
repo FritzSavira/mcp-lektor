@@ -86,6 +86,7 @@ class TestBibleValidatorLocal:
     async def test_validate_fail(self):
         """Test local validation failure for non-existent verse."""
         mock_provider = MagicMock(spec=BibleProvider)
+        mock_provider._data = {"menge": {}}  # Mock the internal data structure
         mock_provider.exists.return_value = False
         
         structure = self._make_structure(["Gen 60,1"])
