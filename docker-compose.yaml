@@ -19,5 +19,7 @@ services:
     volumes:
       - ./config:/app/config:ro
       - ./data:/app/data:ro
-    command: ["streamlit", "run", "src/mcp_lektor/gui.py", "--server.address", "0.0.0.0"]
+    # ÄNDERUNG HIER: baseUrlPath hinzugefügt
+    command: ["streamlit", "run", "src/mcp_lektor/gui.py", "--server.address", "0.0.0.0", "--server.baseUrlPath", "/lektor"]
+    # command: ["streamlit", "run", "src/mcp_lektor/gui.py", "--server.address", "0.0.0.0"]
     restart: unless-stopped
