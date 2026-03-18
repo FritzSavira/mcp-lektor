@@ -1,4 +1,22 @@
-"""MCP tool: extract_document – parse a .docx and store a session."""
+"""
+MCP Tool: extract_document – Parse a .docx document and start a proofreading session.
+
+This tool is the entry point for the proofreading workflow. It reads a Word document,
+extracts its content (paragraphs, comments, track changes), and stores it in a temporary
+session.
+
+Parameters:
+- file_content (str | None): Base64-encoded content of the .docx file.
+  REQUIRED for cloud environments (Langdock, Straico, Remote MCP).
+- file_path (str | None): Local file path to the .docx file.
+  ONLY for local development or when the server has direct file access.
+- filename (str | None): Optional filename for the uploaded document (default: "document.docx").
+
+Returns:
+- JSON string containing:
+  - session_id: UUID to be used in subsequent tool calls (proofread_text, validate_bible_refs).
+  - document: Structured representation of the document content.
+"""
 
 from __future__ import annotations
 

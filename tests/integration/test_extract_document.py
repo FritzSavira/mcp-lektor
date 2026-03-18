@@ -50,3 +50,27 @@ class TestExtractDocumentTool:
         raw = await extract_document(str(tmp_dir / "nope.docx"))
         data = json.loads(raw)
         assert "error" in data
+
+    @pytest.mark.asyncio
+    async def test_extract_via_base64(self, sample_docx_path: Path) -> None:
+        """Verify that documents can be uploaded via Base64 content."""
+        import base64
+
+        # Read the fixture file
+        file_bytes = sample_docx_path.read_bytes()
+        encoded = base64.b64encode(file_bytes).decode("utf-8")
+
+        # Call tool with file_content instead of file_path
+        raw = await extract_document(file_content=encoded, filename="base64_upload.docx")
+        data = json.loads(raw)
+
+        # Assertions
+        assert "session_id" in data, f"Response should contain session_id. Got: {data}"
+        assert "document" in data
+
+        # Verify session was created
+        sid = data["session_id"]
+        session = session_manager.get_session(sid)
+        assert session is not None
+        assert "structure" in session
+        assert len(session["temp_files"]) > 0  # Should track the temp file
