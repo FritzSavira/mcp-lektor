@@ -33,17 +33,22 @@ from mcp_lektor.core.session_manager import session_manager
 logger = logging.getLogger(__name__)
 
 async def extract_document(
-    file_path: str | None = None,
     file_content: str | None = None,
+    file_path: str | None = None,
     filename: str | None = "document.docx"
 ) -> str:
-    """Read a .docx file and return a structured representation.
+    """Parse a .docx document and start a proofreading session.
 
-    Can accept either a local file path (local mode) or a Base64-encoded
-    content string (cloud/remote mode).
+    CRITICAL: For cloud environments like Langdock or Straico, ALWAYS use 'file_content'.
+    DO NOT use 'file_path' unless the server is running on your local machine.
 
-    Creates an in-memory session so subsequent tools can reference
-    the parsed document via ``session_id``.
+    Args:
+        file_content: REQUIRED FOR CLOUD. The Base64-encoded content of the .docx file.
+        file_path: ONLY FOR LOCAL DEV. Absolute path to a local .docx file.
+        filename: Optional name for the file (e.g. "sermon.docx").
+
+    Returns:
+        JSON with 'session_id' and 'document' structure.
     """
     try:
         temp_files_to_track = []
